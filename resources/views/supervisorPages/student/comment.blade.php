@@ -22,8 +22,9 @@
                 <div id="messages" class="messages" style="max-height: 60vh !important;">
                     @foreach ($thesis->comments as $comment)
                     @if ($comment->user->user_type == 'Supervisor')
-                    <div class="message me"><img
-                            src="https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
+                    <div class="message me">
+                        <img
+                            src="{{ asset('logo.png') }}"
                             alt="{{$comment->user->name}}" />
                         <p class="info">
                             {{ $comment->comment }} <br>

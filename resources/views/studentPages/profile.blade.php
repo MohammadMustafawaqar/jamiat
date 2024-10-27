@@ -24,7 +24,7 @@
                      </ul>
                  </div>
                  @endif
-                <form action="{{route('students.prifle.update',$student->id)}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('students.profile.update',$student->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <div class="row">

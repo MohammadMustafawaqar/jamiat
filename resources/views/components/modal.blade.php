@@ -3,7 +3,7 @@
 'title' => '',
 'size'=>''
 ])
-<div class="modal animate__animated animate__zoomIn" id="{{$id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal animate__animated animate__zoomIn animate__faster" id="{{$id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-{{$size}}">
         <div class="modal-content">

@@ -74,7 +74,7 @@ class HomeController extends Controller
 
         // Fetch counts grouped by day, excluding Friday (day 5 in MySQL's WEEKDAY function)
         $feesData = DB::table('fees')
-            ->select(DB::raw('DAYNAME(created_at) as day_of_week'), DB::raw('COUNT(*) as count'))
+            ->select(DB::raw('DAYNAME(created_at) as day_of_week'), DB::raw('sum(amount) as total'))
             ->whereBetween('created_at', [$startDate, $endDate])
             ->whereRaw('WEEKDAY(created_at) != 4') // Exclude Friday
             ->groupBy(DB::raw('DAYNAME(created_at)')) // Group by DAYNAME instead of DAYOFWEEK
@@ -88,9 +88,10 @@ class HomeController extends Controller
         foreach ($feesData as $data) {
             $dayIndex = array_search($data->day_of_week, $customWeekDays);
             if ($dayIndex !== false) {
-                $feesCounts[$dayIndex] = $data->count;
+                $feesCounts[$dayIndex] = $data->total;
             }
         }
+
 
         return $feesCounts;
     }

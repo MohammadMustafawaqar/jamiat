@@ -21,6 +21,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'schools.edit', 'guard_name' => 'web'],
             ['name' => 'schools.read', 'guard_name' => 'web'],
             ['name' => 'schools.delete', 'guard_name' => 'web'],
+            ['name' => 'schools.import', 'guard_name' => 'web'],
+            ['name' => 'schools.address.interior', 'guard_name' => 'web'],
+            ['name' => 'schools.address.exterior', 'guard_name' => 'web'],
 
             ['name' => 'students.*', 'guard_name' => 'web'],
             ['name' => 'students.create', 'guard_name' => 'web'],
@@ -28,6 +31,10 @@ class PermissionSeeder extends Seeder
             ['name' => 'students.read', 'guard_name' => 'web'],
             ['name' => 'students.show', 'guard_name' => 'web'],
             ['name' => 'students.delete', 'guard_name' => 'web'],
+            ['name' => 'students.import', 'guard_name' => 'web'],
+            ['name' => 'students.create.rajab', 'guard_name' => 'web'],
+            ['name' => 'students.create.commission', 'guard_name' => 'web'],
+            ['name' => 'students.create.evaluation', 'guard_name' => 'web'],
 
             ['name' => 'supervisors.*', 'guard_name' => 'web'],
             ['name' => 'supervisors.create', 'guard_name' => 'web'],
@@ -62,6 +69,35 @@ class PermissionSeeder extends Seeder
             ['name' => 'users.read', 'guard_name' => 'web'],
             ['name' => 'users.db_backup', 'guard_name' => 'web'],
             ['name' => 'users.file_backup', 'guard_name' => 'web'],
+
+            // language
+            ['name' => 'language.*', 'guard_name' => 'web'],
+            ['name' => 'language.create', 'guard_name' => 'web'],
+            ['name' => 'language.edit', 'guard_name' => 'web'],
+            ['name' => 'language.read', 'guard_name' => 'web'],
+            ['name' => 'language.delete', 'guard_name' => 'web'],
+
+            // exam
+            ['name' => 'exam.*', 'guard_name' => 'web'],
+            ['name' => 'exam.create', 'guard_name' => 'web'],
+            ['name' => 'exam.edit', 'guard_name' => 'web'],
+            ['name' => 'exam.read', 'guard_name' => 'web'],
+            ['name' => 'exam.delete', 'guard_name' => 'web'],
+
+            // education_level
+            ['name' => 'education_level.*', 'guard_name' => 'web'],
+            ['name' => 'education_level.create', 'guard_name' => 'web'],
+            ['name' => 'education_level.edit', 'guard_name' => 'web'],
+            ['name' => 'education_level.read', 'guard_name' => 'web'],
+            ['name' => 'education_level.delete', 'guard_name' => 'web'],
+
+            // school_grade
+            ['name' => 'school_grade.*', 'guard_name' => 'web'],
+            ['name' => 'school_grade.create', 'guard_name' => 'web'],
+            ['name' => 'school_grade.edit', 'guard_name' => 'web'],
+            ['name' => 'school_grade.read', 'guard_name' => 'web'],
+            ['name' => 'school_grade.delete', 'guard_name' => 'web'],
+
         ]);
         $role = Role::create(['name' => 'Super Admin', 'guard_name' => 'web']);
         $permissions = Permission::get();

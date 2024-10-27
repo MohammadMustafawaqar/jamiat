@@ -57,6 +57,8 @@ Route::prefix('{locale}')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::group(['middleware' => ['admin']], function () {
         Route::resource('schools', SchoolController::class);
+        Route::post('/school/from-select', [SchoolController::class, 'storeFromSelect'])
+            ->name('school.storeFromSelect');
         Route::resource('students', StudentController::class);
         Route::resource('supervisors', SupervisorController::class);
         Route::resource('supervisor-student', SupervisorStudentController::class);
@@ -95,7 +97,7 @@ Route::prefix('{locale}')->group(function () {
         Route::put('supervisor/thesis/{thesis_id}', [ThesisController::class, 'updataStatus'])
             ->name('supervisor.thesis.update');
     });
-    
+
     Route::view('change-password', 'user.changePassword')->name('user.setting');
     Route::post('user/change-password', [UserController::class, 'changePassword'])->name('user.change-password');
     Route::resource('topic', TopicController::class);
@@ -106,9 +108,17 @@ Route::prefix('{locale}')->group(function () {
         Route::resource('thesis', ThesisController::class);
         Route::get('search-topic', [TopicController::class, 'searchTopic'])->name('topic.search');
         Route::view('user-profile', 'studentPages.profile')->name('student.profile');
-        Route::put('student-profile-update/{id}', [StudentController::class, 'updateProfile'])->name('students.prifle.update');
+        Route::put('student-profile-update/{id}', [StudentController::class, 'updateProfile'])->name('students.profile.update');
     });
     Route::get('load-provinces', [AjaxController::class, 'loadProvinces'])->name('load-provinces');
     Route::get('load-districts', [AjaxController::class, 'loadDistricts'])->name('load-districts');
     Route::get('load-sub-categories', [AjaxController::class, 'loadSubCategories'])->name('load-sub-categories');
+
+    Route::get('load-schools-districts', [AjaxController::class, 'loadDistrictsAndSchools'])
+        ->name('load-schools-districts');
+
+    Route::get('load-schools', [AjaxController::class, 'loadSchools'])
+        ->name('load-schools');
+
+    require __DIR__.'/jamiat.php';
 });

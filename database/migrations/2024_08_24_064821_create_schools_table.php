@@ -14,9 +14,21 @@ return new class extends Migration
         Schema::create('schools', function (Blueprint $table) {
             $table->id();
             $table->foreignId("address_type_id")->constrained()->cascadeOnDelete();
-            $table->foreignId("district_id")->constrained()->cascadeOnDelete();
+            $table->foreignId("province_id")
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+
+            $table->foreignId("district_id")
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->string('village')
+                ->nullable();
             $table->string("name");
+
             $table->text("details")->nullable();
+            $table->string('status')
+                ->default('created');
             $table->timestamps();
         });
     }

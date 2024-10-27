@@ -1,0 +1,46 @@
+/* styles.css */
+
+
+.pre-student-form-card {
+    background-color: #ffffff; /* White background for the pre-student-form-card */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+.pre-student-form-card-header {
+    background-color: #007bff; /* Primary color for the header */
+    color: #ffffff; /* White text for header */
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.pre-student-form-card-title {
+    margin: 0;
+}
+
+.pre-student-form-card-body {
+    padding: 30px;
+}
+
+.pre-student-form-group {
+    margin-bottom: 20px;
+}
+
+.pre-student-form-check {
+    margin-bottom: 10px;
+}
+
+.pre-student-form-check-input {
+    color: #007bff;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.pre-student-form-check-label {
+    cursor: pointer;
+    margin-left: 10px;
+    color: #495057; /* Dark text for better readability */
+}
+

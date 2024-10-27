@@ -1,200 +1,125 @@
-@extends('layouts.app')
-@section('title','Create student')
-@push('styles')
-<link rel="stylesheet" href="{{asset('admin/select2/css/select2.min.css')}}">
-<link rel="stylesheet" href="{{asset('admin/select2/css/select2-bootstrap-5-theme.min.css')}}">
-@endpush
-@section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="bi bi-people"></i> {{__('lang.students')}}</h1>
-    </div>
-    <ul class="app-breadcrumb breadcrumb">
+<x-app :title="__('sidebar.add_students')">
+    <x-page-nav :title="__('sidebar.add_students')" icon='add'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item"><a href="#">{{__('lang.new_student')}}</a></li>
-    </ul>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="tile">
-            <div class="tile-title-w-btn">
-                <h3 class="title"><i class="bi bi-plus"></i> {{__('lang.new_student')}}</h3>
-                <a class="btn btn-primary" href="{{route('students.index')}}"><i class='bi bi-list-ul'></i></a>
+        &nbsp;
+        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
+
+        <li class="breadcrumb-item"><a href="{{ route('admin.student.form.commission') }}">{{ __('lang.students') }}</a></li>
+        <li class="breadcrumb-item"><span>{{ __('lang.first_form') }}</span></li>
+    </x-page-nav>
+
+    <div class="container-fluid" style="min-height: 70vh">
+        <div class="pre-student-form-card" id='pre-form'>
+            <div class="pre-student-form-card-header">
+                <h2 class="pre-student-form-card-title">{{ __('jamiat.pre_form_title') }}</h2>
             </div>
-            <div class="tile-body">
-                {{-- @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif --}}
-                <form action="{{route('students.store')}}" method="post">
-                    @csrf
-                    <div class="row">
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="form_id" :label="__('lang.form_id')"
-                            :required="1" autofocus />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="name" :label="__('lang.name')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="name_en" :label="__('lang.name_en')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="last_name" :label="__('lang.last_name')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="last_name_en"
-                            :label="__('lang.last_name_en')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="father_name"
-                            :label="__('lang.father_name')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="father_name_en"
-                            :label="__('lang.father_name_en')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="grand_father_name"
-                            :label="__('lang.grand_father_name')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="grand_father_name_en"
-                            :label="__('lang.grand_father_name_en')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" display="name_ps" :options="$genders"
-                            name="gender_id" :label="__('lang.gender')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob" :label="__('lang.dob')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob_qamari" :label="__('lang.dob_qamari')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="phone" :label="__('lang.phone')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="whatsapp" :label="__('lang.whatsapp')"
-                            :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="graduation_year"
-                            :label="__('lang.graduation_year')" :required="1" />
-                        <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
-                            :label="__('lang.image')" :required="1" />
+            <form action="{{ route('admin.student.form.second') }}" method="GET">
 
-                        <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="$schools"
-                            name="school_id" :label="__('lang.school')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="$appreciations"
-                            name="appreciation_id" :label="__('lang.appreciation')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="$categories"
-                            name="category_id" :label="__('lang.category')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2"
-                            :options="old('category_id') ? App\Models\Category::find(old('category_id'))->subCategories : collect()"
-                            name="sub_category_id" :label="__('lang.sub_category')" :required="1" />
+                <div class="pre-student-form-card-body">
+                    <div class="form-group mt-3">
+                        <label class='form-label fs-5'>{{ __('jamiat.form_type') }}:</label>
+                        <div class="">
+                            {{-- <input class="btn-check" type="radio" name="form_type" id="commission" value="commission"
+                                checked>
+                            <label class="btn btn-outline-primary" for="commission">
+                                {{ __('jamiat.commission') }}
+                            </label>
 
-                        <div class="col-12">
-                            <hr />
-                            <h4>{{__('lang.current_address')}}</h4>
+                            <input class="btn-check" type="radio" name="form_type" id="evaluation" value="evaluation">
+                            <label class="btn btn-outline-primary" for="evaluation">
+                                {{ __('jamiat.evaluation') }}
+                            </label>
+
+                            <input class="btn-check" type="radio" name="form_type" id="rajab" value="rajab">
+                            <label class="btn btn-outline-primary" for="rajab">
+                                {{ __('jamiat.rajab') }}
+                            </label> --}}
+                            @foreach ($forms as $form)
+                                <span class="" id='form-{{ $form->id }}-container'>
+                                    <input class="btn-check" type="radio" name="form_type"
+                                        id="form-{{ $form->id }}" value="{{ $form->id }}"
+                                        @checked($form->id == 1)>
+                                    <label class="btn btn-outline-primary" for="form-{{ $form->id }}">
+                                        {{ __('jamiat.'.$form->form_type ) }}
+                                    </label>
+                                </span>
+                            @endforeach
                         </div>
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2" :options="$countries"
-                            name="current_country_id" :label="__('lang.country')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2"
-                            :options="old('current_country_id') ? App\Models\Country::find(old('current_country_id'))->provinces : collect()"
-                            name="current_province_id" :label="__('lang.province')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2"
-                            :options="old('current_province_id') ? App\Models\Province::find(old('current_province_id'))->districts : collect()"
-                            name="current_district_id" :label="__('lang.district')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3" name="current_village" :label="__('lang.village')"
-                            :required="1" />
-                        <div class="col-12">
-                            <hr />
-                            <h4>{{__('lang.permanent_address')}}</h4>
-                        </div>
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2" :options="$countries"
-                            name="permanent_country_id" :label="__('lang.country')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2"
-                            :options="old('permanent_country_id') ? App\Models\Country::find(old('permanent_country_id'))->provinces : collect()"
-                            name="permanent_province_id" :label="__('lang.province')" :required="1" />
-                        <x-select col="col-6 col-md-4 col-lg-3" class="select2"
-                            :options="old('permanent_province_id') ? App\Models\Province::find(old('permanent_province_id'))->districts : collect()"
-                            name="permanent_district_id" :label="__('lang.district')" :required="1" />
-                        <x-input col="col-6 col-md-4 col-lg-3" name="permanent_village" :label="__('lang.village')"
-                            :required="1" />
                     </div>
-                    <x-buttons.save />
-                </form>
-            </div>
+
+                    <div class="form-group mt-3">
+                        <label class='form-label fs-5 '>{{ __('lang.address_type') }}:</label>
+                        <div class="">
+                            <input class="btn-check" type="radio" name="address_type_id" id="interior" value="1"
+                                checked>
+                            <label class="btn btn-outline-primary" for="interior">
+                                {{ __('jamiat.interior') }}
+                            </label>
+
+                            <input class="btn-check" type="radio" name="address_type_id" id="exterior"
+                                value="2">
+                            <label class="btn btn-outline-primary" for="exterior">
+                                {{ __('jamiat.exterior') }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label class="form-label fs-5">{{ __('jamiat.exam_grade') }}:</label>
+                        <div>
+                            @foreach (JamiaHelper::grades() as $grade)
+                                <span class="" id='grade-{{ $grade->id }}-container'>
+                                    <input class="btn-check" type="radio" name="exam_grade"
+                                        id="grade-{{ $grade->id }}" value="{{ $grade->id }}"
+                                        @checked($grade->id == 1)>
+                                    <label class="btn btn-outline-primary" for="grade-{{ $grade->id }}">
+                                        {{ $grade->name }} ({{ $grade->equivalent }})
+                                    </label>
+                                </span>
+                            @endforeach
+                        </div>
+                    </div>
+                    <x-select :options="$exams" :label="__('sidebar.exams')" value='id' display='title' id='exam_id'
+                        name='exam_id' col='col-sm-4 mt-3 fs-5' class="select2" />
+                </div>
+                <div class="row">
+                </div>
+
+                <div class="pre-student-form-card-footer d-flex justify-content-between bg-light p-2 mb-2">
+                    <x-btn-back route="students.index" />
+                    <button class="btn btn-info">
+                        {{ Settings::trans('Next', 'وروستې پاڼه', 'صفحه بعدي') }}
+                        <i class="fa fa-arrow-{{ app()->getLocale() == 'en' ? 'right' : 'left' }}"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
-@endsection
 
-@push('scripts')
-<script src="{{asset('admin/select2/js/select2.full.js')}}"></script>
-<script type="text/javascript">
-    $(".select2").select2({
-        placeholder: "{{__('lang.select_option')}}",
-        theme: "bootstrap-5"
-    });
-    $("#current_country_id").change(function(){
-        $.ajax({
-            url: "{{route('load-provinces')}}",
-            method: 'GET',
-            data: {
-                'country_id': $("#current_country_id").val(),
-            },
-            success: function(response) {
-                $("#current_province_id").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-    $("#current_province_id").change(function(){
-        $.ajax({
-            url: "{{route('load-districts')}}",
-            method: 'GET',
-            data: {
-                'province_id': $("#current_province_id").val(),
-            },
-            success: function(response) {
-                $("#current_district_id").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-    $("#permanent_country_id").change(function(){
-        $.ajax({
-            url: "{{route('load-provinces')}}",
-            method: 'GET',
-            data: {
-                'country_id': $("#permanent_country_id").val(),
-            },
-            success: function(response) {
-                $("#permanent_province_id").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-    $("#permanent_province_id").change(function(){
-        $.ajax({
-            url: "{{route('load-districts')}}",
-            method: 'GET',
-            data: {
-                'province_id': $("#permanent_province_id").val(),
-            },
-            success: function(response) {
-                $("#permanent_district_id").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-    $("#category_id").change(function(){
-        $.ajax({
-            url: "{{route('load-sub-categories')}}",
-            method: 'GET',
-            data: {
-                'category_id': $("#category_id").val(),
-            },
-            success: function(response) {
-                $("#sub_category_id").html(response);
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-</script>
-@endpush
+
+    @push('scripts')
+        <script src="{{ asset('admin/select2/js/select2.full.js') }}"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+
+
+
+                $(document).ready(function() {
+                    $("input[name='form_type']").on("change", function(e) {
+                        value = $('input[name="form_type"]:checked').val();
+                        if (value == 3) {
+                            $("#grade-3-container").hide();
+                        } else {
+                            $("#grade-3-container").show();
+                        }
+
+                    })
+                });
+            });
+            $(".select2").select2({
+                placeholder: "{{ __('lang.select_option') }}",
+                theme: "bootstrap-5"
+            });
+        </script>
+    @endpush
+</x-app>

@@ -210,6 +210,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Settings' => App\Global\Settings::class,
+        'JamiaHelper' => App\Helpers\JamiaHelper::class
     ])->toArray(),
 
 ];

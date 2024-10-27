@@ -9,10 +9,16 @@
 'display'=>'name',
 'selected'=>''
 ])
-<div class="{{ $col }}">
-    <div class="mb-3 has-danger">
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('admin/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin/select2/css/select2-bootstrap-5-theme.min.css') }}">
+    
+@endpush
+<div class="{{ $col }}" style="z-index: 1">
+    <div class="has-danger">
         @if($label!='')
-        <label class="mb-1" for="{{ $id == '' ? $name : $id }}">{{ $label }} {!! $required==1 ? '<i
+        <label class="mb-0" for="{{ $id == '' ? $name : $id }}">{{ $label }} {!! $required==1 ? '<i
                 class="text-danger">*</i>' : '' !!}</label>
         @endif
         <select class="{{ $class }} @error($name) is-invalid @enderror" name="{{ $name }}"
@@ -30,8 +36,9 @@
         </select>
         @error($name)
         <span class="form-control-feedback" role="alert">
-            <strong>{{ $message }}</strong>
+            <strong class="text-danger">{{ $message }}</strong>
         </span>
         @enderror
+        <span id="{{ $id == '' ? $name : $id }}-error" class="error invalid-feedback d-none"></span>
     </div>
 </div>

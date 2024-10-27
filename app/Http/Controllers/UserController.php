@@ -24,7 +24,7 @@ class UserController extends Controller
         // if (!Auth::user()->can('users.read')) {
         //     abort(403, 'Unauthorized action.');
         // }
-        $users = User::where('user_type','Admin')->get();
+        $users = User::all();
         $roles=Role::get();
         return view('user.index', compact('users','roles'));
     }

@@ -1,8 +1,9 @@
 @props([
 'modal' => '',
 'text' => '',
-'class'=>''
+'class'=>'',
+'type' => 'primary'
 ])
-<button  {{ $attributes }} class="btn btn-primary {{$class}}" data-bs-toggle="modal" data-bs-target="#{{$modal}}">
+<button  {{ $attributes }} class="btn btn-{{ $type }} {{$class}}" data-bs-toggle="modal" data-bs-target="#{{$modal}}">
     {!!$text!!}
 </button>

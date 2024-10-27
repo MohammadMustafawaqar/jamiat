@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Jamiat\Exam;
+use App\Models\Jamiat\Form;
+use App\Models\Jamiat\StudentForm;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,31 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'current_district_id',
-        'permanent_district_id',
-        'sub_category_id',
-        'school_id',
-        'gender_id',
-        'appreciation_id',
-        'form_id',
-        'name',
-        'name_en',
-        'last_name',
-        'last_name_en',
-        'father_name',
-        'father_name_en',
-        'grand_father_name',
-        'grand_father_name_en',
-        'current_village',
-        'permanent_village',
-        'dob',
-        'dob_qamari',
-        'graduation_year',
-        'phone',
-        'whatsapp',
-    ];
+    protected $guarded = [];
+
+
+    public function addressType()
+    {
+        return $this->belongsTo(AddressType::class);
+    }
 
     public function currentDistrict()
     {
@@ -125,6 +110,27 @@ class Student extends Model
         return Attribute::make(
             get: fn() => "{$this->permanentDistrict->province->country->name} - {$this->permanentDistrict->province->name} - {$this->permanentDistrict->name} - {$this->permanent_village}",
         );
+    }
+
+    public function exams()
+    {
+        return $this->belongsToMany(Exam::class, 'student_exams');
+    }
+
+    public function forms()
+    {
+        return $this->belongsToMany(Form::class, 'student_forms',  'student_id', 'form_id')
+            ->withPivot('id');
+    }
+
+    public function getFormTypeAttribute()
+    {
+        return $this->forms()->first()?->id ? __('jamiat.'.$this->forms()->first()?->form_type) : '';
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name . ' '. $this->last_name;
     }
 
 

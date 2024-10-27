@@ -111,6 +111,7 @@ return [
     'committees' => 'Committees',
     'committee_member' => 'Committee Member',
     'committee_members' => 'Committee Members',
-    'job'=>'Job'
+    'job'=>'Job',
+    'first_form' => 'First form',
 
 ];

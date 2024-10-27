@@ -11,7 +11,7 @@
 <div class="{{ $col }}">
     <div class="mb-3 has-danger">
         @if($label!='')
-        <label class="mb-1" for="{{ $id == '' ? $name : $id }}">{{ $label }} {!! $required==1 ? '<i
+        <label class="mb-0" for="{{ $id == '' ? $name : $id }}">{{ $label }} {!! $required==1 ? '<i
                 class="text-danger">*</i>' : '' !!}</label>
         @endif
         @if($type=='textarea')
