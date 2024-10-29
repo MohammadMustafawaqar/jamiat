@@ -48,4 +48,9 @@ return [
     'excel_import_btn' => 'اکسل امپورټ',
     'select_exam' => 'امتحان خوښ کړئ',
     'exam' => 'امتحان',
+    'name' => 'نوم',
+    'add_campus' => 'د امتحان ځای اضافه کړئ',
+    'classes' => 'اطاقونه',
+    'capacity' => 'ظرفیت',
+    'campus' => 'د امتحان ځای'
 ];

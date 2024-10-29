@@ -9,6 +9,7 @@ use App\Models\Appreciation;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Gender;
+use App\Models\Jamiat\Campus;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Form;
 use App\Models\Jamiat\StudentForm;
@@ -331,13 +332,13 @@ class StudentController extends Controller
             'address_type_id' => 'required',
         ]);
         $file = request()->file('excel_file');
-    
+
         $extension = $file->getClientOriginalExtension();
-        
+
         if ($extension !== 'xlsx' && $extension !== 'csv') {
             return back()->with('error', 'Invalid file type. Please upload an Excel or CSV file.');
         }
-    
+
         $import = new RajabStudentImport($validated);
         Excel::import($import, $file->getRealPath());
 
@@ -348,7 +349,7 @@ class StudentController extends Controller
                 $rowErrors = "Row {$failure->row()}: " . implode(', ', $failure->errors());
                 $errors[] = $rowErrors;
             }
-    
+
             // Redirect back with errors
             return redirect()->back()->withErrors($errors);
         }
@@ -380,13 +381,13 @@ class StudentController extends Controller
 
 
         $file = request()->file('excel_file');
-    
+
         $extension = $file->getClientOriginalExtension();
-        
+
         if ($extension !== 'xlsx' && $extension !== 'csv') {
             return back()->with('error', 'Invalid file type. Please upload an Excel or CSV file.');
         }
-    
+
         $import = new StudentImport($validated);
         Excel::import($import, $file->getRealPath());
 
@@ -397,14 +398,14 @@ class StudentController extends Controller
                 $rowErrors = "Row {$failure->row()}: " . implode(', ', $failure->errors());
                 $errors[] = $rowErrors;
             }
-    
+
             // Redirect back with errors
             return redirect()->back()->withErrors($errors);
         }
 
         $invalidRows = $import->getInvalidRows();
-       
-        
+
+
         if (!empty($invalidRows)) {
             $fileName = $import->saveInvalidRecordsToFile();
 
@@ -416,5 +417,53 @@ class StudentController extends Controller
         }
 
         return redirect()->back()->with('msg', 'imported successfully');
+    }
+
+
+    public function generateIdCard(Request $request)
+    {
+        $request->validate([
+            'exam_id' => 'required'
+        ]);
+
+        $students = Student::whereIn('id', $request->student_ids)->get();
+        $exam = Exam::with('students')->find($request->exam_id);
+
+        foreach ($students as $student) {
+            $currentExam = $student->exams()->first();
+
+            // find campus of exam
+            $campus = Campus::with('classes')->find($exam?->campus_id);
+            $classes = $campus->classes;
+            foreach ($classes as $class) {
+                $assigned_student_count = $class->studentExams->count();
+                if ($currentExam) {
+                    $student->exams()->updateExistingPivot($currentExam->id, [
+                        'exam_id' => $request->exam_id,
+                        'status' => 'updated',
+                    ]);
+                } else {
+                    $student->exams()->attach($request->exam_id, [
+                        'status' => 'created',
+
+                    ]);
+                }
+                if ($class->capacity > $assigned_student_count) {
+                    $student->exams()->updateExistingPivot($currentExam->id, [
+                        'class_id' => $class->id,
+                        'status' => 'class selected',
+                    ]);
+                }
+            }
+            // dd($assigned_student_count);
+            // dd($exam);
+            // if()
+            // if exa exists then update exam_id else create new.
+
+        }
+
+        return view('backend.jamiat.student.card.generate', [
+            'students' => $students
+        ]);
     }
 }

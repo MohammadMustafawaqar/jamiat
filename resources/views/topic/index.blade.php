@@ -31,8 +31,8 @@
                             @foreach ($topics as $topic)
                             <tr>
                                 <td>{{$loop->iteration}}</td>
-                                <td>{{$topic->user->student->form_id}}</td>
-                                <td>{{$topic->user->student->full_name}}</td>
+                                <td>{{$topic->user?->student?->form_id}}</td>
+                                <td>{{$topic->user?->student?->full_name}}</td>
                                 <td>{{$topic->title}}</td>
                                 <td>
                                     {!! $topic->status->label() !!}

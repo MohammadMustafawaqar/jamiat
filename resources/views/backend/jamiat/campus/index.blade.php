@@ -1,18 +1,18 @@
-<x-app :title="__('sidebar.languages')">
+<x-app :title="__('sidebar.campuses')">
 
-    <x-page-nav :title="__('sidebar.languages')" icon='globe'>
+    <x-page-nav :title="__('sidebar.campuses')" icon='school-flag'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
         <li class="breadcrumb-item"><span>{{ __('lang.setting') }}</span></li>
-        <li class="breadcrumb-item">{{ __('sidebar.languages') }}</li>
+        <li class="breadcrumb-item">{{ __('sidebar.campuses') }}</li>
     </x-page-nav>
     <x-page-container>
         <div class="container">
 
             <div class="row">
                 <div class="col-12">
-                    @can('language.create')
+                    @can('school_grade.create')
 
                     <button class="btn btn-primary" onclick="openCreateModal()">
                         <i class="fa fa-add"></i>
@@ -26,7 +26,7 @@
             <div class="clearfix"></div>
             <hr>
 
-            <x-table id='doctorTable'>
+            <x-table>
                 <x-slot:tools>
                     <div class="container">
 
@@ -35,24 +35,35 @@
                 <thead>
                     <tr>
                         <th>{{ __('jamiat.no') }}</th>
-                        <th>{{ __('jamiat.language') }}</th>
+                        <th>{{ __('jamiat.name') }}</th>
+                        <th>{{ __('lang.province') }}</th>
+                        <th>{{ __('jamiat.address') }}</th>
                         <th>{{ __('jamiat.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($languages as $language)
+                    @foreach ($campuses as $campus)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                <span
-                                    class="badge bg-primary"
-                                    >{{ Settings::trans($language->en_name, $language->pa_name, $language->da_name, $language->ar_name)}}</span>
+                                {{ $campus->name }}
+                            </td>
+                            <td>
+                                {{ $campus->province?->name }}
+                            </td>
+                            <td>
+                                {{ $campus->address }}
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @can('language.delete')
+                                    @can('school_grade.delete')
 
-                                    <x-buttons.delete :route="route('admin.settings.languages.destroy', $language->id)" />
+                                    <x-buttons.delete  :route="route('admin.settings.campus.destroy', $campus->id)" />
+                                    {{-- <x-buttons.show :route="route('admin.settings.campus.show',$campus->id)" /> --}}
+                                        <a href="{{ route('admin.settings.campus.show', $campus->id) }}" class="btn btn-sm btn-info">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+
                                         @endcan
                                 </div>
 
@@ -61,21 +72,22 @@
                     @endforeach
                 </tbody>
                 <x-slot:links>
-                    {{ $languages->links() }}
+                    {{ $campuses->links() }}
                 </x-slot:links>
             </x-table>
         </div>
     </x-page-container>
-    <x-modal id='create-modal' :title="__('jamiat.add_exam')" size='md'>
+    <x-modal id='create-modal' :title="__('jamiat.add_campus')" size='md'>
         <div class="container-fluid">
             <form id='create-form' class="row" method="POST">
                 @csrf
 
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_ar') }}" id='ar_name' name='ar_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_en') }}" id='en_name' name='en_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_pa') }}" id='pa_name' name='pa_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_da') }}" id='da_name' name='da_name' />
+                <x-input2 type='text' label="{{ __('jamiat.name') }}" id='name' name='name' />
 
+                <x-js-select2 
+                :list="App\Models\Country::where('name', 'افغانستان')->first()->provinces" col="col-6" id='province_id' name="province_id" :label="__('lang.province')"
+                col='col-sm-12'
+                name='province_id' value='id' text='name' required modal_id="create-modal" />
 
 
                 <div class="d-flex justify-content-between bg-light mt-2">
@@ -87,8 +99,8 @@
         </div>
     </x-modal>
     @push('scripts')
-
         <script>
+            const saveBtn = $('#save-btn');
 
             function openCreateModal() {
                 $('#create-modal').modal('show');
@@ -108,7 +120,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('admin.settings.education-level.store') }}",
+                        url: "{{ route('admin.settings.campus.store') }}",
                         data: formData,
                         dataType: "json",
                         processData: false,
@@ -121,7 +133,6 @@
 
 
                             $('#create-form')[0].reset();
-                            // $('#patient_id').val(null).trigger('change'); // Reset Select2
                             location.reload();
 
 
@@ -146,8 +157,6 @@
                         }
                     });
                 });
-
-              
             });
         </script>
     @endpush

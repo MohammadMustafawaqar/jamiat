@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class AppreciationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:appreciations.read')->only('index');
+        $this->middleware('permission:appreciations.create')->only(['index', 'store']);
+        $this->middleware('permission:appreciations.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:appreciations.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:appreciations.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

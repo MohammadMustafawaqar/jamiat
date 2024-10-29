@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:school_grade.read')->only('index');
+        $this->middleware('permission:school_grade.create')->only(['index', 'store']);
+        $this->middleware('permission:school_grade.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:school_grade.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:school_grade.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -88,7 +98,7 @@ class GradeController extends Controller
      */
     public function destroy($locale, string $id)
     {
-        $grade = Grade::find($id);
+        $grade = Grade::findOrFail($id);
 
         $grade->delete();
 

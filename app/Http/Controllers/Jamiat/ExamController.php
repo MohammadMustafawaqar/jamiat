@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:exam.read')->only('index');
+        $this->middleware('permission:exam.create')->only(['index', 'store']);
+        $this->middleware('permission:exam.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:exam.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:exam.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -45,12 +55,14 @@ class ExamController extends Controller
             'province_id' => 'required',
             'district_id' => 'nullable',
             'address' => 'nullable|string|max:255|min:3',
+            'campus_id' => 'required'
         ], attributes: [
             'title' => __('lang.title'),
             'start_date' => __('jamiat.start_date'),
             'end_date' => __('jamiat.end_date'),
             'grade_id' => __('jamiat.exam_grade'),
             'description' => __('jamiat.description'),
+            'campus_id' => __('jamiat.campus'),
         ]);
 
         if($validator->fails()){

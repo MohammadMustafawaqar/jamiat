@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Validator;
 
 class EducationLevelController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:education_level.read')->only('index');
+        $this->middleware('permission:education_level.create')->only(['index', 'store']);
+        $this->middleware('permission:education_level.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:education_level.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:education_level.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -83,8 +92,11 @@ class EducationLevelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($locale, string $id)
     {
-        //
+        $edu_level = EducationLevel::findOrFail($id);
+        $edu_level->delete();
+
+        return redirect()->back()->with('msg', __('messages.record_deleted'));
     }
 }

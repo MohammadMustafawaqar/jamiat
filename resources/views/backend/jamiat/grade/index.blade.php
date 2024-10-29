@@ -1,16 +1,10 @@
-<x-app>
-    <x-slot:title>Appointments</x-slot:title>
-    <x-page-nav>
-        <x-slot:icon>
-            <i class="bi bi-bar-chart"></i>
-        </x-slot:icon>
-        <x-slot:title>
-            {{ __('jamiat.jamiat_grade') }}
-        </x-slot:title>
+<x-app :title="__('jamiat.jamiat_grade')">
+
+    <x-page-nav :title="__('jamiat.jamiat_grade')" icon='chart-simple'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
-        <li class="breadcrumb-item">{{ __('lang.setting') }}</li>
+        <li class="breadcrumb-item"><span>{{ __('lang.setting') }}</span></li>
         <li class="breadcrumb-item">{{ __('jamiat.jamiat_grade') }}</li>
     </x-page-nav>
     <x-page-container>
@@ -18,10 +12,12 @@
 
             <div class="row">
                 <div class="col-12">
+                    @can('school_grade.create')
 
                     <button class="btn btn-primary" onclick="openCreateModal()">
                         <i class="fa fa-add"></i>
                     </button>
+                    @endcan
 
                 </div>
 
@@ -60,9 +56,11 @@
                             <td>{{ $grade->status }}</td>
                             <td>
                                 <div class="dropdown open">
+                                    @can('school_grade.delete')
 
                                     <x-buttons.delete  :route="route('admin.settings.jamiat_grades.destroy', $grade->id)"
                                         title="{{ __('lang.delete') }}" />
+                                        @endcan
                                 </div>
 
                             </td>

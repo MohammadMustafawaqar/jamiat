@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Jamiat\CampusController;
+use App\Http\Controllers\Jamiat\ClassController;
 use App\Http\Controllers\Jamiat\EducationLevelController;
 use App\Http\Controllers\Jamiat\ExamController;
 use App\Http\Controllers\Jamiat\GradeController;
@@ -17,9 +19,15 @@ Route::group([
         'as' => 'settings.',
         'prefix' => 'settings/'
     ], function () {
+
         Route::resource('jamiat_grades', GradeController::class);
         Route::resource('education-level', EducationLevelController::class);
         Route::resource('languages', LanguageController::class);
+
+        Route::resource('campus', CampusController::class);
+
+
+        Route::resource('/campus/{campus_id}/classes', ClassController::class);
     });
 
     Route::resource('exam', ExamController::class);
@@ -30,10 +38,12 @@ Route::group([
         'controller' => StudentController::class
     ], function () {
         Route::get('second-form', 'secondForm')
-            ->name('form.second');
+            ->name('form.second')
+            ->middleware('permission:students.create');
 
         Route::get('/form/rajab', 'rajabIndex')
-            ->name('form.rajab');
+            ->name('form.rajab')
+            ->middleware('permission:students.read.rajab');
 
         Route::get('/form/commission', 'commissionForm')
             ->name('form.commission');
@@ -46,6 +56,12 @@ Route::group([
 
         Route::post('import/form/excel/', 'importFromExcel')
             ->name('import.excel');
+
+
+        // Generate Card
+
+        Route::post('/generate-card', 'generateIdCard')
+            ->name('generate.card');
     });
 
 
@@ -54,7 +70,7 @@ Route::group([
         'as' => 'school.',
         'prefix' => 'school/',
         'controller' => SchoolController::class,
-    ], function(){
+    ], function () {
         Route::post('import/excel', 'importFromExcel')
             ->name('import.excel');
 

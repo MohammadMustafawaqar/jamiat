@@ -8,6 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 class TopicController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:topics.read')->only('index');
+        $this->middleware('permission:topics.create')->only(['index', 'store']);
+        $this->middleware('permission:topics.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:topics.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:topics.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

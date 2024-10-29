@@ -44,3 +44,7 @@
     color: #495057; /* Dark text for better readability */
 }
 
+
+.text-end{
+    text-align: right !important;
+}

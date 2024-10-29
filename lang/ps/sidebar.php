@@ -8,6 +8,6 @@ return [
     'rajab_students' => 'د رجب امتحان فاضلان',
     'evaluation_students' => 'د ارزیابې فاضلان',
     'edu_level' => 'د زده کړې کچې',
-    'languages' => 'ژبې'
-
+    'languages' => 'ژبې',
+    'campuses' => 'د امتحان ځایونه'
 ];

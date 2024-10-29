@@ -35,14 +35,41 @@
                                 {{ __('jamiat.rajab') }}
                             </label> --}}
                             @foreach ($forms as $form)
+                                @if($form->id == 1)
+                                @canany(['students.create', 'students.create.commission'])  
                                 <span class="" id='form-{{ $form->id }}-container'>
                                     <input class="btn-check" type="radio" name="form_type"
                                         id="form-{{ $form->id }}" value="{{ $form->id }}"
-                                        @checked($form->id == 1)>
+                                        @checked(auth()->user()->can('students.create.commission') || auth()->user()->can('students.create'))>
                                     <label class="btn btn-outline-primary" for="form-{{ $form->id }}">
                                         {{ __('jamiat.'.$form->form_type ) }}
                                     </label>
                                 </span>
+                                @endcanany
+                                @elseif ($form->id == 2)
+                                @canany(['students.create', 'students.create.evaluation'])  
+                                <span class="" id='form-{{ $form->id }}-container'>
+                                    <input class="btn-check" type="radio" name="form_type"
+                                        id="form-{{ $form->id }}" value="{{ $form->id }}"
+                                        @checked(auth()->user()->can('students.create.evaluation') && auth()->user()->cannot('students.create'))>
+                                    <label class="btn btn-outline-primary" for="form-{{ $form->id }}">
+                                        {{ __('jamiat.'.$form->form_type ) }}
+                                    </label>
+                                </span>
+                                @endcanany
+                                @elseif ($form->id == 3)
+                                @canany(['students.create', 'students.create.rajab'])  
+
+                                <span class="" id='form-{{ $form->id }}-container'>
+                                    <input class="btn-check" type="radio" name="form_type"
+                                        id="form-{{ $form->id }}" value="{{ $form->id }}"
+                                        @checked(auth()->user()->can('students.create.rajab') && auth()->user()->cannot('students.create'))>
+                                    <label class="btn btn-outline-primary" for="form-{{ $form->id }}">
+                                        {{ __('jamiat.'.$form->form_type ) }}
+                                    </label>
+                                </span>
+                                @endcanany
+                                @endif
                             @endforeach
                         </div>
                     </div>

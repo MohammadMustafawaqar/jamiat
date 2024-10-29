@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="{{ asset('admin/sweetalert/sweetalert2.min.css')}} ">
 <link rel="stylesheet" href="{{ asset('admin/bootstrap-icons/bootstrap-icons.css') }} ">
 <link rel="stylesheet" href="{{ asset('assets/plugins/fontawesome/css/all.min.css') }} ">
+@if(app()->getLocale() != 'en')
+<link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-rtl/bootstrap-rtl.min.css') }}">
+@endif
 {{-- <link rel="stylesheet" href="{{ asset('assets/plugins/select2/css/select2.min.css') }} "> --}}
 <link rel="stylesheet" href="{{ asset('assets/style.css') }}">
 <link  rel="stylesheet" href="{{asset('shamsi_calendars/css/persianDatepicker-default.css')}}" >

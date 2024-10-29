@@ -113,5 +113,6 @@ return [
     'committee_members' => 'د کمیټې غړي',
     'job'=>'دنده',
     'dob_shamsi' => ' زیږیدو نیټه (شمسي)',
-    'first_form' => 'د فورمې ډول'
+    'first_form' => 'د فورمې ډول',
+    'success' => 'کړنه موفقانه ترسره شوه'
 ];

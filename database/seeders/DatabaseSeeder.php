@@ -150,7 +150,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call([
-            Permission2Seeder::class
+            PermissionSeeder::class
         ]);
     }
 }

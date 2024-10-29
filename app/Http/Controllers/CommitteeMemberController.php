@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class CommitteeMemberController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:committee_member.read')->only('index');
+        $this->middleware('permission:committee_member.create')->only(['index', 'store']);
+        $this->middleware('permission:committee_member.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:committee_member.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:committee_member.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

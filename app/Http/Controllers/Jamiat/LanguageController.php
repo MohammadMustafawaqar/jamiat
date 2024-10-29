@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Validator;
 
 class LanguageController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:language.read')->only('index');
+        $this->middleware('permission:language.create')->only(['index', 'store']);
+        $this->middleware('permission:language.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:language.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:language.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -83,8 +92,12 @@ class LanguageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($locale, string $id)
     {
-        //
+        $language = Language::findOr($id);
+
+        $language->delete();
+
+        return redirect()->back()->with('msg', __('messages.record_deleted'));
     }
 }

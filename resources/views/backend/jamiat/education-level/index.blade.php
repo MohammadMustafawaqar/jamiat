@@ -1,22 +1,22 @@
-<x-app>
-   
-    <x-slot:title>Appointments</x-slot:title>
-    <x-page-nav>
+<x-app :title="__('sidebar.edu_level')">
+
+    <x-page-nav :title="__('sidebar.edu_level')" icon='book-open'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
         <li class="breadcrumb-item">{{ __('lang.setting') }}</li>
-        <li class="breadcrumb-item">{{ __('jamiat.jamiat_grade') }}</li>
+        <li class="breadcrumb-item">{{ __('sidebar.edu_level') }}</li>
     </x-page-nav>
     <x-page-container>
         <div class="container">
 
             <div class="row">
                 <div class="col-12">
-
-                    <button class="btn btn-primary" onclick="openCreateModal()">
-                        <i class="fa fa-add"></i>
-                    </button>
+                    @can('education_level.create')
+                        <button class="btn btn-primary" onclick="openCreateModal()">
+                            <i class="fa fa-add"></i>
+                        </button>
+                    @endcan
 
                 </div>
 
@@ -44,12 +44,13 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>
                                 <span
-                                    class="badge bg-primary"
-                                    >{{ Settings::trans($level->en_name, $level->pa_name, $level->da_name, $level->ar_name    )}}</span>
+                                    class="badge bg-primary">{{ Settings::trans($level->en_name, $level->pa_name, $level->da_name, $level->ar_name) }}</span>
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <x-buttons.delete :route="route('admin.exam.destroy', $level->id)" />
+                                    @can('education_level.delete')
+                                        <x-buttons.delete :route="route('admin.settings.education-level.destroy', $level->id)" />
+                                    @endcan
                                 </div>
 
                             </td>
@@ -83,9 +84,7 @@
         </div>
     </x-modal>
     @push('scripts')
-
         <script>
-
             function openCreateModal() {
                 $('#create-modal').modal('show');
             }
@@ -143,7 +142,7 @@
                     });
                 });
 
-              
+
             });
         </script>
     @endpush

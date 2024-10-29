@@ -15,6 +15,8 @@ class Permission2Seeder extends Seeder
      */
     public function run(): void
     {
+
+        DB::table('roles')->whereIn('name', ['role_name'])->delete();
         $permissions = [
             ['name' => 'schools.import', 'guard_name' => 'web'],
             ['name' => 'schools.address.interior', 'guard_name' => 'web'],
@@ -54,11 +56,10 @@ class Permission2Seeder extends Seeder
             ['name' => 'school_grade.delete', 'guard_name' => 'web'],
         ];
 
-        $role = Role::find(1);
-        $role = Role::find(1);
-        $permissions = Permission::get();
-        foreach ($permissions as $permission) {
-            $role->givePermissionTo($permission->name);
-        }
+        // $role = Role::find(1);
+        // $permissions = Permission::get();
+        // foreach ($permissions as $permission) {
+        //     $role->givePermissionTo($permission->name);
+        // }
     }
 }

@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Form;
+use App\Models\Jamiat\StudentExam;
 use App\Models\Jamiat\StudentForm;
+use App\Models\Jamiat\Tazkira;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -114,7 +116,8 @@ class Student extends Model
 
     public function exams()
     {
-        return $this->belongsToMany(Exam::class, 'student_exams');
+        return $this->belongsToMany(Exam::class, 'student_exams')
+            ->withPivot('student_id', 'exam_id', 'class_id');
     }
 
     public function forms()
@@ -133,5 +136,14 @@ class Student extends Model
         return $this->name . ' '. $this->last_name;
     }
 
+    public function tazkira()
+    {
+        return $this->belongsTo(Tazkira::class);
+    }
+
+    public function studentExams()
+    {
+        return $this->hasMany(StudentExam::class);
+    }
 
 }

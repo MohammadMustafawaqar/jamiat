@@ -1,6 +1,7 @@
 <?php 
 namespace App\Helpers;
 
+use App\Models\Jamiat\Campus;
 use App\Models\Jamiat\EducationLevel;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Grade;
@@ -26,5 +27,10 @@ class JamiaHelper{
     public static function exams()
     {
         return Exam::all();
+    }
+
+    public static function campuses()
+    {
+        return Campus::all();
     }
 }
