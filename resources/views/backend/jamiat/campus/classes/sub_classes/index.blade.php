@@ -1,12 +1,13 @@
-<x-app :title="__('jamiat.classes')">
+<x-app :title="__('jamiat.sub_classes')">
 
-    <x-page-nav :title="__('jamiat.classes')" icon='house'>
+    <x-page-nav :title="__('jamiat.sub_classes')" icon='house'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
         <li class="breadcrumb-item"><span>{{ __('lang.setting') }}</span></li>
         <li class="breadcrumb-item"><a href="{{ route('admin.settings.campus.index') }}">{{ __('sidebar.campuses') }}</a></li>
-        <li class="breadcrumb-item">{{ __('jamiat.classes') }}</li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.settings.campus.show', $campus_id) }}">{{ __('jamiat.classes') }}</a></li>
+        <li class="breadcrumb-item">{{ __('jamiat.sub_classes') }}</li>
     </x-page-nav>
     <x-page-container>
         <div class="container">
@@ -41,7 +42,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($classes as $class)
+                    @foreach ($sub_classes as $class)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
@@ -53,10 +54,10 @@
                             <td>
                                 <div class="btn-group">
                                     @can('exam_centers.delete')
-                                        <x-buttons.delete :route="route('admin.settings.classes.destroy', [
-                                            'class' => $class->id,
+                                        <x-buttons.delete :route="route('admin.settings.sub-classes.destroy', [
+                                            'class_id' => $class->class_id,
                                             'locale' => '',
-                                            'campus_id' => $class->campus_id,
+                                            'sub_class' => $class->id,
                                         ])" />
                                     @endcan
                                     @can('exam_centers.edit')
@@ -65,12 +66,6 @@
                                             <i class="fa fa-edit"></i>
                                         </button>
                                     @endcan
-                                    @can('exam_centers.show')
-                                        <a href="{{ route('admin.settings.sub-classes.index', $class->id) }}"
-                                            class="btn btn-sm btn-info">
-                                            <i class="fa fa-eye"></i>
-                                        </a>
-                                    @endcan
                                 </div>
 
                             </td>
@@ -78,12 +73,12 @@
                     @endforeach
                 </tbody>
                 <x-slot:links>
-                    {{ $classes->links() }}
+                    {{ $sub_classes->links() }}
                 </x-slot:links>
             </x-table>
         </div>
     </x-page-container>
-    <x-modal id='create-modal' :title="__('jamiat.add_class')" size='md'>
+    <x-modal id='create-modal' :title="__('jamiat.add_sub_class')" size='md'>
         <div class="container-fluid">
             <form id='create-form' class="row" method="POST">
                 @csrf
@@ -99,7 +94,7 @@
             </form>
         </div>
     </x-modal>
-    <x-modal id='edit-modal' :title="__('jamiat.edit_class')" size='md'>
+    <x-modal id='edit-modal' :title="__('jamiat.edit_sub_class')" size='md'>
         <div class="container-fluid">
             <form id='edit-form' class="row" method="POST">
                 @csrf
@@ -129,7 +124,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: `{{ route('admin.settings.classes.edit', ['campus_id' => $campus->id, 'class' => ':class', 'locale' => '']) }}`
+                    url: `{{ route('admin.settings.sub-classes.edit', ['class_id' => $class_id, 'sub_class' => ':class', 'locale' => '']) }}`
                         .replace(':class', class_id),
                     dataType: "json",
                     processData: false,
@@ -168,7 +163,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: `{{ route('admin.settings.classes.update', ['campus_id' => $campus->id, 'class' => ':class', 'locale' => '']) }}`
+                        url: `{{ route('admin.settings.sub-classes.update', ['class_id' => $class_id, 'sub_class' => ':class', 'locale' => '']) }}`
                             .replace(":class", class_id),
                         data: formData,
                         dataType: "json",
@@ -210,7 +205,7 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('admin.settings.classes.store', $campus->id) }}",
+                        url: "{{ route('admin.settings.sub-classes.store', $class_id) }}",
                         data: formData,
                         dataType: "json",
                         processData: false,

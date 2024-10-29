@@ -15,4 +15,16 @@ class SubClass extends Model
     {
         return $this->belongsTo(CClass::class);
     }
+
+    
+    public function studentExams()
+    {
+        return $this->hasMany(StudentExam::class, 'sub_class_id', 'id');
+    }
+
+    public function getAddressAttribute()
+    {
+        
+        return $this->class->campus->name . '، ' . $this->class->name . '، ' . $this->name;
+    }
 }

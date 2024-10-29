@@ -8,10 +8,12 @@
     <title>Student Cards</title>
     <!-- Link Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #555b6184;
+            font-family: 'Amiri', sans-serif;
+            background-color: #e2e7ec84;
             margin: 0;
             padding: 0;
         }
@@ -28,6 +30,7 @@
         }
 
         .card-header {
+            background: #428bca;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -43,7 +46,7 @@
             text-align: center;
             font-weight: bold;
             font-size: 18px;
-            color: #007bff;
+            color: #ffffff;
         }
 
         .title-section div {
@@ -51,7 +54,7 @@
         }
 
         .divider {
-            border-bottom: 2px solid #007bff;
+            border-bottom: 2px solid #193a79;
             margin: 10px 0;
         }
 
@@ -67,16 +70,20 @@
         }
 
         .card-field {
-            width: 48%;
+            width: 50%;
         }
 
         .card-label {
             font-weight: bold;
             color: #555;
+            font-size: 16px;
+
         }
 
         .card-value {
-            color: #007bff;
+            color: #193a79;
+            font-size: 16px;
+            font-weight: bold;
         }
 
         @media print {
@@ -88,9 +95,16 @@
                 border: 1px solid #333;
                 background-color: #bbb !important;
                 box-shadow: none;
-                margin: 10px 0;
-                padding: 15px;
-                page-break-inside: avoid; /* Avoid splitting cards between pages */
+                page-break-inside: avoid;
+                /* Avoid splitting cards between pages */
+            }
+
+            .card-header {
+                background: #428bca !important;
+                -webkit-print-color-adjust: exact;
+                /* For Chrome and Safari */
+                color-adjust: exact;
+                /* For Firefox */
             }
 
             .divider {
@@ -108,14 +122,16 @@
                     <div class="card-container">
                         <!-- Header with logos and titles -->
                         <div class="card-header">
-                            <img src="{{ asset('assets/logos/eia-logo.png') }}" alt="Logo 1" class="logo"> <!-- Left logo -->
+                            <img src="{{ asset('assets/logos/eia-logo.png') }}" alt="Logo 1" class="logo">
+                            <!-- Left logo -->
                             <div class="title-section">
-                                <div>د افغانستان اسلامي امارت</div>
-                                <div>د لوړو زده کړو وزارت</div>
-                                <div>د دیني جامعاتو او تخصصاتو ریاست</div>
-                                <div>د {{ $student->exams->first()?->title }} ازموینې کارت</div>
+                                <h6>د افغانستان اسلامي امارت</h6>
+                                <h6>د لوړو زده کړو وزارت</h6>
+                                <h6>د دیني جامعاتو او تخصصاتو لوی ریاست</h6>
+                                <h6>{{ $student->exams->first()?->title }} کارت</h6>
                             </div>
-                            <img src="{{ asset('assets/logos/mohe_logo.png') }}" alt="MOHE" class="logo"> <!-- Right logo -->
+                            <img src="{{ asset('assets/logos/mohe_logo.png') }}" alt="MOHE" class="logo">
+                            <!-- Right logo -->
                         </div>
 
                         <div class="divider"></div> <!-- Divider below the title section -->
@@ -128,46 +144,51 @@
                                     <span class="card-value">{{ $student->form_id }}</span>
                                 </div>
                                 <div class="card-field">
-                                    <span class="card-label">مسلسل نمبر: </span>
-                                    <span class="card-value">{{ $student->id }}</span>
-                                </div>
-                            </div>
-                            <div class="card-row">
-                                <div class="card-field">
                                     <span class="card-label">نوم: </span>
                                     <span class="card-value">{{ $student->name }}</span>
                                 </div>
+                            </div>
+                            <div class="card-row">
+
                                 <div class="card-field">
                                     <span class="card-label">د پلار نوم: </span>
                                     <span class="card-value">{{ $student->father_name }}</span>
                                 </div>
-                            </div>
-                            <div class="card-row">
                                 <div class="card-field">
                                     <span class="card-label">د نیکه نوم: </span>
                                     <span class="card-value">{{ $student->grand_father_name }}</span>
                                 </div>
-                                <div class="card-field">
-                                    <span class="card-label">تذکره نمبر: </span>
-                                    <span class="card-value" dir="ltr">{{ $student->tazkira?->tazkira_no }}</span>
-                                </div>
                             </div>
                             <div class="card-row">
+
+                                <div class="card-field">
+                                    <span class="card-label">تذکرې شمېره: </span>
+                                    <span class="card-value" dir="ltr">{{ $student->tazkira?->tazkira_no }}</span>
+                                </div>
                                 <div class="card-field">
                                     <span class="card-label">د اړیکې شمېره: </span>
                                     <span class="card-value" dir="ltr">{{ $student->phone }}</span>
                                 </div>
-                                <div class="card-field">
+                            </div>
+
+                            <div class="card-row">
+                                <div class="">
                                     <span class="card-label">د امتحان ځای: </span>
-                                    <span class="card-value" dir="ltr">{{ $student->studentExams()->first()->class->address }}</span>
+                                    <span
+                                        class="card-value">{{ $student->studentExams()->first()?->subClass?->address }}</span>
                                 </div>
                             </div>
-                          
+                            <div class="card-row text-left">
+                                <div style="width: 90%" class="bg-danger-subtle">
+                                    د ډیټابېس آمریت
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             @endforeach
-           
+
         </div>
     </div>
     <!-- Include Bootstrap JS and dependencies -->

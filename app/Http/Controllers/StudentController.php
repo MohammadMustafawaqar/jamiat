@@ -185,7 +185,9 @@ class StudentController extends Controller
                 'permanent_province_id',
                 'action'
 
-            ])
+            ]) + [
+                'tazkira_id' => $tazkira->id
+            ]
         );
         $student_exam = StudentExam::create([
             'student_id' => $student->id,
@@ -431,28 +433,32 @@ class StudentController extends Controller
 
         foreach ($students as $student) {
             $currentExam = $student->exams()->first();
+            if ($currentExam) {
+                $student->exams()->updateExistingPivot($currentExam->id, [
+                    'exam_id' => $request->exam_id,
+                    'status' => 'updated',
+                ]);
+            } else {
+                $student->exams()->attach($request->exam_id, [
+                    'status' => 'created',
 
+                ]);
+            }
             // find campus of exam
             $campus = Campus::with('classes')->find($exam?->campus_id);
             $classes = $campus->classes;
             foreach ($classes as $class) {
-                $assigned_student_count = $class->studentExams->count();
-                if ($currentExam) {
-                    $student->exams()->updateExistingPivot($currentExam->id, [
-                        'exam_id' => $request->exam_id,
-                        'status' => 'updated',
-                    ]);
-                } else {
-                    $student->exams()->attach($request->exam_id, [
-                        'status' => 'created',
-
-                    ]);
-                }
-                if ($class->capacity > $assigned_student_count) {
-                    $student->exams()->updateExistingPivot($currentExam->id, [
-                        'class_id' => $class->id,
-                        'status' => 'class selected',
-                    ]);
+                $sub_classes = $class->subClasses;
+                if ($sub_classes) {
+                    foreach ($sub_classes as $sub_class) {
+                        $assigned_student_count = $sub_class->studentExams->count();
+                        if ($sub_class->capacity > $assigned_student_count) {
+                            $student->exams()->updateExistingPivot($currentExam->id, [
+                                'sub_class_id' => $sub_class->id,
+                                'status' => 'class selected',
+                            ]);
+                        }
+                    }
                 }
             }
             // dd($assigned_student_count);

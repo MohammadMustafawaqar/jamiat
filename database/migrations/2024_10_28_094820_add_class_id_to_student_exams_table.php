@@ -11,17 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_classes', function (Blueprint $table) {
-            $table->id();
+        Schema::table('student_exams', function (Blueprint $table) {
             $table->foreignId('class_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete();
-                
-            $table->string('name');
-            $table->integer('capacity');
-            $table->string('status')
-                ->default('active');
-            $table->timestamps();
+                ->nullOnDelete();
         });
     }
 
@@ -30,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_classes');
+        Schema::table('student_exams', function (Blueprint $table) {
+            $table->dropConstrainedForeignId('class_id');
+        });
     }
 };

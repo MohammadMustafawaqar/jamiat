@@ -6,6 +6,7 @@ use App\Http\Controllers\Jamiat\EducationLevelController;
 use App\Http\Controllers\Jamiat\ExamController;
 use App\Http\Controllers\Jamiat\GradeController;
 use App\Http\Controllers\Jamiat\LanguageController;
+use App\Http\Controllers\Jamiat\SubClassController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,8 @@ Route::group([
         Route::resource('languages', LanguageController::class);
 
         Route::resource('campus', CampusController::class);
-
-
         Route::resource('/campus/{campus_id}/classes', ClassController::class);
+        Route::resource('campus/classes/{class_id}/sub-classes', SubClassController::class);
     });
 
     Route::resource('exam', ExamController::class);

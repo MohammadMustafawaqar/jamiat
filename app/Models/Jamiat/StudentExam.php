@@ -11,10 +11,15 @@ class StudentExam extends Model
     use HasFactory;
 
     protected $guarded = [];
+    protected $with = ['subClass'];
 
     public function class()
     {
         return $this->belongsTo(CClass::class, 'class_id');
+    }
+    public function subClass()
+    {
+        return $this->belongsTo(SubClass::class, 'sub_class_id');
     }
 
     public function student()

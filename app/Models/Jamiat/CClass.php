@@ -10,7 +10,7 @@ class CClass extends Model
     use HasFactory;
 
     protected $table = 'classes';
-    protected $with = 'studentExams';
+    protected $with = ['studentExams', 'subClasses'];
 
     protected $guarded = [];
 
@@ -28,6 +28,11 @@ class CClass extends Model
     {
         
         return $this->campus->name . '، ' . $this->name;
+    }
+
+    public function subClasses()
+    {
+        return $this->hasMany(SubClass::class, 'class_id');
     }
 
   

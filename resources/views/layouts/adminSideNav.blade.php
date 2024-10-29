@@ -160,7 +160,7 @@
             </li>
             @endcanany
 
-            @canany(['language.create', 'language.edit', 'language.read', 'language.delete', 'language.show'])
+            @canany(['exam_centers.create', 'exam_centers.edit', 'exam_centers.read', 'exam_centers.delete', 'exam_centers.show'])
             <li>
                 <a class="treeview-item  {{ Settings::current_route('admin.settings.campus.') }}"
                     href="{{ route('admin.settings.campus.index') }}">

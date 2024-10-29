@@ -12,11 +12,10 @@
 
             <div class="row">
                 <div class="col-12">
-                    @can('school_grade.create')
-
-                    <button class="btn btn-primary" onclick="openCreateModal()">
-                        <i class="fa fa-add"></i>
-                    </button>
+                    @can('exam_centers.create')
+                        <button class="btn btn-primary" onclick="openCreateModal()">
+                            <i class="fa fa-add"></i>
+                        </button>
                     @endcan
 
                 </div>
@@ -56,15 +55,15 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @can('school_grade.delete')
-
-                                    <x-buttons.delete  :route="route('admin.settings.campus.destroy', $campus->id)" />
-                                    {{-- <x-buttons.show :route="route('admin.settings.campus.show',$campus->id)" /> --}}
-                                        <a href="{{ route('admin.settings.campus.show', $campus->id) }}" class="btn btn-sm btn-info">
+                                    @can('exam_centers.delete')
+                                        <x-buttons.delete :route="route('admin.settings.campus.destroy', $campus->id)" />
+                                    @endcan
+                                    @can('exam_centers.show')
+                                        <a href="{{ route('admin.settings.campus.show', $campus->id) }}"
+                                            class="btn btn-sm btn-info">
                                             <i class="fa fa-eye"></i>
                                         </a>
-
-                                        @endcan
+                                    @endcan
                                 </div>
 
                             </td>
@@ -84,10 +83,8 @@
 
                 <x-input2 type='text' label="{{ __('jamiat.name') }}" id='name' name='name' />
 
-                <x-js-select2 
-                :list="App\Models\Country::where('name', 'افغانستان')->first()->provinces" col="col-6" id='province_id' name="province_id" :label="__('lang.province')"
-                col='col-sm-12'
-                name='province_id' value='id' text='name' required modal_id="create-modal" />
+                <x-js-select2 :list="App\Models\Country::where('name', 'افغانستان')->first()->provinces" col="col-6" id='province_id' name="province_id" :label="__('lang.province')"
+                    col='col-sm-12' name='province_id' value='id' text='name' required modal_id="create-modal" />
 
 
                 <div class="d-flex justify-content-between bg-light mt-2">

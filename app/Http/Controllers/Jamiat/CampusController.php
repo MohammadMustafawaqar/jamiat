@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Validator;
 
 class CampusController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:exam_centers.read')->only('index');
+        $this->middleware('permission:exam_centers.create')->only(['index', 'store']);
+        $this->middleware('permission:exam_centers.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:exam_centers.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:exam_centers.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */

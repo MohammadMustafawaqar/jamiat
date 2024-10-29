@@ -112,12 +112,18 @@ class PermissionSeeder extends Seeder
         //     ['name' => 'committee_member.delete', 'guard_name' => 'web'],
 
 
-             // Committee Members
-            ['name' => 'topics.*', 'guard_name' => 'web'],
-            ['name' => 'topics.create', 'guard_name' => 'web'],
-            ['name' => 'topics.edit', 'guard_name' => 'web'],
-            ['name' => 'topics.read', 'guard_name' => 'web'],
-            ['name' => 'topics.delete', 'guard_name' => 'web'],
+            //  // Committee Members
+            // ['name' => 'topics.*', 'guard_name' => 'web'],
+            // ['name' => 'topics.create', 'guard_name' => 'web'],
+            // ['name' => 'topics.edit', 'guard_name' => 'web'],
+            // ['name' => 'topics.read', 'guard_name' => 'web'],
+            // ['name' => 'topics.delete', 'guard_name' => 'web'],
+
+            // ['name' => 'exam_centers.*', 'guard_name' => 'web'],
+            // ['name' => 'exam_centers.create', 'guard_name' => 'web'],
+            // ['name' => 'exam_centers.edit', 'guard_name' => 'web'],
+            // ['name' => 'exam_centers.read', 'guard_name' => 'web'],
+            ['name' => 'exam_centers.show', 'guard_name' => 'web'],
 
         ]);
         $role = Role::find(1);
