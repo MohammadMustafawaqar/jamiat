@@ -181,7 +181,7 @@
                             <div class="divider"></div>
                             <div class="card-row bg-text-primary">
                                 <div style="width: 90%" class="bg-danger-subtle">
-                                   نوټ: مهرباني وکړئ، امحتان وخت کې دا کارت ځان سره ولرئ، دې کارت نشتون صورت کې امتحان ته شاملیدو حق نه لرئ 
+                                   نوټ: مهرباني وکړئ، امحتان وخت کې دا کارت ځان سره ولرئ،  
                                 </div>
                             </div>
 
