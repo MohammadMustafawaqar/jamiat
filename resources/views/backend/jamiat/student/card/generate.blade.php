@@ -178,9 +178,10 @@
                                         class="card-value">{{ $student->studentExams()->first()?->subClass?->address }}</span>
                                 </div>
                             </div>
-                            <div class="card-row text-left">
+                            <div class="divider"></div>
+                            <div class="card-row bg-text-primary">
                                 <div style="width: 90%" class="bg-danger-subtle">
-                                    د ډیټابېس آمریت
+                                   نوټ: مهرباني وکړئ، امحتان وخت کې دا کارت ځان سره ولرئ، دې کارت نشتون صورت کې امتحان ته شاملیدو حق نه لرئ 
                                 </div>
                             </div>
 
