@@ -26,13 +26,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::withoutEvents(function () {
-        //     User::create([
-        //         'name' => "Admin",
-        //         'email' => "admin@gmail.com",
-        //         'password' => Hash::make("admin123"),
-        //     ]);
-        // });
+        User::withoutEvents(function () {
+            User::create([
+                'name' => "Admin",
+                'email' => "admin@gmail.com",
+                'password' => Hash::make("admin123"),
+            ]);
+        });
 
         // DB::table('permissions')->insert([
         //     ['name' => 'schools.*', 'guard_name' => 'web'],
@@ -91,62 +91,62 @@ class DatabaseSeeder extends Seeder
         // $user->assignRole($role->name);
 
 
-        // Country::insert([
-        //     ['name' => 'افغانستان'],
-        //     ['name' => 'پاکستان'],
-        //     ['name' => 'سعودی عربستان'],
-        //     ['name' => 'هند'],
-        //     ['name' => 'ترکیه'],
-        // ]);
-        // Province::insert([
-        //     ['country_id' => '1', 'name' => 'کابل'],
-        //     ['country_id' => '1', 'name' => 'ننگرهار'],
-        //     ['country_id' => '1', 'name' => 'بلخ'],
-        //     ['country_id' => '1', 'name' => 'هرات'],
-        //     ['country_id' => '1', 'name' => 'قندهار'],
-        //     ['country_id' => '1', 'name' => 'خوست'],
-        //     ['country_id' => '1', 'name' => 'بامیان'],
-        //     ['country_id' => '1', 'name' => 'فراه'],
-        //     ['country_id' => '1', 'name' => 'غور'],
-        //     ['country_id' => '1', 'name' => 'لوگر'],
-        //     ['country_id' => '1', 'name' => 'پکتیا'],
-        //     ['country_id' => '1', 'name' => 'پکتیکا'],
-        //     ['country_id' => '1', 'name' => 'پروان'],
-        //     ['country_id' => '1', 'name' => 'سمنگان'],
-        //     ['country_id' => '1', 'name' => 'تخار'],
-        //     ['country_id' => '1', 'name' => 'غزنی'],
-        //     ['country_id' => '1', 'name' => 'کندز'],
-        //     ['country_id' => '1', 'name' => 'میدان وردک'],
-        //     ['country_id' => '1', 'name' => 'نورستان'],
-        //     ['country_id' => '1', 'name' => 'لغمان'],
-        //     ['country_id' => '1', 'name' => 'بدخشان'],
-        //     ['country_id' => '1', 'name' => 'بدغیس'],
-        //     ['country_id' => '1', 'name' => 'بادغیس'],
-        //     ['country_id' => '1', 'name' => 'سرپل'],
-        //     ['country_id' => '1', 'name' => 'دایکندی'],
-        //     ['country_id' => '1', 'name' => 'اوزبک'],
-        //     ['country_id' => '1', 'name' => 'جوزجان'],
-        //     ['country_id' => '1', 'name' => 'کاپیسا'],
-        //     ['country_id' => '1', 'name' => 'نیمروز'],
-        //     ['country_id' => '1', 'name' => 'زابل'],
-        //     ['country_id' => '1', 'name' => 'اروزگان']
-        // ]);
+        Country::insert([
+            ['name' => 'افغانستان'],
+            ['name' => 'پاکستان'],
+            ['name' => 'سعودی عربستان'],
+            ['name' => 'هند'],
+            ['name' => 'ترکیه'],
+        ]);
+        Province::insert([
+            ['country_id' => '1', 'name' => 'کابل'],
+            ['country_id' => '1', 'name' => 'ننگرهار'],
+            ['country_id' => '1', 'name' => 'بلخ'],
+            ['country_id' => '1', 'name' => 'هرات'],
+            ['country_id' => '1', 'name' => 'قندهار'],
+            ['country_id' => '1', 'name' => 'خوست'],
+            ['country_id' => '1', 'name' => 'بامیان'],
+            ['country_id' => '1', 'name' => 'فراه'],
+            ['country_id' => '1', 'name' => 'غور'],
+            ['country_id' => '1', 'name' => 'لوگر'],
+            ['country_id' => '1', 'name' => 'پکتیا'],
+            ['country_id' => '1', 'name' => 'پکتیکا'],
+            ['country_id' => '1', 'name' => 'پروان'],
+            ['country_id' => '1', 'name' => 'سمنگان'],
+            ['country_id' => '1', 'name' => 'تخار'],
+            ['country_id' => '1', 'name' => 'غزنی'],
+            ['country_id' => '1', 'name' => 'کندز'],
+            ['country_id' => '1', 'name' => 'میدان وردک'],
+            ['country_id' => '1', 'name' => 'نورستان'],
+            ['country_id' => '1', 'name' => 'لغمان'],
+            ['country_id' => '1', 'name' => 'بدخشان'],
+            ['country_id' => '1', 'name' => 'بدغیس'],
+            ['country_id' => '1', 'name' => 'بادغیس'],
+            ['country_id' => '1', 'name' => 'سرپل'],
+            ['country_id' => '1', 'name' => 'دایکندی'],
+            ['country_id' => '1', 'name' => 'اوزبک'],
+            ['country_id' => '1', 'name' => 'جوزجان'],
+            ['country_id' => '1', 'name' => 'کاپیسا'],
+            ['country_id' => '1', 'name' => 'نیمروز'],
+            ['country_id' => '1', 'name' => 'زابل'],
+            ['country_id' => '1', 'name' => 'اروزگان']
+        ]);
 
-        // Appreciation::insert([
-        //     ['name' => 'ممتاز'],
-        // ]);
-        // AddressType::insert([
-        //     ['name' => 'داخل'],
-        //     ['name' => 'خارج']
-        // ]);
-        // NicType::insert([
-        //     ['name' => 'الکترونیکی'],
-        //     ['name' => 'کاغذی']
-        // ]);
-        // Gender::insert([
-        //     ['name_ps' => 'نارینه', 'name_dr' => 'مرد'],
-        //     ['name_ps' => 'ښځینه', 'name_dr' => 'زن']
-        // ]);
+        Appreciation::insert([
+            ['name' => 'ممتاز'],
+        ]);
+        AddressType::insert([
+            ['name' => 'داخل'],
+            ['name' => 'خارج']
+        ]);
+        NicType::insert([
+            ['name' => 'الکترونیکی'],
+            ['name' => 'کاغذی']
+        ]);
+        Gender::insert([
+            ['name_ps' => 'نارینه', 'name_dr' => 'مرد'],
+            ['name_ps' => 'ښځینه', 'name_dr' => 'زن']
+        ]);
 
 
         $this->call([

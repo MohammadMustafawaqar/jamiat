@@ -53,7 +53,7 @@ Route::get('change-language/{lang}', function ($lang) {
     return redirect($redirectUrl);
 })->name('change-language');
 
-Route::prefix('{locale}')->group(function () {
+Route::middleware(['auth.session', 'auth'])->prefix('{locale}')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::group(['middleware' => ['admin']], function () {
         Route::resource('schools', SchoolController::class);
