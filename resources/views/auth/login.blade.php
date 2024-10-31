@@ -20,7 +20,7 @@
     <section class="login-content">
         <div class="logo">
             {{-- <h1>{{ config('app.name', 'Laravel') }}</h1> --}}
-            <img src="{{asset('logo.png')}}" alt="LOGO" height="140">
+            <img src="{{asset('assets/logos/mohe_logo.png')}}" alt="LOGO" height="140">
         </div>
         <div class="login-box">
             @if (session('status'))
