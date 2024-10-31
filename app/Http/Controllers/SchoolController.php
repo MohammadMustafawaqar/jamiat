@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Permission;
 
 class SchoolController extends Controller
 {
@@ -21,6 +22,7 @@ class SchoolController extends Controller
      */
     public function index()
     {
+
         $schools = School::paginate(10);
         return view('school.index', compact('schools'));
     }
