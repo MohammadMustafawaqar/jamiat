@@ -38,8 +38,7 @@ Route::get('/', function () {
 });
 Route::redirect('/home', '/ps/home');
 
-// Auth::routes(['register' => false]);
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('change-language/{lang}', function ($lang) {
     // Get the previous route URL
