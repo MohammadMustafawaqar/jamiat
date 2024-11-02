@@ -119,12 +119,11 @@ class PermissionSeeder extends Seeder
             ['name' => 'topics.read', 'guard_name' => 'web'],
             ['name' => 'topics.delete', 'guard_name' => 'web'],
 
-            ['name' => 'centers.*', 'guard_name' => 'web'],
-            ['name' => 'centers.create', 'guard_name' => 'web'],
-            ['name' => 'centers.edit', 'guard_name' => 'web'],
-            ['name' => 'centers.read', 'guard_name' => 'web'],
-            ['name' => 'centers.show', 'guard_name' => 'web'],
-
+            ['name' => 'exam_centers.*', 'guard_name' => 'web'],
+            ['name' => 'exam_centers.create', 'guard_name' => 'web'],
+            ['name' => 'exam_centers.edit', 'guard_name' => 'web'],
+            ['name' => 'exam_centers.read', 'guard_name' => 'web'],
+            ['name' => 'exam_centers.show', 'guard_name' => 'web'],
         ];
 
 
