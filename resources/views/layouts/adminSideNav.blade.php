@@ -169,6 +169,15 @@
                 </a>
             </li>
             @endcanany
+            @canany(['exam_centers.create', 'exam_centers.edit', 'exam_centers.read', 'exam_centers.delete', 'exam_centers.show'])
+            <li>
+                <a class="treeview-item  {{ Settings::current_route('admin.settings.user-group.') }}"
+                    href="{{ route('admin.settings.user-group.index') }}">
+                    <i class="icon bi bi-people"></i>
+                    {{ __('sidebar.user_groups') }}
+                </a>
+            </li>
+            @endcanany
 
         </ul>
     </li>

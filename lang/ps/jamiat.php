@@ -64,5 +64,8 @@ return [
     'language_en' => 'ژپه (انګلیسي)',
     'language_pa' => 'ژپه (پښتو)',
     'language_da' => 'ژپه (دري)',
-    'add_language' => 'ژبه اضافه کړۍ'
+    'add_language' => 'ژبه اضافه کړۍ',
+    'school_name' => 'د جامعې نوم',
+    'group_name' => 'ګروپ نوم',
+    'select_group' => 'ګروپ خوښ کړئ'
 ];

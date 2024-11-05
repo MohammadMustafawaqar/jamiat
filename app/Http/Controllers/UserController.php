@@ -49,15 +49,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->user_group_id);
         $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_group_id' => 'required'
         ]);
+
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'user_group_id' => $request->user_group_id,
             'user_type' => 'Admin',
             'password' => Hash::make($request->password),
         ]);
@@ -118,7 +122,9 @@ class UserController extends Controller
      */
     public function destroy($locale, User $user)
     {
-        //
+        $user->delete();
+
+        return redirect()->route('user.index')->with("msg", __('messages.record_deleted'));
     }
 
     public function changePassword(Request $request)

@@ -47,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('components.backend.shared.btn.filter', 'btn-filter');
         Blade::component('components.backend.shared.btn.print-button', 'btn-print');
         Blade::component('components.backend.shared.btn.cancel', 'btn-cancel');
+        Blade::component('components.backend.shared.btn.reset', 'btn-reset');
 
         Blade::component('components.backend.shared.checkbox', 'checkbox');
         Blade::component('components.backend.shared.editor', 'editor');

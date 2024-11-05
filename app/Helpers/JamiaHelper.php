@@ -1,6 +1,7 @@
 <?php 
 namespace App\Helpers;
 
+use App\Models\Country;
 use App\Models\Jamiat\Campus;
 use App\Models\Jamiat\EducationLevel;
 use App\Models\Jamiat\Exam;
@@ -33,4 +34,9 @@ class JamiaHelper{
     {
         return Campus::all();
     }
+
+    public static function countries()
+    {
+        return Country::all();
+    } 
 }

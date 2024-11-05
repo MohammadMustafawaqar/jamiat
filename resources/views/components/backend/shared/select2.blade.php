@@ -12,6 +12,8 @@
     'disabled' => '0',
     'readonly' => '0',
     'classes' => 'form-control',
+    'local_path'=>'',
+    'local_text'=>'',
 ])
 
 @push('styles')
@@ -33,7 +35,9 @@
             @if ($disabled) disabled @endif @if ($readonly) readonly @endif>
             <option value="">{{ $default }}</option>
             @foreach ($list as $item)
-                <option value="{{ $item->$value }}" @selected($item->$value == $selected_value || old($name) == $item->$value || (isset($_GET[$name]) && $_GET[$name] == $item->$value))>{{ $item->$text }}
+                <option value="{{ $item->$value }}" @selected($item->$value == $selected_value || old($name) == $item->$value || (isset($_GET[$name]) && $_GET[$name] == $item->$value))>
+                    {{ ($text!='text') ? $item->$text :'' }}
+                    {{ ($local_path !='') ? __($local_path.'.'.$item->$local_text) :'' }}
                 </option>
             @endforeach
         </select>
@@ -48,7 +52,7 @@
          $(document).ready(function() {
             $('#{{ $id }}').select2({
                 theme: "bootstrap-5",
-                placeholder: '{{ $default }}',
+                placeholder: '{{ $default != "default" ? $default : $label}}',
             });
         });
     </script>

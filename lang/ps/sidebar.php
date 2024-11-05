@@ -9,5 +9,6 @@ return [
     'evaluation_students' => 'د ارزیابې فاضلان',
     'edu_level' => 'د زده کړې کچې',
     'languages' => 'ژبې',
-    'campuses' => 'د امتحان ځایونه'
+    'campuses' => 'د امتحان ځایونه',
+    'user_groups' => 'د کارونکوو ګروپ'
 ];

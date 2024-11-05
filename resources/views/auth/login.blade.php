@@ -216,13 +216,19 @@
                         <!-- Username Field -->
                         <div class="form-group">
                             <input type="text" name="email" placeholder="ایمیل / اړیکې شمېره" required autocomplete="email"
-                                autofocus>
+                                autofocus class="@error('email') is-invalid @enderror form-control" value="{{ old('email') }}">
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                         </div>
 
                         <!-- Password Field -->
                         <div class="form-group">
                             <input type="password" name="password" placeholder="پاسورډ" required
                                 autocomplete="current-password">
+                            @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <!-- Remember Me & Forgot Password Links -->

@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Exports\InvalidSchoolExport;
 use App\Models\AddressType;
 use App\Models\District;
+use App\Models\Jamiat\SchoolGrade;
 use App\Models\Province;
 use App\Models\School;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
@@ -16,7 +17,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Events\AfterImport;
 use Maatwebsite\Excel\Facades\Excel;
 
-class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
+class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFailure
 {
 
     use SkipsFailures;
@@ -26,8 +27,10 @@ class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnF
 
     public function model(array $row)
     {
+
+
         $errors = [];
-       
+
 
         // Validate related models and capture errors
         $address_type = AddressType::where('name', $row['address_type'])->first();
@@ -40,10 +43,21 @@ class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnF
             $errors[] = 'Invalid Province';
         }
 
-        $district = District::where('name', $row['district'])->first();
-        if (!$district) {
-            $errors[] = 'Invalid District';
+        $existingSchool = School::where('name', $row['name'])
+            ->whereHas('district.province', function ($query) use ($province) {
+                $query->where('id', $province?->id);
+            })
+            ->exists();
+
+        if ($existingSchool) {
+            $errors[] = 'School already exists';
         }
+
+
+        // $district = District::where('name', $row['district'])->first();
+        // if (!$district) {
+        //     $errors[] = 'Invalid District';
+        // }
 
         // If there are any errors, capture the invalid row with errors
         if (!empty($errors)) {
@@ -52,16 +66,23 @@ class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnF
             return null; // Skip this row
         }
 
-
-        // If no errors, return the new model
-        return new School([
+        $school = School::create([
             'address_type_id' => $address_type->id,
             'province_id' => $province->id,
-            'district_id' => $district->id,
-            'village' => $row['village'],
+            'district_id' => $province->districts->first()->id,
+            'village' => 'نامعلوم',
             'name' => $row['name'],
-            'details' => $row['details'],
+            'details' => '',
+            'status' => 'imported_from_excel'
         ]);
+
+        SchoolGrade::create([
+            'school_id' => $school->id,
+            'grade_id' => 2
+        ]);
+
+
+        return $school;
     }
 
     public function rules(): array
@@ -69,8 +90,7 @@ class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnF
         return [
             'address_type' => 'required|string',
             'province' => 'required|string',
-            'district' => 'required|string',
-            'village' => 'required|string',
+            'village' => 'nullable|string',
             'name' => 'required|string',
             'details' => 'nullable|string',
         ];
@@ -90,7 +110,4 @@ class SchoolImport implements  ToModel, WithHeadingRow, WithValidation, SkipsOnF
 
         return $fileName;
     }
-  
-    
-   
 }
