@@ -11,7 +11,7 @@ class ClassController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:exam_centers.read')->only('index');
+        $this->middleware('permission:exam_centers.read')->only(['index', 'show']);
         $this->middleware('permission:exam_centers.create')->only(['index', 'store']);
         $this->middleware('permission:exam_centers.edit')->only(['index', 'edit','update']);
         $this->middleware('permission:exam_centers.delete')->only(['index', 'destroy']);
@@ -40,7 +40,7 @@ class ClassController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
-            'capacity' => 'required',
+            // 'capacity' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -96,7 +96,7 @@ class ClassController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
-            'capacity' => 'required',
+            // 'capacity' => 'required',
         ]);
 
         if ($validator->fails()) {

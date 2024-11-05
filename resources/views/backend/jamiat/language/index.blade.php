@@ -66,15 +66,15 @@
             </x-table>
         </div>
     </x-page-container>
-    <x-modal id='create-modal' :title="__('jamiat.add_exam')" size='md'>
+    <x-modal id='create-modal' :title="__('jamiat.add_language')" size='md'>
         <div class="container-fluid">
             <form id='create-form' class="row" method="POST">
                 @csrf
 
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_ar') }}" id='ar_name' name='ar_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_en') }}" id='en_name' name='en_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_pa') }}" id='pa_name' name='pa_name' />
-                <x-input2 type='text' label="{{ __('jamiat.edu_name_da') }}" id='da_name' name='da_name' />
+                <x-input2 type='text' label="{{ __('jamiat.language_ar') }}" id='ar_name' name='ar_name' />
+                <x-input2 type='text' label="{{ __('jamiat.language_en') }}" id='en_name' name='en_name' />
+                <x-input2 type='text' label="{{ __('jamiat.language_pa') }}" id='pa_name' name='pa_name' />
+                <x-input2 type='text' label="{{ __('jamiat.language_da') }}" id='da_name' name='da_name' />
 
 
 

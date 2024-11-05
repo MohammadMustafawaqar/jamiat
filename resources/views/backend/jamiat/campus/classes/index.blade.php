@@ -36,7 +36,7 @@
                     <tr>
                         <th>{{ __('jamiat.no') }}</th>
                         <th>{{ __('jamiat.name') }}</th>
-                        <th>{{ __('jamiat.capacity') }}</th>
+                        {{-- <th>{{ __('jamiat.capacity') }}</th> --}}
                         <th>{{ __('jamiat.actions') }}</th>
                     </tr>
                 </thead>
@@ -47,9 +47,9 @@
                             <td>
                                 {{ $class->name }}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $class->capacity }}
-                            </td>
+                            </td> --}}
                             <td>
                                 <div class="btn-group">
                                     @can('exam_centers.delete')
@@ -89,7 +89,7 @@
                 @csrf
 
                 <x-input2 type='text' label="{{ __('jamiat.name') }}" id='name' name='name' />
-                <x-input2 type='text' label="{{ __('jamiat.capacity') }}" id='capacity' name='capacity' />
+                {{-- <x-input2 type='text' label="{{ __('jamiat.capacity') }}" id='capacity' name='capacity' /> --}}
 
                 <div class="d-flex justify-content-between bg-light mt-2">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -105,7 +105,7 @@
                 @csrf
 
                 <x-input2 type='text' label="{{ __('jamiat.name') }}" id='edit_name' name='name' />
-                <x-input2 type='text' label="{{ __('jamiat.capacity') }}" id='edit_capacity' name='capacity' />
+                {{-- <x-input2 type='text' label="{{ __('jamiat.capacity') }}" id='edit_capacity' name='capacity' /> --}}
 
                 <div class="d-flex justify-content-between bg-light mt-2">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
