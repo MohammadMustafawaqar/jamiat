@@ -78,7 +78,7 @@ class StudentController extends Controller
             'form_type' => 'required',
             'address_type_id' => 'required',
             'exam_grade' => 'required',
-            'exam_id' => 'required',
+            // 'exam_id' => 'required',
         ]);
 
         session([
@@ -123,7 +123,7 @@ class StudentController extends Controller
         $session = session('pre_form_data', []);
         $form_type = $session['form_type'];
         $address_type = $session['address_type_id'];
-        $exam_id = $session['exam_id'];
+        // $exam_id = $session['exam_id'];
 
         $request->validate([
             'current_district_id' => 'required|integer|exists:districts,id',
