@@ -73,8 +73,8 @@
                             <td>{{ $student->full_name }}</td>
                             <td>{{ $student->father_name }}</td>
                             <td>{{ $student->dob_qamari }}</td>
-                            <td>{{ $student->currentDistrict->name }}</td>
-                            <td>{{ $student->permanentDistrict->name }}</td>
+                            <td>{{ $student->currentDistrict?->name }}</td>
+                            <td>{{ $student->permanentDistrict?->name }}</td>
                             <td dir="ltr">{{ $student->phone }}</td>
                             <td>{{ $student->school?->name }}</td>
                             <td>{{ $student->addressType?->name }}</td>

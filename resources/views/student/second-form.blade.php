@@ -62,7 +62,9 @@
                                 @endif
 
                                 <x-select2 col="col-6 col-md-4 col-lg-3 col-xl-2" :list="$nic_types" name="tazkira_type"
-                                    value='value' text='text' :label="__('jamiat.nic_type')" selected_value='electric' />
+                                    value='value' text='text' :label="__('jamiat.nic_type')" selected_value='electric'
+                                    :required='1'
+                                    />
 
                                 <x-input type='text' name='tazkira_no' :label="__('jamiat.tazkira_no')"
                                     col='col-6 col-md-4 col-lg-3 col-xl-2' :required='1' />
@@ -85,12 +87,12 @@
                                         :required="1" />
 
                                     <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="relative_contact"
-                                        :label="__('jamiat.relative_contact')" :required="1" />
+                                        :label="__('jamiat.relative_contact')"  />
 
 
 
                                     <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
-                                        :label="__('lang.image')" :required="1" />
+                                        :label="__('lang.image')"  />
                                 @endif
 
 

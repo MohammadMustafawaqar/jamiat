@@ -4,7 +4,7 @@
     'list' => [],
     'value' => 'value',
     'selected_value' => 'selected_value',
-    'text' => 'text',
+    'text' => 'text_to_display',
     'default' => 'default',
     'label' => 'default',
     'col' => 'col-sm-12',
@@ -36,7 +36,7 @@
             <option value="">{{ $default }}</option>
             @foreach ($list as $item)
                 <option value="{{ $item->$value }}" @selected($item->$value == $selected_value || old($name) == $item->$value || (isset($_GET[$name]) && $_GET[$name] == $item->$value))>
-                    {{ ($text!='text') ? $item->$text :'' }}
+                    {{ ($text!='text_to_display') ? $item->$text :'' }}
                     {{ ($local_path !='') ? __($local_path.'.'.$item->$local_text) :'' }}
                 </option>
             @endforeach

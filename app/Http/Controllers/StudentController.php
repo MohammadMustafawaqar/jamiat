@@ -143,7 +143,7 @@ class StudentController extends Controller
             'tazkira_no' => 'required|integer',
             'name' => 'required|string|max:255',
             // 'name_en' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'last_name' => 'nullable|string|max:255',
             // 'last_name_en' => 'required|string|max:255',
             'father_name' => 'required|string|max:255',
             // 'father_name_en' => 'required|string|max:255',
@@ -155,8 +155,8 @@ class StudentController extends Controller
             'dob_qamari' => 'required|string|max:255',
             'dob_shamsi' => $form_type == '3' ? 'required' : 'nullable',
             'graduation_year' => $form_type == '3' ? 'nullable' : 'required|integer',
-            'phone' => 'required|string',
-            'whatsapp' => $form_type == '3' ? 'nullable' : 'required|string',
+            'phone' => 'required|string|regex:/^(07\d{8}|00937\d{8})$/',
+            'whatsapp' => $form_type == '3' ? 'nullable' : 'required|string|regex:/^(07\d{8}|00937\d{8})$/',
             'image_path' => 'nullable|mimes:jpeg,jpg,png|max:2048'
         ]);
 
