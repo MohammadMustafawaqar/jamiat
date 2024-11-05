@@ -59,4 +59,10 @@ return [
     'edit_class' => 'د امتحان ځایونه تغییر کړئ',
     'add_sub_class' => 'د امتحان محلونه اضافه کړئ',
     'edit_sub_class' => 'د امتحان محلونه تغییر کړئ',
+
+    'language_ar' => 'ژپه (عربي)',
+    'language_en' => 'ژپه (انګلیسي)',
+    'language_pa' => 'ژپه (پښتو)',
+    'language_da' => 'ژپه (دري)',
+    'add_language' => 'ژبه اضافه کړۍ'
 ];
