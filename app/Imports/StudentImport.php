@@ -41,38 +41,133 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         $this->requestData = $requestData;
     }
 
+    function normalizeName($name)
+    {
+        if ($name === null || $name === '') return null; // Check if the name is null or empty
+        $name = str_replace(' ', '', $name); // Remove spaces
+        $name = str_replace('ګ', 'گ', $name); // Replace ګ with گ
+        $name = str_replace('ی', 'ي', $name); // Replace ګ with گ
+        $name = str_replace('ې', 'ي', $name); // Replace ګ with گ
+        $name = str_replace('ئ', 'ي', $name); // Replace ګ with گ
+        $name = str_replace('ۍ', 'ي', $name); // Replace ګ with گ
+        return $name;
+    }
+
+    function dateFormat($date) {
+        $date = str_replace(' ', '', $date);
+        return str_replace('/', '-', $date);
+    }
+
+    function determineTazkiraType($tazkira) {
+        $cleanedTazkira = str_replace(['-', ' '], '', $tazkira);
+    
+        if (strlen($cleanedTazkira) === 13 && ctype_digit($cleanedTazkira)) {
+            return 'electric';
+        } else {
+            return 'paper';
+        }
+    }
+
+    function formatTazkira($tazkira) {
+        return str_replace(['-', ' '], '', $tazkira);
+    }
+    
+
     public function model(array $row)
     {
         $errors = [];
 
-        $currentProvince = Province::where('name', $row['current_province'])->first();
+        $currentProvinceName = $this->normalizeName($row['current_province']);
+        $currentProvince = $currentProvinceName ? Province::where('name', $currentProvinceName)->first() : null;
+        // dd($currentProvinceName, $currentProvince);
+        if (!$currentProvince && $row['current_province']) {
+            $currentProvince = Province::create(['name' => $row['current_province'], 
+            'country_id' => 1 
+        ]);
+        }
         if (!$currentProvince) $errors[] = "Invalid Current Province";
 
-        // Retrieve IDs based on `name` from models, and capture errors if not found
-        $currentDistrict = District::where('name', $row['current_district'])
-            ->where('province_id', $currentProvince->id)->first();
+        // Process Current District
+        $currentDistrictName = $this->normalizeName($row['current_district']);
+        $currentDistrict = $currentDistrictName && $currentProvince
+            ? District::where('name', $currentDistrictName)->where('province_id', $currentProvince->id)->first()
+            : null;
+        if (!$currentDistrict && $row['current_district']) {
+            $currentDistrict = District::create(['name' => $row['current_district'], 'province_id' => $currentProvince->id]);
+        }
         if (!$currentDistrict) $errors[] = "Invalid Current District";
 
-        $permanentProvince = Province::where('name', $row['permanent_province'])->first();
+        // Process Permanent Province
+        $permanentProvinceName = $this->normalizeName($row['permanent_province']);
+        $permanentProvince = $permanentProvinceName ? Province::where('name', $permanentProvinceName)->first() : null;
+        if (!$permanentProvince && $row['permanent_province']) {
+            $permanentProvince = Province::create(['name' => $row['permanent_province'], 
+        'country_id' => 1]);
+        }
         if (!$permanentProvince) $errors[] = "Invalid Permanent Province";
 
-        $permanentDistrict = District::where('name', $row['permanent_district'])
-            ->where('province_id', $permanentProvince->id)->first();
+        // Process Permanent District
+        $permanentDistrictName = $this->normalizeName($row['permanent_district']);
+        $permanentDistrict = $permanentDistrictName && $permanentProvince
+            ? District::where('name', $permanentDistrictName)->where('province_id', $permanentProvince->id)->first()
+            : null;
+        if (!$permanentDistrict && $row['permanent_district']) {
+            $permanentDistrict = District::create(['name' => $row['permanent_district'], 'province_id' => $permanentProvince->id]);
+        }
         if (!$permanentDistrict) $errors[] = "Invalid Permanent District";
 
-        $schoolCountry = Country::where('name', $row['school_country'])->first();
+        // Process School Country
+        $schoolCountryName = $this->normalizeName($row['school_country']);
+        $schoolCountry = $schoolCountryName ? Country::where('name', $schoolCountryName)->first() : null;
+        if (!$schoolCountry && $row['school_country']) {
+            $schoolCountry = Country::create(['name' => $row['school_country']]);
+        }
         if (!$schoolCountry) $errors[] = "Invalid School Country";
 
-        $schoolProvince = Province::where('name', $row['school_province'])->first();
-        if (!$schoolProvince) $errors[] = "Invalid School Province";
+        // Process School Province
+        $schoolProvinceName = $this->normalizeName($row['school_province']);
+        $schoolProvince = $schoolProvinceName ? Province::where('name', $schoolProvinceName)->first() : Province::find(1);
+        // if (!$schoolProvince && $row['school_province']) {
+        //     $schoolProvince = Province::create(['name' => $row['school_province']]);
+        // }
+        // if (!$schoolProvince) $errors[] = "Invalid School Province";
 
-        $schoolDistrict = District::where('name', $row['school_district'])->first();
-        if (!$schoolDistrict) $errors[] = "Invalid School District";
+        // Process School District
+        // $schoolDistrictName = $this->normalizeName($row['school_district']);
+        // $schoolDistrict = $schoolDistrictName ? District::where('name', $schoolDistrictName)->first() : null;
+        // if (!$schoolDistrict && $row['school_district']) {
+        //     $schoolDistrict = District::create(['name' => $row['school_district']]);
+        // }
+        // if (!$schoolDistrict) $errors[] = "Invalid School District";
+
+        // $currentProvince = Province::where('name', $row['current_province'])->first();
+        // if (!$currentProvince) $errors[] = "Invalid Current Province";
+
+        // // Retrieve IDs based on `name` from models, and capture errors if not found
+        // $currentDistrict = District::where('name', $row['current_district'])
+        //     ->where('province_id', $currentProvince->id)->first();
+        // if (!$currentDistrict) $errors[] = "Invalid Current District";
+
+        // $permanentProvince = Province::where('name', $row['permanent_province'])->first();
+        // if (!$permanentProvince) $errors[] = "Invalid Permanent Province";
+
+        // $permanentDistrict = District::where('name', $row['permanent_district'])
+        //     ->where('province_id', $permanentProvince->id)->first();
+        // if (!$permanentDistrict) $errors[] = "Invalid Permanent District";
+
+        // $schoolCountry = Country::where('name', $row['school_country'])->first();
+        // if (!$schoolCountry) $errors[] = "Invalid School Country";
+
+        // $schoolProvince = Province::where('name', $row['school_province'])->first();
+        // if (!$schoolProvince) $errors[] = "Invalid School Province";
+
+        // $schoolDistrict = District::where('name', $row['school_district'])->first();
+        // if (!$schoolDistrict) $errors[] = "Invalid School District";
 
         $school = School::where('name', $row['school'])
-            ->where(function ($query) use ($schoolProvince, $schoolDistrict) {
-                $query->where('province_id', $schoolProvince->id)
-                    ->orWhere('district_id', $schoolDistrict->id);
+            ->where(function ($query) use ($schoolProvince) {
+                $query->where('province_id', $schoolProvince?->id);
+                // ->orWhere('district_id', $schoolDistrict->id);
             })
             ->first();
 
@@ -107,8 +202,8 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
 
         // Create Tazkira record if tazkira_type and tazkira_no are provided
         $tazkira = Tazkira::create([
-            'type' => $row['tazkira_type'],
-            'tazkira_no' => $row['tazkira_no'],
+            'type' => $this->determineTazkiraType($row['tazkira_no']),
+            'tazkira_no' => $this->formatTazkira($row['tazkira_no']),
         ]);
 
         // Create Student record with resolved IDs
@@ -129,7 +224,7 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
             'graduation_year' => $row['graduation_year'],
             'school_id' => $school->id,
             'gender_id' => $gender->id,
-            'dob_qamari' => $row['dob_qamari'],
+            'dob_qamari' => $this->dateFormat($row['dob_qamari']),
             'phone' => $row['phone'],
             'whatsapp' => $row['whatsapp'],
             'tazkira_id' => $tazkira->id,
@@ -158,37 +253,37 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         return [
             'form_id' => 'required',
             'name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'father_name' => 'required|string|max:255',
-            'grand_father_name' => 'required|string|max:255',
-            'current_province' => 'required|string|max:255',
-            'permanent_province' => 'required|string|max:255',
-            'current_district' => 'required',
-            'permanent_district' => 'required',
-            'current_village' => 'required|string|max:255',
-            'permanent_village' => 'required|string|max:255',
+            // 'last_name' => 'required|string|max:255',
+            // 'father_name' => 'required|string|max:255',
+            // 'grand_father_name' => 'required|string|max:255',
+            // 'current_province' => 'required|string|max:255',
+            // 'permanent_province' => 'required|string|max:255',
+            // 'current_district' => 'required',
+            // 'permanent_district' => 'required',
+            // 'current_village' => 'required|string|max:255',
+            // 'permanent_village' => 'required|string|max:255',
 
-            'school_country' => 'required',
-            'school_province' => 'required',
-            'school_district' => 'required',
-            'school' => 'required',
-            'gender' => 'required',
+            // 'school_country' => 'required',
+            // 'school_province' => 'required',
+            // 'school_district' => 'required',
+            // 'school' => 'required',
+            // 'gender' => 'required',
 
-            'mother_tongue' => 'required|string|max:255',
-            'education_level' => 'required|string|max:255',
+            // 'mother_tongue' => 'required|string|max:255',
+            // 'education_level' => 'required|string|max:255',
 
-            'tazkira_type' => 'nullable',
-            'tazkira_no' => 'required|integer|unique:tazkiras,tazkira_no',
+            // 'tazkira_type' => 'nullable',
+            // 'tazkira_no' => 'required|integer|unique:tazkiras,tazkira_no',
 
-            'dob_qamari' => ['required', 'string', 'regex:/^\d{4}-\d{2}-\d{2}$/'],
+            // 'dob_qamari' => ['required', 'string', 'regex:/^\d{4}-\d{2}-\d{2}$/'],
 
-            'appreciation' => 'required',
-            'graduation_year' => 'required|integer',
+            // 'appreciation' => 'required',
+            // 'graduation_year' => 'required|integer',
 
 
-            'phone' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
-            'whatsapp' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
-            'relative_contact' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
+            // 'phone' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
+            // 'whatsapp' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
+            // 'relative_contact' => ['required', 'string', 'regex:/^(07\d{8}|00937\d{8})$/'],
 
         ];
     }

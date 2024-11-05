@@ -20,10 +20,40 @@ class SchoolController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $schools = School::paginate(10);
+        $schools = School::when($request->filter_name, function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->filter_name . '%');
+        })
+            ->when($request->filter_country_id, function ($query) use ($request) {
+                $query->whereHas('district.province', function ($q) use ($request) {
+                    $q->where('country_id', $request->filter_country_id);
+                });
+            })
+            ->when($request->filter_province_id, function ($query) use ($request) {
+                $query->whereHas('district', function ($q) use ($request) {
+                    $q->where('province_id', $request->filter_province_id);
+                });
+            })
+            ->when($request->filter_district_id, function ($query) use ($request) {
+                $query->where('district_id', $request->filter_district_id);
+            })
+            ->when($request->filter_village, function ($query) use ($request) {
+                $query->where('village', 'like', '%' . $request->filter_village . '%');
+            })
+            ->when($request->filter_address_type_id, function ($query) use ($request) {
+                $query->where('address_type_id',  $request->filter_address_type_id);
+            })
+            ->when($request->filter_grades, function($query) use($request) {
+                $query->whereHas('grades',function($query) use($request){
+                    $query->whereIn('grades.id',$request->filter_grades);
+                });  
+            })
+            ->paginate(10);
+
+        $schools->appends($request->all());
+
         return view('school.index', compact('schools'));
     }
 
@@ -154,6 +184,7 @@ class SchoolController extends Controller
         $request->validate([
             'excel_file' => 'required|required|mimes:xlsx,csv,xls|max:10240'
         ]);
+       
         $file = request()->file('excel_file');
 
         $import = new SchoolImport;

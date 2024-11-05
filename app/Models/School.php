@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Models\Jamiat\Grade;
+use App\Traits\CreatedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedBy;
     protected $fillable = ['address_type_id','province_id', 'district_id', 'name', 'details', 'village'];
 
     public function addressType()

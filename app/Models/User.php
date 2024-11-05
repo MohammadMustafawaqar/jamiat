@@ -23,7 +23,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'user_type'
+        'user_type',
+        'user_group_id'
     ];
 
     /**
@@ -62,5 +63,10 @@ class User extends Authenticatable
     public function topics()
     {
         return $this->hasMany(Topic::class)->orderBy('id', 'desc');
+    }
+
+    public function userGroup()
+    {
+        return $this->belongsTo(UserGroup::class);
     }
 }

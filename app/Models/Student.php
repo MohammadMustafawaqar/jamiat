@@ -7,13 +7,14 @@ use App\Models\Jamiat\Form;
 use App\Models\Jamiat\StudentExam;
 use App\Models\Jamiat\StudentForm;
 use App\Models\Jamiat\Tazkira;
+use App\Traits\CreatedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory;
+    use HasFactory, CreatedBy;
     protected $guarded = [];
 
 

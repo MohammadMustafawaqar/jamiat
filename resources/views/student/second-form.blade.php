@@ -125,11 +125,12 @@
                                 <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="old('school_province_id')
                                     ? App\Models\Province::find(old('school_province_id'))->districts
                                     : collect()"
+                                    id='school_district_id'
                                     name="school_district_id" :label="__('lang.district')" :required="1"
                                     :selected="old('school_district_id')" />
 
 
-                                <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" id="school_select" :options="old('school_district_id')
+                                <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" id="school_id" :options="old('school_district_id')
                                     ? App\Models\District::find(old('school_district_id'))->schools
                                     : collect()"
                                     name="school_id" :label="__('lang.school')" :required="1" :selected="old('school_id')" />
@@ -258,7 +259,7 @@
                     success: function(response) {
                         console.log(response)
                         // $("#school_id").append(response.schools);
-                        $("#school_select").html(response);
+                        $("#school_id").html(response);
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
@@ -349,7 +350,7 @@
 
 
             function intializeSchoolSelect(enableTag) {
-                $('#school_select').select2({
+                $('#school_id').select2({
                     placeholder: "{{ __('lang.select_option') }}",
                     tags: enableTag,
                     theme: "bootstrap-5",
@@ -388,7 +389,7 @@
 
 
 
-            $("#school_select").on('select2:select', function(e) {
+            $("#school_id").on('select2:select', function(e) {
                 var selected = e.params.data;
 
                 // Check if the selected option is a new tag (not an existing record)
@@ -407,7 +408,7 @@
                         success: function(response) {
                             console.log(response)
                             var newOption = new Option(response.name, response.id, true, true);
-                            $("#school_select").append(newOption).trigger('change');
+                            $("#school_id").append(newOption).trigger('change');
                         },
                         error: function(xhr, status, error) {
                             if (xhr.status === 422) {
