@@ -189,10 +189,10 @@ class StudentController extends Controller
                 'tazkira_id' => $tazkira->id
             ]
         );
-        $student_exam = StudentExam::create([
-            'student_id' => $student->id,
-            'exam_id' => $exam_id
-        ]);
+        // $student_exam = StudentExam::create([
+        //     'student_id' => $student->id,
+        //     'exam_id' => $exam_id
+        // ]);
 
         $student_form = StudentForm::create([
             'form_id' => $form_type,

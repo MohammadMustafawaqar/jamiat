@@ -64,7 +64,7 @@
                             <td>{{ $student->school->name }}</td>
                             <td>{{ $student->graduation_year }}</td>
                             <td>{{ $student->addressType?->name }}</td>
-                            <td>{{ $student->exams->first()->title }}</td>
+                            <td>{{ $student->exams->first()?->title }}</td>
                             <td>
                                 <div class="btn-group" dir="ltr">
                                     @can('students.delete')

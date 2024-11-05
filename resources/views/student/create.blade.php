@@ -106,8 +106,8 @@
                             @endforeach
                         </div>
                     </div>
-                    <x-select :options="$exams" :label="__('sidebar.exams')" value='id' display='title' id='exam_id'
-                        name='exam_id' col='col-sm-4 mt-3 fs-5' class="select2" />
+                    {{-- <x-select :options="$exams" :label="__('sidebar.exams')" value='id' display='title' id='exam_id'
+                        name='exam_id' col='col-sm-4 mt-3 fs-5' class="select2" /> --}}
                 </div>
                 <div class="row">
                 </div>
