@@ -283,7 +283,7 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         // Create StudentForm record
         StudentForm::create([
             'student_id' => $student->id,
-            'form_id' => $form->id,
+            'form_id' => 2,
         ]);
 
         return $student;

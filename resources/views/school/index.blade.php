@@ -54,7 +54,7 @@
                             :required="1" col="col-sm-3" text='name' value='id' />
 
                         <x-select2 :list="
-                            App\Models\Province::find(1)->districts
+                            App\Models\Province::find(14)->districts
                             " id='filter_district_id' name="filter_district_id"
                             :label="__('lang.district')" :required="1" col="col-sm-3" text='name' value='id' />
 
