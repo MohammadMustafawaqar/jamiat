@@ -38,13 +38,25 @@ class StudentController extends Controller
     public function commissionForm()
     {
         $students = $students = Form::find(1)->students()->paginate(10);;
-        return view('backend.jamiat.student.index', compact("students"));
+        $exams = Exam::all();
+
+        return view('backend.jamiat.student.index', [
+            'students' => $students,
+            'exams' => $exams
+
+        ]);
     }
 
     public function evaluationForm()
     {
-        $students = $students = Form::find(2)->students()->paginate(10);;
-        return view('backend.jamiat.student.index', compact("students"));
+        $students = $students = Form::find(2)->students()->paginate(10);
+        $exams = Exam::all();
+
+        return view('backend.jamiat.student.index', [
+            'students' => $students,
+            'exams' => $exams
+
+        ]);
     }
 
     public function rajabIndex()
