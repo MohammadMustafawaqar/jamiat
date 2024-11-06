@@ -38,14 +38,37 @@ class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             $errors[] = 'Invalid Address Type';
         }
 
-        $province = Province::where('name', $row['province'])->first();
-        if (!$province) {
+        if (!$row['province']) {
             $errors[] = 'Invalid Province';
+        } 
+
+        $province = Province::firstOrCreate([
+            'name' => $row['province'],
+        ], [
+            'country_id' => $address_type->id
+        ]);
+
+        $district = null;
+
+        if($row['district'] != null){
+            $district = District::firstOrCreate([
+                'province_id' => $province->id,
+                'name' => $row['district'],
+            ]);
+        }else{
+            $district = District::firstOrCreate([
+                'province_id' => $province->id,
+                'name' => 'نامعلوم',
+            ]);
         }
+        if (!$district) {
+            $errors[] = 'Invalid District';
+        }
+       
 
         $existingSchool = School::where('name', $row['name'])
-            ->whereHas('district.province', function ($query) use ($province) {
-                $query->where('id', $province?->id);
+            ->whereHas('province', function ($query) use ($province) {
+                $query->where('id', $province->id);
             })
             ->exists();
 
@@ -53,14 +76,7 @@ class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             $errors[] = 'School already exists';
         }
 
-
-        // $district = District::where('name', $row['district'])->first();
-        // if (!$district) {
-        //     $errors[] = 'Invalid District';
-        // }
-
-        // If there are any errors, capture the invalid row with errors
-        if (!empty($errors)) {
+         if (!empty($errors)) {
             $row['errors'] = implode(', ', $errors); // Add errors to the row
             $this->invalidRows[] = $row; // Store the invalid row
             return null; // Skip this row
@@ -69,8 +85,8 @@ class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
         $school = School::create([
             'address_type_id' => $address_type->id,
             'province_id' => $province->id,
-            'district_id' => $province->districts->first()->id,
-            'village' => 'نامعلوم',
+            'district_id' => $district->id,
+            'village' => $row['village'] ?? 'نامعلوم',
             'name' => $row['name'],
             'details' => '',
             'status' => 'imported_from_excel'
@@ -81,8 +97,15 @@ class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             'grade_id' => 2
         ]);
 
-
         return $school;
+
+
+
+
+       
+
+        // If there are any errors, capture the invalid row with errors
+
     }
 
     public function rules(): array

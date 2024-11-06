@@ -41,7 +41,7 @@
                 <div class="row">
                     <form class="row" action="{{ route('schools.index') }}" id='filter-container'
                         style="{{ isset($_GET['filter_name']) ? '' : 'display: none' }}">
-                        <x-input type="text" name='filter_name' :label="__('jamiat.school_name')" col='col-sm-3' />
+                        <x-input2 type="text" name='filter_name' :label="__('jamiat.school_name')" col='col-sm-3' />
 
                         <x-select2 col="col-sm-3" :list="App\Models\AddressType::get()" id='filter_address_type_id' text="name"
                             value='id' name="filter_address_type_id" :label="__('lang.address_type')" />
@@ -111,9 +111,9 @@
                                         @endforeach
                                     </td>
                                     <td>{{ $school->addressType->name }}</td>
-                                    <td>{{ $school->district->province->country->name }}</td>
-                                    <td>{{ $school->district->province->name }}</td>
-                                    <td>{{ $school->district->name }}</td>
+                                    <td>{{ $school->province?->country?->name }}</td>
+                                    <td>{{ $school->province?->name }}</td>
+                                    <td>{{ $school->district?->name }}</td>
                                     <td>{{ $school->village }}</td>
                                     <td>{{ $school->details }}</td>
                                     <td>

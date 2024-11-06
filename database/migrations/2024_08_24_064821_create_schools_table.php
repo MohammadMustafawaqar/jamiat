@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId("address_type_id")->constrained()->cascadeOnDelete();
             $table->foreignId("province_id")
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId("district_id")
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
-
-            $table->foreignId("district_id")
-                ->constrained()
-                ->cascadeOnDelete();
             $table->string('village')
                 ->nullable();
             $table->string("name");
@@ -29,6 +29,11 @@ return new class extends Migration
             $table->text("details")->nullable();
             $table->string('status')
                 ->default('created');
+
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
             $table->timestamps();
         });
     }

@@ -27,12 +27,12 @@ class SchoolController extends Controller
             $query->where('name', 'like', '%' . $request->filter_name . '%');
         })
             ->when($request->filter_country_id, function ($query) use ($request) {
-                $query->whereHas('district.province', function ($q) use ($request) {
+                $query->whereHas('province', function ($q) use ($request) {
                     $q->where('country_id', $request->filter_country_id);
                 });
             })
             ->when($request->filter_province_id, function ($query) use ($request) {
-                $query->whereHas('district', function ($q) use ($request) {
+                $query->whereHas('province', function ($q) use ($request) {
                     $q->where('province_id', $request->filter_province_id);
                 });
             })
@@ -50,6 +50,8 @@ class SchoolController extends Controller
                     $query->whereIn('grades.id',$request->filter_grades);
                 });  
             })
+            ->orderBy('province_id')
+            ->orderBy('name')
             ->paginate(10);
 
         $schools->appends($request->all());

@@ -21,6 +21,11 @@ class School extends Model
         return $this->belongsTo(District::class);
     }
 
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
     public function grades()
     {
         return $this->belongsToMany(Grade::class, 'school_grades');
