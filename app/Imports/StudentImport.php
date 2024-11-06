@@ -133,10 +133,9 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         }
 
 
-        $schoolCountry = Country::where('name', $row['school_country'])->first();
+        // $schoolCountry = Country::where('name', $row['school_country'])->first();
         // dd($schoolCountry, $row['school_country']);
 
-        if (!$schoolCountry) $errors[] = "Invalid School Country";
 
         // $schoolProvince = Province::where('name', $row['school_province'])->first();
         // if (!$schoolProvince) $errors[] = "Invalid School Province";
@@ -151,15 +150,27 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         // ]);
 
 
+
+        $schoolCountry = null;
+        if ($row['school_country'] != '') {
+            $schoolCountry = Country::firstOrCreate([
+                'name' => $row['school_country'],
+            ]);
+        }
+
+        if (!$schoolCountry) {
+            $errors[] = 'Invalid schoolCountry';
+        }
+
         if ($row['school_province'] != '') {
             $schoolProvince = Province::firstOrCreate([
                 'name' => $row['school_province'],
-                'country_id' => $row['school_country'] == 'افغانستان' ? 1 : 2
+                'country_id' => $schoolCountry->id
             ]);
         } else {
             $schoolProvince = Province::firstOrCreate([
                 'name' => 'نامعلوم',
-                'country_id' => $row['school_country'] == 'افغانستان' ? 1 : 2
+                'country_id' => $schoolCountry->id
             ]);
         }
         if (!$schoolProvince) {
@@ -186,12 +197,20 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
             $errors[] = 'Invalid School District';
         }
 
-        $school = School::where('name', $row['school'])
-            ->where(function ($query) use ($schoolProvince, $schoolDistrict) {
-                $query->where('province_id', $schoolProvince->id)
-                    ->orWhere('district_id', $schoolDistrict->id);
-            })
-            ->first();
+        // $school = School::whereRaw('REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(name), " ", ""), "ی", "ي"), "ګ", "گ"), "ئ", "ي"), "ې", "ي") = ?', [$this->normalizeName($row['school'])])
+        //     ->where('province_id', $schoolProvince->id)
+        //     ->first();
+
+        $school = School::firstOrCreate([
+            'name' => $row['school'] ?? 'نامعلوم',
+            'province_id' => $schoolProvince->id
+        ], [
+            'address_type_id' => $schoolCountry->id == 1 ? 1 : 2,
+            'district_id' => $schoolDistrict->id,
+            'village' => $row['school_village'] ?? 'نامعلوم',
+            'details' => '',
+            'status' => 'imported_from_excel'
+        ]);
 
         if (!$school) $errors[] = "School Not Found";
 
@@ -241,7 +260,7 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
             'current_village' => $row['current_village'],
             'permanent_village' => $row['permanent_village'],
             'education_level_id' => $edu_level?->id,
-            'language_id' => $language->id,
+            'language_id' => $language?->id,
             'appreciation_id' => $appreciation?->id,
             'graduation_year' => $row['graduation_year'],
             'school_id' => $school->id,

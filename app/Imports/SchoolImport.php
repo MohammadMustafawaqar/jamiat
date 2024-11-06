@@ -48,6 +48,8 @@ class SchoolImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnFa
             'country_id' => $address_type->id
         ]);
 
+    
+
         $district = null;
 
         if($row['district'] != null){
