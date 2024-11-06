@@ -32,7 +32,7 @@
                     @endcan
 
                     <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">
-                        {{ __('jamiat.generate_card_btn') }}    
+                        {{ __('jamiat.generate_card_btn') }}
                     </button>
 
                 </x-slot:tools>
@@ -93,7 +93,21 @@
                     @endforeach
                 </tbody>
                 <x-slot:links>
-                    {{ $students->links() }}
+
+                    <form method="GET" action="{{ url()->current() }}" class="mb-3">
+                        <label for="perPage">Items per page:</label>
+                        <select name="perPage" id="perPage" onchange="this.form.submit()">
+                            <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
+                            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                        </select>
+                    </form>
+
+
+                    <!-- Paginate Links -->
+                    {{ $students->appends(['perPage' => $perPage])->links() }}
+
                 </x-slot:links>
             </x-table>
         </div>

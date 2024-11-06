@@ -35,27 +35,31 @@ class StudentController extends Controller
         return view('student.index', compact("students"));
     }
 
-    public function commissionForm()
+    public function commissionForm(Request $request)
     {
-        $students = $students = Form::find(1)->students()->paginate(10);;
+        $perPage = $request->input('perPage', 10);
+
+        $students = $students = Form::find(1)->students()->paginate($perPage);;
         $exams = Exam::all();
 
         return view('backend.jamiat.student.index', [
             'students' => $students,
-            'exams' => $exams
+            'exams' => $exams,
+            'perPage' => $perPage
 
         ]);
     }
 
-    public function evaluationForm()
+    public function evaluationForm(Request $request)
     {
-        $students = $students = Form::find(2)->students()->paginate(10);
+        $perPage = $request->input('perPage', 10);
+        $students = $students = Form::find(2)->students()->paginate($perPage);
         $exams = Exam::all();
 
         return view('backend.jamiat.student.index', [
             'students' => $students,
-            'exams' => $exams
-
+            'exams' => $exams,
+            'perPage' => $perPage
         ]);
     }
 
