@@ -37,9 +37,8 @@ CREATE TABLE `appreciations` (
 --
 -- Dumping data for table `appreciations`
 --
-
+use jamiat;
 INSERT INTO `appreciations` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(1, 'ممتاز', NULL, NULL),
 (2, 'جید', '2024-11-05 01:13:09', '2024-11-05 01:13:09'),
 (3, 'جید جدا', '2024-11-05 01:13:15', '2024-11-06 02:08:54'),
 (4, 'مقبول', '2024-11-06 02:05:44', '2024-11-06 02:05:44');

@@ -391,7 +391,8 @@ class StudentController extends Controller
         }
 
         $import = new StudentImport($validated);
-        Excel::import($import, $file->getRealPath());
+        Excel::import($import, $file, null, \Maatwebsite\Excel\Excel::XLSX);
+
 
         if ($import->failures()->isNotEmpty()) {
             // Retrieve validation failures
