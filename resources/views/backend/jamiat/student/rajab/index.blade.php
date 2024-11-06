@@ -40,7 +40,9 @@
                         </button>
                     @endcan
 
-                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">Generate ID Cards</button>
+                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">
+                        {{ __('jamiat.generate_card_btn') }}    
+                    </button>
 
 
                 </x-slot:tools>
@@ -64,8 +66,10 @@
                 <tbody>
                     @foreach ($students as $student)
                         <tr>
-                            <td><input type="checkbox" name="student_ids[]" value="{{ $student->id }}"
-                                    class="student-checkbox"></td>
+                            <td>
+                                <input type="checkbox" name="student_ids[]" value="{{ $student->id }}"
+                                    class="student-checkbox">
+                            </td>
                             <td>{{ $loop->iteration }}</td>
                             {{-- <td>
                                     <img src="{{$student->image_path}}" alt="Student image" height="70">
@@ -140,7 +144,7 @@
             </x-modal>
         @endcan
 
-        <x-modal id='card-modal' :title="__('jamiat.import_from_excel')" size='md'>
+        <x-modal id='card-modal' :title="__('jamiat.generate_card_btn')" size='md'>
             <div class="container-fluid">
 
                 <form action="{{ route('admin.student.generate.card') }}" method="POST" id='card-form'>

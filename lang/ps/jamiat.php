@@ -67,5 +67,7 @@ return [
     'add_language' => 'ژبه اضافه کړۍ',
     'school_name' => 'د جامعې نوم',
     'group_name' => 'ګروپ نوم',
-    'select_group' => 'ګروپ خوښ کړئ'
+    'select_group' => 'ګروپ خوښ کړئ',
+
+    'generate_card_btn' => 'کارت جوړ کړئ',
 ];

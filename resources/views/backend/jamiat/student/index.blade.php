@@ -30,9 +30,16 @@
                             {{ __('jamiat.excel_import_btn') }}
                         </button>
                     @endcan
+
+                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">
+                        {{ __('jamiat.generate_card_btn') }}    
+                    </button>
+
                 </x-slot:tools>
                 <thead>
                     <tr>
+                        <th><input type="checkbox" id="select-all"></th>
+
                         <th>#</th>
                         {{-- <th>{{__('lang.image')}}</th> --}}
                         <th>{{ __('lang.name') }}</th>
@@ -51,6 +58,10 @@
                 <tbody>
                     @foreach ($students as $student)
                         <tr>
+                            <td>
+                                <input type="checkbox" name="student_ids[]" value="{{ $student->id }}"
+                                    class="student-checkbox">
+                            </td>
                             <td>{{ $loop->iteration }}</td>
                             {{-- <td>
                                     <img src="{{$student->image_path}}" alt="Student image" height="70">
@@ -61,7 +72,7 @@
                             <td>{{ $student->currentDistrict->name }}</td>
                             <td>{{ $student->permanentDistrict->name }}</td>
                             <td dir="ltr">{{ $student->phone }}</td>
-                            <td>{{ $student->school->name }}</td>
+                            <td>{{ $student->school?->name }}</td>
                             <td>{{ $student->graduation_year }}</td>
                             <td>{{ $student->addressType?->name }}</td>
                             <td>{{ $student->exams->first()?->title }}</td>
@@ -128,6 +139,20 @@
                 </div>
             </x-modal>
         @endcan
+        <x-modal id='card-modal' :title="__('jamiat.generate_card_btn')" size='md'>
+            <div class="container-fluid">
+
+                <form action="{{ route('admin.student.generate.card') }}" method="POST" id='card-form'>
+                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title' id='card_exam_id'
+                        name='exam_id' col='col-sm-12' modal_id='card-modal' />
+                    @csrf
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-save"></i>
+                    </button>
+                </form>
+
+            </div>
+        </x-modal>
 
     </div>
     @push('scripts')
@@ -135,6 +160,52 @@
             function openImportModal() {
                 $("#import-modal").modal('show');
             }
+
+
+
+            // Card Generation Handling Start
+
+            function toggleGenerateButton() {
+                const isAnyChecked = $('.student-checkbox:checked').length > 0;
+                $('#generate-id-cards-btn').toggle(isAnyChecked);
+            }
+
+            // Call toggleGenerateButton on page load and on checkbox changes
+            $(document).ready(function() {
+                toggleGenerateButton();
+            });
+
+            $('#select-all').on('change', function() {
+                $('.student-checkbox').prop('checked', $(this).is(':checked'));
+                toggleGenerateButton();
+            });
+
+            $('.student-checkbox').on('change', function() {
+                toggleGenerateButton();
+            });
+
+            // Open modal and gather selected IDs
+            $('#generate-id-cards-btn').on('click', function() {
+                const selectedIds = $('.student-checkbox:checked').map(function() {
+                    return this.value;
+                }).get();
+
+                if (selectedIds.length === 0) {
+                    alert("Please select at least one student.");
+                    return;
+                }
+
+                selectedIds.forEach(function(id) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'student_ids[]',
+                        value: id
+                    }).appendTo('#card-form');
+                });
+
+                $('#card-modal').data('selected-ids', selectedIds);
+                $('#card-modal').modal('show');
+            });
         </script>
     @endpush
 </x-app>
