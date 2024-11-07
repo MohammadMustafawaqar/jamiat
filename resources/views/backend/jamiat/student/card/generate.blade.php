@@ -93,7 +93,8 @@
 
             .card-container {
                 border: 1px solid #333;
-                background-color: #bbb !important;
+                background: #428bca !important;
+                color: #fff;
                 box-shadow: none;
                 page-break-inside: avoid;
                 /* Avoid splitting cards between pages */
@@ -118,7 +119,7 @@
     <div class="container">
         <div class="row">
             @foreach ($students as $student)
-                <div class="col-6" style="border-right: 3px dotted black; border-bottom: 3px dotted black">
+                <div class="col-6" style="margin-top: 3px; border-right: 3px dotted black; border-bottom: 3px dotted black;">
                     <div class="card-container">
                         <!-- Header with logos and titles -->
                         <div class="card-header">
@@ -173,15 +174,15 @@
 
                             <div class="card-row">
                                 <div class="">
-                                    <span class="card-label">د امتحان ځای: </span>
+                                    <span class="card-label">د ازموینې ځای: </span>
                                     <span
-                                        class="card-value">{{ $student->studentExams()->first()?->subClass?->address }}</span>
+                                        class="card-value">{{ $student->studentExams->where('sub_class_id', '<>', null)->first()?->subClass?->address }}</span>
                                 </div>
                             </div>
                             <div class="divider"></div>
                             <div class="card-row bg-text-primary">
                                 <div style="width: 90%" class="bg-danger-subtle">
-                                   نوټ: مهرباني وکړئ، امحتان وخت کې دا کارت ځان سره ولرئ،  
+                                   نوټ: مهرباني وکړئ، ازموینې وخت کې دا کارت ځان سره ولرئ،  
                                 </div>
                             </div>
 

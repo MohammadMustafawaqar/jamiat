@@ -56,19 +56,19 @@
                 <table class="table table-sm">
                     <tr>
                         <th>{{__('lang.name')}}</th>
-                        <td>{{$supervisor?->name.' '.$supervisor->last_name}}</td>
+                        <td>{{$supervisor?->name.' '.$supervisor?->last_name}}</td>
                     </tr>
                     <tr>
                         <th>{{__('lang.father_name')}}</th>
-                        <td>{{$supervisor->father_name}}</td>
+                        <td>{{$supervisor?->father_name}}</td>
                     </tr>
                     <tr>
                         <th>{{__('lang.phone')}}</th>
-                        <td>{{$supervisor->phone}}</td>
+                        <td>{{$supervisor?->phone}}</td>
                     </tr>
                     <tr>
                         <th>{{__('lang.whatsapp')}}</th>
-                        <td>{{$supervisor->whatsapp}}</td>
+                        <td>{{$supervisor?->whatsapp}}</td>
                     </tr>
                 </table>
                 @else
@@ -91,7 +91,7 @@
         <div class="tile">
             <div class="tile-body">
                 <h3>{{__('lang.topics')}}</h3>
-                @if($student->user->topics)
+                @if($student?->user->topics)
                 <div class="accordion" id="accordionExample">
                     @foreach ($student->user->topics as $topic)
                     <div class="accordion-item">
@@ -159,7 +159,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if($student->supervisors()->exists())
+                            @if($student?->supervisors()->exists())
                             <tr>
                                 <td>{{$supervisor->name}}</td>
                                 <td>{{$supervisor->last_name}}</td>

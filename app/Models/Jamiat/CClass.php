@@ -32,7 +32,7 @@ class CClass extends Model
 
     public function subClasses()
     {
-        return $this->hasMany(SubClass::class, 'id');
+        return $this->hasMany(SubClass::class, 'class_id', 'id');
     }
 
   

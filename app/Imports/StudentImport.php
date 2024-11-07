@@ -74,7 +74,7 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
 
     function formatTazkira($tazkira)
     {
-        return str_replace(['-', ' '], '', $tazkira);
+        return str_replace(['-', ' ', '/'], '', $tazkira);
     }
 
 

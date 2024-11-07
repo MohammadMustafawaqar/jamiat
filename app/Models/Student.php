@@ -117,7 +117,7 @@ class Student extends Model
 
     public function exams()
     {
-        return $this->belongsToMany(Exam::class, 'student_exams')
+        return $this->belongsToMany(Exam::class, 'student_exams', 'student_id', 'exam_id')
             ->withPivot('student_id', 'exam_id', 'class_id');
     }
 
@@ -146,5 +146,11 @@ class Student extends Model
     {
         return $this->hasMany(StudentExam::class);
     }
+
+    public function getPhoneAttribute($value)
+    {
+        return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
+    }
+
 
 }

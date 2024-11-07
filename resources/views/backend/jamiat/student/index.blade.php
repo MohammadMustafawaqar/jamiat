@@ -8,6 +8,53 @@
         <li class="breadcrumb-item">{{ __('lang.students') }}</li>
     </x-page-nav>
     <x-page-container>
+        <div class="container-fluid">
+            <div class="">
+                <div class="btn-group">
+                    @can('students.import')
+                        <button class="btn btn-success" onclick="openImportModal()">
+                            <i class="fa fa-file-excel"></i>
+                            {{ __('jamiat.excel_import_btn') }}
+                        </button>
+                    @endcan
+                    <button class="btn btn-sm btn-info" id="btn-filter" title='filter'>
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <form class="row" action="{{ route('admin.student.form.evaluation') }}" id='filter-container'
+                    style="{{ isset($_GET['filter_name']) ? '' : 'display: none' }}">
+                    <x-input2 type="text" name='filter_name' :label="__('jamiat.name')" col='col-sm-3' />
+                    <x-input2 type="text" name='tazkira_no' :label="__('jamiat.tazkira_no')" col='col-sm-3' />
+
+                    <x-select2 col="col-sm-3" :list="App\Models\AddressType::get()" id='filter_address_type_id' text="name"
+                        value='id' name="filter_address_type_id" :label="__('lang.address_type')" />
+
+                    <x-select2 col="col-sm-3" :list="App\Models\Country::get()" id='filter_country_id' text='name' value='id'
+                        name="filter_country_id" :label="__('lang.country')" :required="1" />
+                    <x-select2 :list="App\Models\Province::get()" id='filter_province_id' name="filter_province_id" :label="__('lang.province')"
+                        :required="1" col="col-sm-3" text='name' value='id' />
+
+
+                    <x-select2 :list="App\Models\District::get()" id='filter_district_id' name="filter_district_id" :label="__('lang.district')"
+                        :required="1" col="col-sm-3" text='name' value='id' />
+
+                    <x-select2 :list="App\Models\UserGroup::get()" id='user_group_id' name="user_group_id" :label="__('sidebar.user_groups')"
+                        :required="1" col="col-sm-3" text='name' value='id' />
+
+                    
+
+                    <div class="col-sm-4 mt-4">
+                        <div class="btn-group">
+                            <x-btn-filter type='submit' />
+                            <x-btn-reset :route="route(Route::currentRouteName())" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row">
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show">
@@ -24,14 +71,8 @@
             @endif
             <x-table>
                 <x-slot:tools>
-                    @can('students.import')
-                        <button class="btn btn-success" onclick="openImportModal()">
-                            <i class="fa fa-file-excel"></i>
-                            {{ __('jamiat.excel_import_btn') }}
-                        </button>
-                    @endcan
-
-                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">
+                    <div></div>
+                    <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
                         {{ __('jamiat.generate_card_btn') }}
                     </button>
 
@@ -44,12 +85,13 @@
                         {{-- <th>{{__('lang.image')}}</th> --}}
                         <th>{{ __('lang.name') }}</th>
                         <th>{{ __('lang.father_name') }}</th>
-                        <th>{{ __('lang.dob_qamari') }}</th>
+                        <th>{{ __('jamiat.tazkira_no') }}</th>
+                        {{-- <th>{{ __('lang.dob_qamari') }}</th> --}}
                         <th>{{ __('lang.current_address') }}</th>
                         <th>{{ __('lang.permanent_address') }}</th>
                         <th>{{ __('lang.phone') }}</th>
                         <th>{{ __('lang.school') }}</th>
-                        <th>{{ __('lang.address_type') }}</th>
+                        {{-- <th>{{ __('lang.address_type') }}</th> --}}
                         <th>{{ __('lang.graduation_year') }}</th>
                         <th>{{ __('jamiat.exam') }}</th>
                         <th>{{ __('lang.action') }}</th>
@@ -68,13 +110,14 @@
                                 </td> --}}
                             <td>{{ $student->full_name }}</td>
                             <td>{{ $student->father_name }}</td>
-                            <td>{{ $student->dob_qamari }}</td>
+                            <td>{{ $student->tazkira?->tazkira_no}}</td>
+                            {{-- <td>{{ $student->dob_qamari }}</td> --}}
                             <td>{{ $student->currentDistrict->name }}</td>
                             <td>{{ $student->permanentDistrict->name }}</td>
                             <td dir="ltr">{{ $student->phone }}</td>
                             <td>{{ $student->school?->name }}</td>
                             <td>{{ $student->graduation_year }}</td>
-                            <td>{{ $student->addressType?->name }}</td>
+                            {{-- <td>{{ $student->addressType?->name }}</td> --}}
                             <td>{{ $student->exams->first()?->title }}</td>
                             <td>
                                 <div class="btn-group" dir="ltr">
@@ -93,20 +136,8 @@
                     @endforeach
                 </tbody>
                 <x-slot:links>
-
-                    <form method="GET" action="{{ url()->current() }}" class="mb-3">
-                        <label for="perPage">Items per page:</label>
-                        <select name="perPage" id="perPage" onchange="this.form.submit()">
-                            <option value="5" {{ request('perPage') == 5 ? 'selected' : '' }}>5</option>
-                            <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
-                            <option value="25" {{ request('perPage') == 25 ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
-                        </select>
-                    </form>
-
-
                     <!-- Paginate Links -->
-                    {{ $students->appends(['perPage' => $perPage])->links() }}
+                    {{ $students->links() }}
 
                 </x-slot:links>
             </x-table>
@@ -141,8 +172,10 @@
                         </div>
 
                         <x-js-select2 :list="JamiaHelper::exams()" :label="__('jamiat.select_exam')" value='id' text='title' id='exam_id'
-                            modal_id='import-modal' name='exam_id' col='col-sm-12 fs-6' class="select2" :required="1" />
-                        <x-input type="file" name='excel_file' col='col-12 fs-6' :label="__('jamiat.select_excel_file')" :required="1" />
+                            modal_id='import-modal' name='exam_id' col='col-sm-12 fs-6' class="select2"
+                            :required="1" />
+                        <x-input type="file" name='excel_file' col='col-12 fs-6' :label="__('jamiat.select_excel_file')"
+                            :required="1" />
 
                         <div class="d-flex justify-content-between bg-light mt-2">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -157,8 +190,8 @@
             <div class="container-fluid">
 
                 <form action="{{ route('admin.student.generate.card') }}" method="POST" id='card-form'>
-                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title' id='card_exam_id'
-                        name='exam_id' col='col-sm-12' modal_id='card-modal' />
+                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title'
+                        id='card_exam_id' name='exam_id' col='col-sm-12' modal_id='card-modal' />
                     @csrf
                     <button type="submit" class="btn btn-info">
                         <i class="fa fa-save"></i>
@@ -187,6 +220,19 @@
             // Call toggleGenerateButton on page load and on checkbox changes
             $(document).ready(function() {
                 toggleGenerateButton();
+
+                $("#btn-filter").click(function() {
+                    console.log('object selected')
+                    $("#filter-container").toggle();
+                });
+                $("input[name='address_type_id']").change(function() {
+                    if ($("#interior").is(":checked")) {
+                        $("#country_container").hide();
+                    } else if ($("#exterior").is(":checked")) {
+                        $("#country_container").show();
+                        $("#village").attr('col', 'col-sm-6')
+                    }
+                });
             });
 
             $('#select-all').on('change', function() {
@@ -220,6 +266,51 @@
                 $('#card-modal').data('selected-ids', selectedIds);
                 $('#card-modal').modal('show');
             });
+
+            $("#filter_country_id").change(function() {
+                const country_id = $("#filter_country_id").val()
+                loadProvinces(country_id, 'filter_province_id');
+            });
+
+            $("#filter_province_id").change(function() {
+                const province_id = $("#filter_province_id").val()
+                loadDistricts(province_id, 'filter_district_id');
+            });
+
+
+
+            function loadProvinces(country_id, target_el_id) {
+                $.ajax({
+                    url: "{{ route('load-provinces') }}",
+                    method: 'GET',
+                    data: {
+                        'country_id': country_id,
+                    },
+                    success: function(response) {
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            function loadDistricts(province_id, target_el_id) {
+                $.ajax({
+                    url: "{{ route('load-districts') }}",
+                    method: 'GET',
+                    data: {
+                        'province_id': province_id,
+                    },
+                    success: function(response) {
+
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
         </script>
     @endpush
 </x-app>

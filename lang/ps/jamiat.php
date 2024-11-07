@@ -71,3 +71,4 @@ return [
 
     'generate_card_btn' => 'کارت جوړ کړئ',
 ];
+

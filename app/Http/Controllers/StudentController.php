@@ -53,7 +53,42 @@ class StudentController extends Controller
     public function evaluationForm(Request $request)
     {
         $perPage = $request->input('perPage', 10);
-        $students = $students = Form::find(2)->students()->paginate($perPage);
+        $students = $students = Form::find(2)->students()
+            ->when($request->filter_name, function ($query) use ($request) {
+                $query->where('name', 'like', '%' . $request->filter_name . '%')
+                    ->orWhere('last_name', 'like', '%' . $request->filter_name . '%')
+                    ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$request->filter_name%"]);
+            })
+            ->when($request->tazkira_no, function ($query) use ($request) {
+                $query->whereHas('tazkira', function ($q) use ($request) {
+                    $q->where('tazkira_no', 'like', '%' . $request->tazkira_no . '%');
+                });
+            })
+            ->when($request->filter_address_type_id, function ($query) use ($request) {
+                $query->where('address_type_id', $request->filter_address_type_id);
+            })
+            ->when($request->filter_country_id, function ($query) use ($request) {
+                $query->whereHas('school.province.country', function ($q) use ($request) {
+                    $q->where('country_id', $request->filter_country_id);
+                });
+            })
+            ->when($request->filter_province_id, function ($query) use ($request) {
+                $query->whereHas('currentDistrict.province', function ($q) use ($request) {
+                    $q->where('province_id', $request->filter_province_id);
+                });
+            })
+            ->when($request->filter_district_id, function ($query) use ($request) {
+                $query->where('current_district_id', $request->filter_district_id);
+            })
+            ->when($request->filter_village, function ($query) use ($request) {
+                $query->where('current_village', 'like', '%' . $request->filter_village . '%');
+            })
+            ->when($request->user_group_id, function ($query) use ($request) {
+                $query->whereHas('createdBy.userGroup', function($query) use ($request) {
+                    $query->where('id', $request->user_group_id);
+                });
+            })
+            ->paginate($perPage);
         $exams = Exam::all();
 
         return view('backend.jamiat.student.index', [
@@ -449,18 +484,19 @@ class StudentController extends Controller
         $exam = Exam::with('students')->find($request->exam_id);
 
         foreach ($students as $student) {
-            $currentExam = $student->exams()->first();
-            if ($currentExam) {
-                $student->exams()->updateExistingPivot($currentExam->id, [
-                    'exam_id' => $request->exam_id,
-                    'status' => 'updated',
-                ]);
-            } else {
-                $student->exams()->attach($request->exam_id, [
-                    'status' => 'created',
 
-                ]);
+            $currentExam = StudentExam::firstOrCreate(
+                [
+                    'exam_id' => $request->exam_id,
+                    'student_id' => $student->id
+                ],
+                ['status' => 'created']
+            );
+
+            if ($currentExam->wasRecentlyCreated) {
+                $currentExam->status = 'created';
             }
+            $currentExam->save();
             // find campus of exam
             $campus = Campus::with('classes')->find($exam?->campus_id);
             $classes = $campus->classes;
@@ -470,7 +506,16 @@ class StudentController extends Controller
                     foreach ($sub_classes as $sub_class) {
                         $assigned_student_count = $sub_class->studentExams->count();
                         if ($sub_class->capacity > $assigned_student_count) {
-                            $student->exams()->updateExistingPivot($currentExam->id, [
+                            if (!$currentExam) {
+
+                                dd($currentExam, $student->load('exams'));
+                            }
+                            // $student->exams()->updateExistingPivot($currentExam->id, [
+                            //     'sub_class_id' => $sub_class->id,
+                            //     'status' => 'class selected',
+                            // ]);
+
+                            $currentExam->update([
                                 'sub_class_id' => $sub_class->id,
                                 'status' => 'class selected',
                             ]);

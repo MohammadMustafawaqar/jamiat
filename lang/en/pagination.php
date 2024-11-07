@@ -13,7 +13,12 @@ return [
     |
     */
 
-    'previous' => '&laquo; Previous',
-    'next' => 'Next &raquo;',
+    'previous' => '&lsaquo; Previous',
+    'next' => 'Next &rsaquo;',
+    'per_page' => 'Items per page',
+    'showing' => 'Showing',
+    'to' => 'to',
+    'of' => 'of',
+    'results' => 'results',
 
 ];
