@@ -52,7 +52,7 @@ class SchoolController extends Controller
             })
             ->orderBy('province_id')
             ->orderBy('name')
-            ->paginate(10);
+            ->paginate($request->perPage);
 
         $schools->appends($request->all());
 

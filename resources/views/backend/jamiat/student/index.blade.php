@@ -25,28 +25,38 @@
             </div>
             <div class="row">
                 <form class="row" action="{{ route('admin.student.form.evaluation') }}" id='filter-container'
-                    style="{{ isset($_GET['filter_name']) ? '' : 'display: none' }}">
-                    <x-input2 type="text" name='filter_name' :label="__('jamiat.name')" col='col-sm-3' />
-                    <x-input2 type="text" name='tazkira_no' :label="__('jamiat.tazkira_no')" col='col-sm-3' />
+                    style="{{ request()->except('perPage', 'page') ? '' : 'display: none' }}">
+                    @foreach (request()->only('perPage') as $key => $value)
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                    @endforeach
+                    <x-input2 type="text" name='form_id' :label="__('lang.form_id')" col='col-sm-2' />
+                    <x-input2 type="text" name='filter_name' :label="__('jamiat.name')" col='col-sm-2' />
+                    <x-input2 type="text" name='tazkira_no' :label="__('jamiat.tazkira_no')" col='col-sm-2' />
 
-                    <x-select2 col="col-sm-3" :list="App\Models\AddressType::get()" id='filter_address_type_id' text="name"
+                    <x-select2 col="col-sm-2" :list="App\Models\AddressType::get()" id='filter_address_type_id' text="name"
                         value='id' name="filter_address_type_id" :label="__('lang.address_type')" />
 
-                    <x-select2 col="col-sm-3" :list="App\Models\Country::get()" id='filter_country_id' text='name' value='id'
-                        name="filter_country_id" :label="__('lang.country')" :required="1" />
+                    <x-select2 :list="App\Models\School::with('province')->get()" id='school_id' name="school_id" :label="__('jamiat.school_name')" col="col-sm-4"
+                        text='name' value='id' concat_model='province' concat_field="name" />
+
+                    <x-input2 type="text" name='phone' :label="__('lang.phone')" col='col-sm-2' />
+
+
                     <x-select2 :list="App\Models\Province::get()" id='filter_province_id' name="filter_province_id" :label="__('lang.province')"
-                        :required="1" col="col-sm-3" text='name' value='id' />
+                        col="col-sm-2" text='name' value='id' />
 
 
-                    <x-select2 :list="App\Models\District::get()" id='filter_district_id' name="filter_district_id" :label="__('lang.district')"
-                        :required="1" col="col-sm-3" text='name' value='id' />
+                    <x-select2 :list="App\Models\Appreciation::get()" id='appreciation_id' name="appreciation_id" :label="__('lang.appreciation')"
+                        col="col-sm-2" text='name' value='id' />
 
                     <x-select2 :list="App\Models\UserGroup::get()" id='user_group_id' name="user_group_id" :label="__('sidebar.user_groups')"
-                        :required="1" col="col-sm-3" text='name' value='id' />
+                        col="col-sm-2" text='name' value='id' />
 
-                    
+                    <x-select2 :list="App\Models\User::get()" id='user_id' name="user_id" :label="__('lang.user')" col="col-sm-2"
+                        text='name' value='id' />
 
-                    <div class="col-sm-4 mt-4">
+
+                    <div class="col-sm-2 mt-4">
                         <div class="btn-group">
                             <x-btn-filter type='submit' />
                             <x-btn-reset :route="route(Route::currentRouteName())" />
@@ -77,12 +87,13 @@
                     </button>
 
                 </x-slot:tools>
-                <thead>
+                <thead class="table-primary">
                     <tr>
                         <th><input type="checkbox" id="select-all"></th>
 
                         <th>#</th>
                         {{-- <th>{{__('lang.image')}}</th> --}}
+                        <th>{{ __('lang.form_id') }}</th>
                         <th>{{ __('lang.name') }}</th>
                         <th>{{ __('lang.father_name') }}</th>
                         <th>{{ __('jamiat.tazkira_no') }}</th>
@@ -105,12 +116,13 @@
                                     class="student-checkbox">
                             </td>
                             <td>{{ $loop->iteration }}</td>
+                            <td>{{ $student->form_id }}</td>
                             {{-- <td>
                                     <img src="{{$student->image_path}}" alt="Student image" height="70">
                                 </td> --}}
                             <td>{{ $student->full_name }}</td>
                             <td>{{ $student->father_name }}</td>
-                            <td>{{ $student->tazkira?->tazkira_no}}</td>
+                            <td>{{ $student->tazkira?->tazkira_no }}</td>
                             {{-- <td>{{ $student->dob_qamari }}</td> --}}
                             <td>{{ $student->currentDistrict->name }}</td>
                             <td>{{ $student->permanentDistrict->name }}</td>
@@ -157,8 +169,8 @@
                         <div class="form-group ">
                             <label class='form-label fs-6 '>{{ __('lang.address_type') }}:</label>
                             <div class="">
-                                <input class="btn-check" type="radio" name="address_type_id" id="interior" value="1"
-                                    checked>
+                                <input class="btn-check" type="radio" name="address_type_id" id="interior"
+                                    value="1" checked>
                                 <label class="btn btn-outline-primary" for="interior">
                                     {{ __('jamiat.interior') }}
                                 </label>
@@ -277,6 +289,19 @@
                 loadDistricts(province_id, 'filter_district_id');
             });
 
+            $("#user_group_id").change(function() {
+                const province_id = $("#user_group_id").val()
+                loadGroupUsers("{{ route('load-group-users') }}", 'province_id', province_id, 'user_id');
+            });
+
+            $("#filter_address_type_id").change(function() {
+                const address_type_id = $("#filter_address_type_id").val()
+                loadGroupUsers("{{ route('load-school-by-address') }}", 'address_type_id', address_type_id,
+                    'school_id');
+            });
+
+
+
 
 
             function loadProvinces(country_id, target_el_id) {
@@ -304,6 +329,24 @@
                     },
                     success: function(response) {
 
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            function loadGroupUsers(routeUrl, param_name, param_value, target_el_id) {
+
+                $.ajax({
+                    url: routeUrl,
+                    method: 'GET',
+                    data: {
+                        [param_name]: param_value,
+                    },
+                    success: function(response) {
+                        console.log(response)
                         $("#" + target_el_id).html(response);
                     },
                     error: function(xhr, status, error) {

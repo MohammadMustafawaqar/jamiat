@@ -6,6 +6,7 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\School;
 use App\Models\SubCategory;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
@@ -63,5 +64,26 @@ class AjaxController extends Controller
             $response .= "<option value='{$subCategory->id}'>{$subCategory->name}</option>";
         }
         return $response;
+    }
+
+    public function loadGroupUsers(Request $request)
+    {
+        $response = "<option></option>";
+        $users = User::where('user_group_id', $request->group_id)->get();
+        foreach ($users as $user) {
+            $response .= "<option value='{$user->id}'>{$user->name}</option>";
+        }
+        return $response;
+    }
+
+    public function loadSchoolsByAddressType(Request $request)
+    {
+        $response = "<option></option>";
+        $schools = School::with('province')->where('address_type_id', $request->address_type_id)->get();
+        foreach ($schools as $school) {
+            $response .= "<option value='{$school->id}'>{$school->name} - {$school->province?->name}</option>";
+        }
+        return $response;
+
     }
 }

@@ -28,7 +28,7 @@ return [
     'appreciation' => 'تقدیر',
     'users' => 'استعمالونکي',
     'user' => 'استعمالونکی',
-    'form_id' => 'Form ID',
+    'form_id' => 'فورم ایډي',
     'name' => 'نوم',
     'action' => 'عملیه',
     'save' => 'ثبتول',

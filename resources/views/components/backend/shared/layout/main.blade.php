@@ -40,7 +40,7 @@
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
             aria-label="Hide Sidebar"></a>
         <div class="app-av my-auto">
-            <div class="p-2 d-flex flex-col">
+            <div class="p-2 d-none d-md-flex flex-col">
                 <h5 class="my-auto px-2 text-light">د دیني جامعاتو او تخصصاتو لوی ریاست</h5>
             </div>
         </div>
@@ -72,9 +72,10 @@
             <li class="dropdown"><a class="app-nav__item" href="#" data-bs-toggle="dropdown"
                     aria-label="Open Profile Menu"><i class="bi bi-translate fs-4"></i></a>
                 <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="{{ route('change-language', 'en') }}">English</a>
                     <a class="dropdown-item" href="{{ route('change-language', 'ps') }}">پښتو</a>
                     <a class="dropdown-item" href="{{ route('change-language', 'dr') }}">دری</a>
+                    <a class="dropdown-item" href="{{ route('change-language', 'ar') }}">عربي</a>
+                    <a class="dropdown-item" href="{{ route('change-language', 'en') }}">English</a>
                 </ul>
             </li>
             <!-- User Menu-->

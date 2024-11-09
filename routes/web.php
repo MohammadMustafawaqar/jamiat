@@ -119,5 +119,10 @@ Route::middleware(['auth.session', 'auth'])->prefix('{locale}')->group(function 
     Route::get('load-schools', [AjaxController::class, 'loadSchools'])
         ->name('load-schools');
 
+    Route::get('load-group-users', [AjaxController::class, 'loadGroupUsers'])
+        ->name('load-group-users');
+    Route::get('load-school-by-address', [AjaxController::class, 'loadSchoolsByAddressType'])
+        ->name('load-school-by-address');
+
     require __DIR__.'/jamiat.php';
 });

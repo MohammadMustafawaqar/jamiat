@@ -7,6 +7,8 @@ use App\Models\Jamiat\EducationLevel;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Grade;
 use App\Models\Jamiat\Language;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class JamiaHelper{
 
@@ -39,4 +41,63 @@ class JamiaHelper{
     {
         return Country::all();
     } 
+
+    public static function applyStudentFilters(Builder $query, Request $request)
+    {
+        return $query->when($request->form_id, function ($query) use ($request) {
+            $query->where('students.form_id', 'like', "%$request->form_id%" );
+        })
+        ->when($request->filter_name, function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->filter_name . '%')
+                ->orWhere('last_name', 'like', '%' . $request->filter_name . '%')
+                ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$request->filter_name%"]);
+        })
+        ->when($request->tazkira_no, function ($query) use ($request) {
+            $query->whereHas('tazkira', function ($q) use ($request) {
+                $q->where('tazkira_no', 'like', '%' . $request->tazkira_no . '%');
+            });
+        })
+        ->when($request->filter_address_type_id, function ($query) use ($request) {
+            $query->where('address_type_id', $request->filter_address_type_id);
+        })
+        ->when($request->phone, function ($query) use ($request) {
+            $phone = substr($request->phone, 1);
+            $query->where('phone','like',  "%$phone%");
+        })
+        ->when($request->filter_country_id, function ($query) use ($request) {
+            $query->whereHas('school.province.country', function ($q) use ($request) {
+                $q->where('country_id', $request->filter_country_id);
+            });
+        })
+        ->when($request->filter_province_id, function ($query) use ($request) {
+            $query->whereHas('permanentDistrict.province', function ($q) use ($request) {
+                $q->where('province_id', $request->filter_province_id);
+            });
+        })
+        // ->when($request->filter_district_id, function ($query) use ($request) {
+        //     $query->where('current_district_id', $request->filter_district_id);
+        // })
+        // ->when($request->filter_village, function ($query) use ($request) {
+        //     $query->where('current_village', 'like', '%' . $request->filter_village . '%');
+        // })
+        ->when($request->user_group_id, function ($query) use ($request) {
+            $query->whereHas('createdBy.userGroup', function ($query) use ($request) {
+                $query->where('id', $request->user_group_id);
+            });
+        })
+        ->when($request->user_id, function ($query) use ($request) {
+            $query->whereHas('createdBy', function ($query) use ($request) {
+                $query->where('id', $request->user_id);
+            });
+        })
+        ->when($request->school_id, function ($query) use ($request) {
+                $query->where('school_id', $request->school_id);
+        })
+        ->when($request->appreciation_id, function ($query) use ($request) {
+                $query->where('appreciation_id', $request->appreciation_id);
+        })
+        ->when($request->address_type_id, function ($query) use ($request) {
+                $query->where('address_type_id', $request->address_type_id);
+        });
+    }
 }

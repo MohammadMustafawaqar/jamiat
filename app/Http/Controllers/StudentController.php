@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JamiaHelper;
 use App\Imports\RajabStudentImport;
 use App\Imports\StudentImport;
 use App\Imports\UsersImport;
@@ -37,9 +38,14 @@ class StudentController extends Controller
 
     public function commissionForm(Request $request)
     {
-        $perPage = $request->input('perPage', 10);
 
-        $students = $students = Form::find(1)->students()->paginate($perPage);;
+        $perPage = $request->input('perPage', 10);
+        $query = $students = Form::find(1)->students()->getQuery();
+
+        $students = JamiaHelper::applyStudentFilters($query, $request)
+            ->paginate($perPage)
+            ->withQueryString();
+
         $exams = Exam::all();
 
         return view('backend.jamiat.student.index', [
@@ -53,42 +59,13 @@ class StudentController extends Controller
     public function evaluationForm(Request $request)
     {
         $perPage = $request->input('perPage', 10);
-        $students = $students = Form::find(2)->students()
-            ->when($request->filter_name, function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->filter_name . '%')
-                    ->orWhere('last_name', 'like', '%' . $request->filter_name . '%')
-                    ->orWhereRaw("CONCAT(name, ' ', last_name) LIKE ?", ["%$request->filter_name%"]);
-            })
-            ->when($request->tazkira_no, function ($query) use ($request) {
-                $query->whereHas('tazkira', function ($q) use ($request) {
-                    $q->where('tazkira_no', 'like', '%' . $request->tazkira_no . '%');
-                });
-            })
-            ->when($request->filter_address_type_id, function ($query) use ($request) {
-                $query->where('address_type_id', $request->filter_address_type_id);
-            })
-            ->when($request->filter_country_id, function ($query) use ($request) {
-                $query->whereHas('school.province.country', function ($q) use ($request) {
-                    $q->where('country_id', $request->filter_country_id);
-                });
-            })
-            ->when($request->filter_province_id, function ($query) use ($request) {
-                $query->whereHas('currentDistrict.province', function ($q) use ($request) {
-                    $q->where('province_id', $request->filter_province_id);
-                });
-            })
-            ->when($request->filter_district_id, function ($query) use ($request) {
-                $query->where('current_district_id', $request->filter_district_id);
-            })
-            ->when($request->filter_village, function ($query) use ($request) {
-                $query->where('current_village', 'like', '%' . $request->filter_village . '%');
-            })
-            ->when($request->user_group_id, function ($query) use ($request) {
-                $query->whereHas('createdBy.userGroup', function($query) use ($request) {
-                    $query->where('id', $request->user_group_id);
-                });
-            })
-            ->paginate($perPage);
+        $query = $students = Form::find(2)->students()->getQuery();
+
+        $students = JamiaHelper::applyStudentFilters($query, $request)
+            ->paginate($perPage)
+            ->withQueryString();
+
+
         $exams = Exam::all();
 
         return view('backend.jamiat.student.index', [
@@ -98,11 +75,16 @@ class StudentController extends Controller
         ]);
     }
 
-    public function rajabIndex()
+    public function rajabIndex(Request $request)
     {
-        $students = Form::find(3)->students()->paginate(10);
         $exams = Exam::all();
 
+        $perPage = $request->input('perPage', 10);
+        $query = Form::find(3)->students()->getQuery();
+
+        $students = JamiaHelper::applyStudentFilters($query, $request)
+            ->paginate($perPage)
+            ->withQueryString();
 
         // dd($students);
 

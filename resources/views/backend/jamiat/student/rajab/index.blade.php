@@ -8,6 +8,64 @@
         <li class="breadcrumb-item">{{ __('sidebar.rajab_students') }}</li>
     </x-page-nav>
     <x-page-container>
+        
+        <div class="container-fluid">
+            <div class="">
+                <div class="btn-group">
+                    @can('students.import')
+                        <button class="btn btn-success" onclick="openImportModal()">
+                            <i class="fa fa-file-excel"></i>
+                            {{ __('jamiat.excel_import_btn') }}
+                        </button>
+                    @endcan
+                    <button class="btn btn-sm btn-info" id="btn-filter" title='filter'>
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <form class="row" action="{{ route('admin.student.form.rajab') }}" id='filter-container'
+                    style="{{ request()->except('perPage', 'page') ? '' : 'display: none' }}">
+                    @foreach (request()->only('perPage') as $key => $value)
+                        <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                    @endforeach
+                    <x-input2 type="text" name='form_id' :label="__('lang.form_id')" col='col-sm-2' />
+                    <x-input2 type="text" name='filter_name' :label="__('jamiat.name')" col='col-sm-2' />
+                    <x-input2 type="text" name='tazkira_no' :label="__('jamiat.tazkira_no')" col='col-sm-2' />
+
+                    <x-select2 col="col-sm-2" :list="App\Models\AddressType::get()" id='filter_address_type_id' text="name"
+                        value='id' name="filter_address_type_id" :label="__('lang.address_type')" />
+
+                    <x-select2 :list="App\Models\School::with('province')->get()" id='school_id' name="school_id" :label="__('jamiat.school_name')" col="col-sm-4"
+                        text='name' value='id' concat_model='province' concat_field="name" />
+
+                    <x-input2 type="text" name='phone' :label="__('lang.phone')" col='col-sm-2' />
+
+
+                    <x-select2 :list="App\Models\Province::get()" id='filter_province_id' name="filter_province_id" :label="__('lang.province')"
+                        col="col-sm-2" text='name' value='id' />
+
+
+                    <x-select2 :list="App\Models\Appreciation::get()" id='appreciation_id' name="appreciation_id" :label="__('lang.appreciation')"
+                        col="col-sm-2" text='name' value='id' />
+
+                    <x-select2 :list="App\Models\UserGroup::get()" id='user_group_id' name="user_group_id" :label="__('sidebar.user_groups')"
+                        col="col-sm-2" text='name' value='id' />
+
+                    <x-select2 :list="App\Models\User::get()" id='user_id' name="user_id" :label="__('lang.user')" col="col-sm-2"
+                        text='name' value='id' />
+
+
+                    <div class="col-sm-2 mt-4">
+                        <div class="btn-group">
+                            <x-btn-filter type='submit' />
+                            <x-btn-reset :route="route(Route::currentRouteName())" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="row">
 
             @if (session('error'))
@@ -33,14 +91,9 @@
 
             <x-table>
                 <x-slot:tools>
-                    @can('students.import')
-                        <button class="btn btn-success" onclick="openImportModal()">
-                            {{ __('jamiat.excel_import_btn') }}
-                            <i class="fa fa-file-excel"></i>
-                        </button>
-                    @endcan
+                  <div></div>
 
-                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn">
+                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn" style="display: none">
                         {{ __('jamiat.generate_card_btn') }}    
                     </button>
 
@@ -104,7 +157,7 @@
                 </x-slot:links>
             </x-table>
         </div>
-        </div>
+        </>
     </x-page-container>
     <div class="modal-containers">
         @can('students.import')
@@ -178,6 +231,19 @@
             // Call toggleGenerateButton on page load and on checkbox changes
             $(document).ready(function() {
                 toggleGenerateButton();
+
+                $("#btn-filter").click(function() {
+                    console.log('object selected')
+                    $("#filter-container").toggle();
+                });
+                $("input[name='address_type_id']").change(function() {
+                    if ($("#interior").is(":checked")) {
+                        $("#country_container").hide();
+                    } else if ($("#exterior").is(":checked")) {
+                        $("#country_container").show();
+                        $("#village").attr('col', 'col-sm-6')
+                    }
+                });
             });
 
             $('#select-all').on('change', function() {
@@ -211,6 +277,82 @@
                 $('#card-modal').data('selected-ids', selectedIds);
                 $('#card-modal').modal('show');
             });
+
+            $("#filter_country_id").change(function() {
+                const country_id = $("#filter_country_id").val()
+                loadProvinces(country_id, 'filter_province_id');
+            });
+
+            $("#filter_province_id").change(function() {
+                const province_id = $("#filter_province_id").val()
+                loadDistricts(province_id, 'filter_district_id');
+            });
+
+            $("#user_group_id").change(function() {
+                const province_id = $("#user_group_id").val()
+                loadGroupUsers("{{ route('load-group-users') }}", 'province_id', province_id, 'user_id');
+            });
+
+            $("#filter_address_type_id").change(function() {
+                const address_type_id = $("#filter_address_type_id").val()
+                loadGroupUsers("{{ route('load-school-by-address') }}", 'address_type_id', address_type_id,
+                    'school_id');
+            });
+
+
+
+
+
+            function loadProvinces(country_id, target_el_id) {
+                $.ajax({
+                    url: "{{ route('load-provinces') }}",
+                    method: 'GET',
+                    data: {
+                        'country_id': country_id,
+                    },
+                    success: function(response) {
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            function loadDistricts(province_id, target_el_id) {
+                $.ajax({
+                    url: "{{ route('load-districts') }}",
+                    method: 'GET',
+                    data: {
+                        'province_id': province_id,
+                    },
+                    success: function(response) {
+
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            function loadGroupUsers(routeUrl, param_name, param_value, target_el_id) {
+
+                $.ajax({
+                    url: routeUrl,
+                    method: 'GET',
+                    data: {
+                        [param_name]: param_value,
+                    },
+                    success: function(response) {
+                        console.log(response)
+                        $("#" + target_el_id).html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
         </script>
     @endpush
 </x-app>

@@ -14,6 +14,8 @@
     'classes' => 'form-control',
     'local_path'=>'',
     'local_text'=>'',
+    'concat_field' => '',
+    'concat_model' => ''
 ])
 
 @push('styles')
@@ -21,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('admin/select2/css/select2-bootstrap-5-theme.min.css') }}">
     
 @endpush
+
 <div class="{{ $col }}">
     <div class="form-group">
 
@@ -35,8 +38,9 @@
             @if ($disabled) disabled @endif @if ($readonly) readonly @endif>
             <option value="">{{ $default }}</option>
             @foreach ($list as $item)
+           
                 <option value="{{ $item->$value }}" @selected($item->$value == $selected_value || old($name) == $item->$value || (isset($_GET[$name]) && $_GET[$name] == $item->$value))>
-                    {{ ($text!='text_to_display') ? $item->$text :'' }}
+                    {{ ($text!='text_to_display') ? $concat_field == '' ? $item->$text : $item->$text . ' - ' . $item->$concat_model->$concat_field :'' }}
                     {{ ($local_path !='') ? __($local_path.'.'.$item->$local_text) :'' }}
                 </option>
             @endforeach
