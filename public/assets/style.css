@@ -56,3 +56,7 @@
     font-weight: 1000;
     color: #ffffff !important;
 } */
+
+table{
+    white-space: nowrap !important;
+}

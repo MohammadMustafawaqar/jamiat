@@ -30,4 +30,9 @@ class School extends Model
     {
         return $this->belongsToMany(Grade::class, 'school_grades');
     }
+
+    public function getAddressAttribute()
+    {
+        return $this->address_type_id === 1 ? $this->province?->name : $this->province?->name . ' - ' . $this->province?->country?->name;
+    }
 }

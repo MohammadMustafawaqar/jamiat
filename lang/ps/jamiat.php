@@ -70,5 +70,7 @@ return [
     'select_group' => 'ګروپ خوښ کړئ',
 
     'generate_card_btn' => 'کارت جوړ کړئ',
+    'class_selected' => 'کارت چاپ ',
+    'pending' => 'انتظار'
 ];
 

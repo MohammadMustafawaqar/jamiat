@@ -151,6 +151,10 @@ class Student extends Model
     {
         return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
     }
+    public function getWhatsappAttribute($value)
+    {
+        return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
+    }
 
  
 

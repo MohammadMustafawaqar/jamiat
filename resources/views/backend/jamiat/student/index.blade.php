@@ -97,13 +97,14 @@
                     <th>{{ __('lang.father_name') }}</th>
                     <th>{{ __('jamiat.tazkira_no') }}</th>
                     {{-- <th>{{ __('lang.dob_qamari') }}</th> --}}
-                    <th>{{ __('lang.current_address') }}</th>
-                    <th>{{ __('lang.permanent_address') }}</th>
+                    <th>{{ __('jamiat.address') }}</th>
+                    {{-- <th>{{ __('lang.permanent_address') }}</th> --}}
                     <th>{{ __('lang.phone') }}</th>
                     <th>{{ __('lang.school') }}</th>
-                    {{-- <th>{{ __('lang.address_type') }}</th> --}}
                     <th>{{ __('lang.graduation_year') }}</th>
+                    <th>{{ __('lang.appreciation') }}</th>
                     <th>{{ __('jamiat.exam') }}</th>
+                    <th>{{ __('lang.status') }}</th>
                     <th>{{ __('lang.action') }}</th>
                 </tr>
             </thead>
@@ -123,29 +124,56 @@
                         <td>{{ $student->father_name }}</td>
                         <td>{{ $student->tazkira?->tazkira_no }}</td>
                         {{-- <td>{{ $student->dob_qamari }}</td> --}}
-                        <td 
-                            class="text-truncate" 
-                            style="max-width: 100px;"
-                            data-toggle="tooltip" 
-                            data-placement="top"
-                            title="{{ $student->currentAddress }}"
-                            >
-                            {{ $student->currentAddress }}
+                        <td>
+
+                            <div>
+                                <div class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                                    data-placement="top"
+                                    title="{{ __('lang.current_address') }}: {{ $student->currentAddress }}">
+                                    {{ $student->currentAddress }}
+
+                                </div>
+                                <div class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                                    data-placement="bottom"
+                                    title="{{ __('lang.permanent_address') }}: {{ $student->permanentAddress }}">
+                                    {{ $student->permanentAddress }}
+                                </div>
+                            </div>
                         </td>
-                        <td 
-                            class="text-truncate" 
-                            style="max-width: 100px;"
-                            data-toggle="tooltip"
+
+                        <td dir="ltr">
+                            @if ($student->whatsapp != $student->phone)
+                                <div>
+                                    {{ $student->phone }}
+                                </div>
+                                <div>
+                                    {{ $student->whatsapp }}
+                                </div>
+                            @else
+                                {{ $student->phone }}
+                            @endif
+                        </td>
+                        <td  data-toggle="tooltip"
                             data-placement="bottom"
-                            title="{{ $student->permanentAddress }}"
-                            >
-                            {{ $student->permanentAddress }}
+                            title="{{ $student->school?->name }} ({{ $student->school?->address }})">
+                            <div class="text-truncate" style="max-width: 150px;">
+                                {{ $student->school?->name }}
+                            </div>
+                            <div>
+                                ({{ $student->school?->address }})
+                            </div>
                         </td>
-                        <td dir="ltr">{{ $student->phone }}</td>
-                        <td>{{ $student->school?->name }}</td>
                         <td>{{ $student->graduation_year }}</td>
-                        {{-- <td>{{ $student->addressType?->name }}</td> --}}
-                        <td>{{ $student->exams->first()?->title }}</td>
+                        <td>
+                            {!! JamiaHelper::studentAppreciationBadge($student->appreciation) !!}
+                        </td>
+                        <td class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                            data-placement="bottom" title="{{ $student->exams->first()?->title }}">
+                            {{ $student->exams->first()?->title }}
+                        </td>
+                        <td>
+                            {!! JamiaHelper::studentExamStatus($student->studentExams?->first()?->status) !!}
+                        </td>
                         <td>
                             <div class="btn-group" dir="ltr">
                                 @can('students.delete')
@@ -173,8 +201,8 @@
         @can('students.import')
             <x-modal id='import-modal' :title="__('jamiat.import_from_excel')" size='md'>
                 <div class="container-fluid">
-                    <form id='import-form' action="{{ route('admin.student.import.excel') }}" class="row" method="POST"
-                        enctype="multipart/form-data">
+                    <form id='import-form' action="{{ route('admin.student.import.excel') }}" class="row"
+                        method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="form_type"
                             value="{{ Route::currentRouteName() == route('admin.student.form.evaluation') ? 'evaluation' : 'commission' }}">
