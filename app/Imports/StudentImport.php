@@ -83,8 +83,20 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         $errors = [];
 
         // $currentProvince = Province::where('name', $row['current_province'])->first();
-        $currentProvince = Province::whereRaw('REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(name), " ", ""), "ی", "ي"), "ګ", "گ"), "ئ", "ي"), "ې", "ي") = ?', [$this->normalizeName($row['current_province'])])->first();
-        if (!$currentProvince) $errors[] = "Invalid Current Province";
+        // $currentProvince = Province::whereRaw('REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(name), " ", ""), "ی", "ي"), "ګ", "گ"), "ئ", "ي"), "ې", "ي") = ?', [$this->normalizeName($row['current_province'])])->first();
+        // if (!$currentProvince) $errors[] = "Invalid Current Province";
+
+        if ($row['current_province']) {
+            $currentProvince = Province::firstOrCreate([
+                'name' => $row['current_province'],
+                'country_id' => 1
+            ]);
+        } else {
+            $currentProvince = Province::firstOrCreate([
+                'name' => 'نامعلوم',
+                'country_id' => 1
+            ]);
+        }
 
 
         $currentDistrict = null;
@@ -108,9 +120,20 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         }
 
 
-        $permanentProvince = Province::whereRaw('REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(name), " ", ""), "ی", "ي"), "ګ", "گ"), "ئ", "ي"), "ې", "ي") = ?', [$this->normalizeName($row['permanent_province'])])->first();
-        if (!$permanentProvince) $errors[] = "Invalid Permanent Province";
+        // $permanentProvince = Province::whereRaw('REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(TRIM(name), " ", ""), "ی", "ي"), "ګ", "گ"), "ئ", "ي"), "ې", "ي") = ?', [$this->normalizeName($row['permanent_province'])])->first();
+        // if (!$permanentProvince) $errors[] = "Invalid Permanent Province";
 
+        if ($row['current_province'] != '') {
+            $permanentProvince = Province::firstOrCreate([
+                'name' => $row['current_province'],
+                'country_id' => 1
+            ]);
+        } else {
+            $permanentProvince = Province::firstOrCreate([
+                'name' => 'نامعلوم',
+                'country_id' => 1
+            ]);
+        }
 
         $permanentDistrict = null;
 
@@ -140,9 +163,9 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, SkipsOnF
         // $schoolProvince = Province::where('name', $row['school_province'])->first();
         // if (!$schoolProvince) $errors[] = "Invalid School Province";
 
-        if (!$row['school_province']) {
-            $errors[] = 'Invalid School Province';
-        }
+        // if (!$row['school_province']) {
+        //     $errors[] = 'Invalid School Province';
+        // }
 
         // $schoolProvince = Province::firstOrCreate([
         //     'name' => $row['school_province'],

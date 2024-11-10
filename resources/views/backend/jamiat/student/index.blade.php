@@ -126,15 +126,21 @@
                         <td 
                             class="text-truncate" 
                             style="max-width: 100px;"
+                            data-toggle="tooltip" 
+                            data-placement="top"
                             title="{{ $student->currentAddress }}"
-                            data-toggle="tooltip" data-placement="top"
-                            >{{ $student->currentAddress }}</td>
+                            >
+                            {{ $student->currentAddress }}
+                        </td>
                         <td 
                             class="text-truncate" 
                             style="max-width: 100px;"
+                            data-toggle="tooltip"
+                            data-placement="bottom"
                             title="{{ $student->permanentAddress }}"
-                            data-toggle="tooltip" data-placement="top"
-                            >{{ $student->permanentAddress }}</td>
+                            >
+                            {{ $student->permanentAddress }}
+                        </td>
                         <td dir="ltr">{{ $student->phone }}</td>
                         <td>{{ $student->school?->name }}</td>
                         <td>{{ $student->graduation_year }}</td>
