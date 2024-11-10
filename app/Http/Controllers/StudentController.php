@@ -62,6 +62,7 @@ class StudentController extends Controller
         $query = $students = Form::find(2)->students()->addSelect('students.*')->getQuery();
 
         $students = JamiaHelper::applyStudentFilters($query, $request)
+            ->orderBy('name')
             ->paginate($perPage)
             ->withQueryString();
 
