@@ -124,7 +124,7 @@
                     <div class="card-container">
                         <!-- Header with logos and titles -->
                         <div class="card-header">
-                            <img src="{{ asset('assets/logos/eia-logo.png') }}" alt="Logo 1" class="logo">
+                            <img src="{{ asset('assets/logos/eia-logo2.png') }}" alt="Logo 1" class="logo">
                             <!-- Left logo -->
                             <div class="title-section">
                                 <h6>د افغانستان اسلامي امارت</h6>
@@ -183,7 +183,7 @@
                             <div class="divider"></div>
                             <div class="card-row bg-text-primary">
                                 <div style="width: 90%" class="bg-danger-subtle">
-                                   نوټ: مهرباني وکړئ، ازموینې وخت کې دا کارت ځان سره ولرئ،  
+                                 .نوټ: مهرباني وکړئ، ازموینې وخت کې دا کارت ځان سره ولرئ،او د الکترونیکي وسایلو له راوړلو څخه ډډه وکړئ.  
                                 </div>
                             </div>
 

@@ -463,7 +463,7 @@ class StudentController extends Controller
             'exam_id' => 'required'
         ]);
 
-        $students = Student::whereIn('id', $request->student_ids)->get();
+        $students = Student::orderBy('name')->whereIn('id', $request->student_ids)->get();
         $exam = Exam::with('students')->find($request->exam_id);
 
         foreach ($students as $student) {
