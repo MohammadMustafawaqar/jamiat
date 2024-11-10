@@ -105,13 +105,13 @@ class Student extends Model
     protected function currentAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => "{$this->currentDistrict->province->country->name} - {$this->currentDistrict->province->name} - {$this->currentDistrict->name} - {$this->current_village}",
+            get: fn() => "{$this->currentDistrict->province->name}, {$this->currentDistrict->name}, {$this->current_village}",
         );
     }
     protected function permanentAddress(): Attribute
     {
         return Attribute::make(
-            get: fn() => "{$this->permanentDistrict->province->country->name} - {$this->permanentDistrict->province->name} - {$this->permanentDistrict->name} - {$this->permanent_village}",
+            get: fn() => "{$this->permanentDistrict->province->name}, {$this->permanentDistrict->name}, {$this->permanent_village}",
         );
     }
 
@@ -151,6 +151,8 @@ class Student extends Model
     {
         return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
     }
+
+ 
 
 
 }

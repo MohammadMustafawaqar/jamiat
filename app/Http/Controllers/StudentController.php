@@ -59,7 +59,7 @@ class StudentController extends Controller
     public function evaluationForm(Request $request)
     {
         $perPage = $request->input('perPage', 10);
-        $query = $students = Form::find(2)->students()->getQuery();
+        $query = $students = Form::find(2)->students()->addSelect('students.*')->getQuery();
 
         $students = JamiaHelper::applyStudentFilters($query, $request)
             ->paginate($perPage)

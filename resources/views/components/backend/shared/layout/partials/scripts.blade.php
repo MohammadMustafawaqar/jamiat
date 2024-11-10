@@ -8,7 +8,8 @@
 <script type="text/javascript" src="{{ asset('admin/js/plugins/printThis.js') }}"></script>
 <script src="{{ asset('assets/plugins/fontawesome/js/all.min.js') }}"></script>
 
-<script src="{{asset('shamsi_calendars/js/persianDatepicker.min.js')}}"> </script>
+<script src="{{ asset('shamsi_calendars/js/persianDatepicker.min.js') }}"></script>
+
 
 {{-- <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script> --}}
 
@@ -22,6 +23,10 @@
             // $(this).find(":submit").html(`<span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
             //     <span role="status">${txt}</span>`);
         });
+
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
 
         function toggleButtonState(isLoading) {
             console.log('hide is also called')

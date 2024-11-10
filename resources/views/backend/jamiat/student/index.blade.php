@@ -65,96 +65,103 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            @if (session('error'))
-                <div class="alert alert-danger alert-dismissible fade show">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    <strong> {{ session('error') }}</strong>
-                    <a
-                        href="{{ route('admin.school.download.invalid.excel', [
-                            'file_name' => session('download_link'),
-                            'locale' => '',
-                        ]) }}">
-                        {{ __('jamiat.invalid_file_download') }}
-                    </a>
-                </div>
-            @endif
-            <x-table>
-                <x-slot:tools>
-                    <div></div>
-                    <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
-                        {{ __('jamiat.generate_card_btn') }}
-                    </button>
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong> {{ session('error') }}</strong>
+                <a
+                    href="{{ route('admin.school.download.invalid.excel', [
+                        'file_name' => session('download_link'),
+                        'locale' => '',
+                    ]) }}">
+                    {{ __('jamiat.invalid_file_download') }}
+                </a>
+            </div>
+        @endif
+        <x-table>
+            <x-slot:tools>
+                <div></div>
+                <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
+                    {{ __('jamiat.generate_card_btn') }}
+                </button>
 
-                </x-slot:tools>
-                <thead class="table-primary">
+            </x-slot:tools>
+            <thead class="table-primary">
+                <tr>
+                    <th><input type="checkbox" id="select-all"></th>
+
+                    <th>#</th>
+                    {{-- <th>{{__('lang.image')}}</th> --}}
+                    <th>{{ __('lang.form_id') }}</th>
+                    <th>{{ __('lang.name') }}</th>
+                    <th>{{ __('lang.father_name') }}</th>
+                    <th>{{ __('jamiat.tazkira_no') }}</th>
+                    {{-- <th>{{ __('lang.dob_qamari') }}</th> --}}
+                    <th>{{ __('lang.current_address') }}</th>
+                    <th>{{ __('lang.permanent_address') }}</th>
+                    <th>{{ __('lang.phone') }}</th>
+                    <th>{{ __('lang.school') }}</th>
+                    {{-- <th>{{ __('lang.address_type') }}</th> --}}
+                    <th>{{ __('lang.graduation_year') }}</th>
+                    <th>{{ __('jamiat.exam') }}</th>
+                    <th>{{ __('lang.action') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($students as $student)
                     <tr>
-                        <th><input type="checkbox" id="select-all"></th>
-
-                        <th>#</th>
-                        {{-- <th>{{__('lang.image')}}</th> --}}
-                        <th>{{ __('lang.form_id') }}</th>
-                        <th>{{ __('lang.name') }}</th>
-                        <th>{{ __('lang.father_name') }}</th>
-                        <th>{{ __('jamiat.tazkira_no') }}</th>
-                        {{-- <th>{{ __('lang.dob_qamari') }}</th> --}}
-                        <th>{{ __('lang.current_address') }}</th>
-                        <th>{{ __('lang.permanent_address') }}</th>
-                        <th>{{ __('lang.phone') }}</th>
-                        <th>{{ __('lang.school') }}</th>
-                        {{-- <th>{{ __('lang.address_type') }}</th> --}}
-                        <th>{{ __('lang.graduation_year') }}</th>
-                        <th>{{ __('jamiat.exam') }}</th>
-                        <th>{{ __('lang.action') }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($students as $student)
-                        <tr>
-                            <td>
-                                <input type="checkbox" name="student_ids[]" value="{{ $student->id }}"
-                                    class="student-checkbox">
-                            </td>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $student->form_id }}</td>
-                            {{-- <td>
+                        <td>
+                            <input type="checkbox" name="student_ids[]" value="{{ $student->id }}"
+                                class="student-checkbox">
+                        </td>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $student->form_id }}</td>
+                        {{-- <td>
                                     <img src="{{$student->image_path}}" alt="Student image" height="70">
                                 </td> --}}
-                            <td>{{ $student->full_name }}</td>
-                            <td>{{ $student->father_name }}</td>
-                            <td>{{ $student->tazkira?->tazkira_no }}</td>
-                            {{-- <td>{{ $student->dob_qamari }}</td> --}}
-                            <td>{{ $student->currentDistrict->name }}</td>
-                            <td>{{ $student->permanentDistrict->name }}</td>
-                            <td dir="ltr">{{ $student->phone }}</td>
-                            <td>{{ $student->school?->name }}</td>
-                            <td>{{ $student->graduation_year }}</td>
-                            {{-- <td>{{ $student->addressType?->name }}</td> --}}
-                            <td>{{ $student->exams->first()?->title }}</td>
-                            <td>
-                                <div class="btn-group" dir="ltr">
-                                    @can('students.delete')
-                                        <x-buttons.delete :route="route('students.destroy', $student)" />
-                                    @endcan
-                                    @can('students.show')
-                                        <x-buttons.show :route="route('students.show', $student)" />
-                                    @endcan
-                                    @can('students.edit')
-                                        <x-buttons.edit :route="route('students.edit', $student)" />
-                                    @endcan
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-                <x-slot:links>
-                    <!-- Paginate Links -->
-                    {{ $students->links() }}
+                        <td>{{ $student->full_name }}</td>
+                        <td>{{ $student->father_name }}</td>
+                        <td>{{ $student->tazkira?->tazkira_no }}</td>
+                        {{-- <td>{{ $student->dob_qamari }}</td> --}}
+                        <td 
+                            class="text-truncate" 
+                            style="max-width: 100px;"
+                            title="{{ $student->currentAddress }}"
+                            data-toggle="tooltip" data-placement="top"
+                            >{{ $student->currentAddress }}</td>
+                        <td 
+                            class="text-truncate" 
+                            style="max-width: 100px;"
+                            title="{{ $student->permanentAddress }}"
+                            data-toggle="tooltip" data-placement="top"
+                            >{{ $student->permanentAddress }}</td>
+                        <td dir="ltr">{{ $student->phone }}</td>
+                        <td>{{ $student->school?->name }}</td>
+                        <td>{{ $student->graduation_year }}</td>
+                        {{-- <td>{{ $student->addressType?->name }}</td> --}}
+                        <td>{{ $student->exams->first()?->title }}</td>
+                        <td>
+                            <div class="btn-group" dir="ltr">
+                                @can('students.delete')
+                                    <x-buttons.delete :route="route('students.destroy', $student)" />
+                                @endcan
+                                @can('students.show')
+                                    <x-buttons.show :route="route('students.show', $student)" />
+                                @endcan
+                                @can('students.edit')
+                                    <x-buttons.edit :route="route('students.edit', $student)" />
+                                @endcan
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+            <x-slot:links>
+                <!-- Paginate Links -->
+                {{ $students->links() }}
 
-                </x-slot:links>
-            </x-table>
-        </div>
-        </div>
+            </x-slot:links>
+        </x-table>
     </x-page-container>
     <div class="modal-containers">
         @can('students.import')
