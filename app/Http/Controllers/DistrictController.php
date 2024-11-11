@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class DistrictController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:countries.read')->only('index');
+        $this->middleware('permission:countries.create')->only(['index', 'store']);
+        $this->middleware('permission:countries.edit')->only(['index', 'edit', 'update']);
+        $this->middleware('permission:countries.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:countries.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -48,7 +56,7 @@ class DistrictController extends Controller
      */
     public function edit($locale, District $district)
     {
-        return view('district.edit',compact('district'));
+        return view('district.edit', compact('district'));
     }
 
 
@@ -58,7 +66,7 @@ class DistrictController extends Controller
     public function update($locale, Request $request, District $district)
     {
         $district->update($request->all());
-        return redirect()->route('province.show',$district->province_id)->with("msg", __('messages.record_updated'));
+        return redirect()->route('province.show', $district->province_id)->with("msg", __('messages.record_updated'));
     }
 
     /**

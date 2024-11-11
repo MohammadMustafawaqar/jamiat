@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class ProvinceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:countries.read')->only(['index', 'show']);
+        $this->middleware('permission:countries.create')->only(['index', 'store']);
+        $this->middleware('permission:countries.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:countries.delete')->only(['index', 'destroy']);
+        $this->middleware('permission:countries.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */

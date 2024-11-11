@@ -481,31 +481,24 @@ class StudentController extends Controller
             }
             $currentExam->save();
             // find campus of exam
-            $campus = Campus::with('classes')->find($exam?->campus_id);
-            $classes = $campus->classes;
-            foreach ($classes as $class) {
-                $sub_classes = $class->subClasses;
-                if ($sub_classes) {
-                    foreach ($sub_classes as $sub_class) {
-                        $assigned_student_count = $sub_class->studentExams->count();
-                        if ($sub_class->capacity > $assigned_student_count) {
-                            if (!$currentExam) {
-
-                                dd($currentExam, $student->load('exams'));
+            // if ($currentExam->status != 'class selected' || $currentExam->sub_class_id == null) {
+                $campus = Campus::with('classes')->find($exam?->campus_id);
+                $classes = $campus->classes;
+                foreach ($classes as $class) {
+                    $sub_classes = $class->subClasses;
+                    if ($sub_classes) {
+                        foreach ($sub_classes as $sub_class) {
+                            $assigned_student_count = $sub_class->studentExams->count();
+                            if ($sub_class->capacity > $assigned_student_count) {
+                                $currentExam->update([
+                                    'sub_class_id' => $sub_class->id,
+                                    'status' => 'class selected',
+                                ]);
                             }
-                            // $student->exams()->updateExistingPivot($currentExam->id, [
-                            //     'sub_class_id' => $sub_class->id,
-                            //     'status' => 'class selected',
-                            // ]);
-
-                            $currentExam->update([
-                                'sub_class_id' => $sub_class->id,
-                                'status' => 'class selected',
-                            ]);
                         }
                     }
                 }
-            }
+            // }
             // dd($assigned_student_count);
             // dd($exam);
             // if()
