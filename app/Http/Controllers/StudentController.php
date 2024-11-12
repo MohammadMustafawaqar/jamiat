@@ -189,8 +189,10 @@ class StudentController extends Controller
             'dob_qamari' => 'required|string|max:255',
             'dob_shamsi' => $form_type == '3' ? 'required' : 'nullable',
             'graduation_year' => $form_type == '3' ? 'nullable' : 'required|integer',
-            'phone' => 'required|string|regex:/^(07\d{8}|00937\d{8})$/',
-            'whatsapp' => $form_type == '3' ? 'nullable' : 'required|string|regex:/^(07\d{8}|00937\d{8})$/',
+
+            'phone' => "required|string|",
+            'whatsapp' => $form_type == '3' ? 'nullable' : "required|string",
+
             'image_path' => 'nullable|mimes:jpeg,jpg,png|max:2048'
         ]);
 
@@ -217,7 +219,8 @@ class StudentController extends Controller
                 'permanent_country_id',
                 'current_province_id',
                 'permanent_province_id',
-                'action'
+                'action',
+                'new_school'
 
             ]) + [
                 'tazkira_id' => $tazkira->id
@@ -482,22 +485,22 @@ class StudentController extends Controller
             $currentExam->save();
             // find campus of exam
             // if ($currentExam->status != 'class selected' || $currentExam->sub_class_id == null) {
-                $campus = Campus::with('classes')->find($exam?->campus_id);
-                $classes = $campus->classes;
-                foreach ($classes as $class) {
-                    $sub_classes = $class->subClasses;
-                    if ($sub_classes) {
-                        foreach ($sub_classes as $sub_class) {
-                            $assigned_student_count = $sub_class->studentExams->count();
-                            if ($sub_class->capacity > $assigned_student_count) {
-                                $currentExam->update([
-                                    'sub_class_id' => $sub_class->id,
-                                    'status' => 'class selected',
-                                ]);
-                            }
+            $campus = Campus::with('classes')->find($exam?->campus_id);
+            $classes = $campus->classes;
+            foreach ($classes as $class) {
+                $sub_classes = $class->subClasses;
+                if ($sub_classes) {
+                    foreach ($sub_classes as $sub_class) {
+                        $assigned_student_count = $sub_class->studentExams->count();
+                        if ($sub_class->capacity > $assigned_student_count) {
+                            $currentExam->update([
+                                'sub_class_id' => $sub_class->id,
+                                'status' => 'class selected',
+                            ]);
                         }
                     }
                 }
+            }
             // }
             // dd($assigned_student_count);
             // dd($exam);
