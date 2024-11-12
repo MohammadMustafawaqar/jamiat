@@ -190,8 +190,8 @@ class StudentController extends Controller
             'dob_shamsi' => $form_type == '3' ? 'required' : 'nullable',
             'graduation_year' => $form_type == '3' ? 'nullable' : 'required|integer',
 
-            'phone' => "required|string|phone",
-            'whatsapp' => $form_type == '3' ? 'nullable' : "required|string|phone",
+            'phone' => "required|string",
+            'whatsapp' => $form_type == '3' ? 'nullable' : "required|string",
 
             'image_path' => 'nullable|mimes:jpeg,jpg,png|max:2048'
         ]);
