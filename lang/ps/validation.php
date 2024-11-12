@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    'phone' => ':attribute باید د تلیفون شمېره وي.',
+
     'accepted' => 'د :attribute برخه باید منل شوې وي.',
     'accepted_if' => 'د :attribute برخه باید منل شوې وي کله چې :other :value وي.',
     'active_url' => 'د :attribute برخه باید یو معتبر URL وي.',
