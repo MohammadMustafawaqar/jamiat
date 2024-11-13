@@ -118,7 +118,7 @@
 <body>
     <div class="container">
         <div class="row">
-            
+
             @foreach ($students as $student)
                 <div class="col-6" style="margin-top: 3px; border-right: 3px dotted black; border-bottom: 3px dotted black;">
                     <div class="card-container">
@@ -183,7 +183,7 @@
                             <div class="divider"></div>
                             <div class="card-row bg-text-primary">
                                 <div style="width: 90%" class="bg-danger-subtle">
-                                 .نوټ: مهرباني وکړئ، ازموینې وخت کې دا کارت ځان سره ولرئ،او د الکترونیکي وسایلو له راوړلو څخه ډډه وکړئ.  
+                                 نوټ: مهرباني وکړئ، ازموینې وخت کې دا کارت ځان سره ولرئ،او د الکترونیکي وسایلو له راوړلو څخه ډډه وکړئ.
                                 </div>
                             </div>
 

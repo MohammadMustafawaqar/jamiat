@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-rtl/bootstrap-rtl.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <style>
         /* Global Styles */
         * {
@@ -186,7 +185,7 @@
     <div class="container-fluid">
         <div class="body-container">
             <div class="login-container row">
-               
+
 
                 <div class="right-section col-md-6 px-5 d-flex " dir="rtl">
                     <div class="" style="margin-top: 6.7rem">

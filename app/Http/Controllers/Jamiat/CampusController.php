@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Validator;
 class CampusController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('permission:campus.read')->only('index');
-        $this->middleware('permission:campus.create')->only(['index', 'store']);
-        $this->middleware('permission:campus.edit')->only(['index', 'edit','update']);
-        $this->middleware('permission:campus.delete')->only(['index', 'destroy']);
-        $this->middleware('permission:campus.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('permission:campus.read')->only('index');
+    //     $this->middleware('permission:campus.create')->only(['index', 'store']);
+    //     $this->middleware('permission:campus.edit')->only(['index', 'edit','update']);
+    //     $this->middleware('permission:campus.delete')->only(['index', 'destroy']);
+    //     $this->middleware('permission:campus.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
+    // }
 
     /**
      * Display a listing of the resource.
