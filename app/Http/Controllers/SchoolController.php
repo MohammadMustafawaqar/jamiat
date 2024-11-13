@@ -50,6 +50,7 @@ class SchoolController extends Controller
                     $query->whereIn('grades.id',$request->filter_grades);
                 });  
             })
+            ->with('grades', 'province', 'district')
             ->orderBy('province_id')
             ->orderBy('name')
             ->paginate($request->perPage);
@@ -114,7 +115,9 @@ class SchoolController extends Controller
         $countries = Country::get();
         $provinces = Province::where('country_id', $school->district->province->country_id)->get();
         $districts = District::where('province_id', $school->district->province_id)->get();
-        return view('school.edit', compact('school'), compact('countries', 'provinces', 'districts'));
+        // return view('school.edit', compact('school'), compact('countries', 'provinces', 'districts'));
+
+
     }
 
     /**

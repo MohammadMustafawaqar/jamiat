@@ -266,7 +266,17 @@ class StudentController extends Controller
         $categories = Category::get();
         $appreciations = Appreciation::get();
         $genders = Gender::get();
-        return view('student.edit', compact("student", "countries", "schools", 'categories', 'appreciations', 'genders'));
+        $nic_types = [
+            (object)[
+                'value' => 'paper',
+                'text' => __('jamiat.paper_nic')
+            ],
+            (object)[
+                'value' => 'electric',
+                'text' => __('jamiat.electric_nic')
+            ],
+        ];
+        return view('student.edit', compact("student", "countries", "schools", 'categories', 'appreciations', 'genders', 'nic_types'));
     }
 
     /**
@@ -276,41 +286,49 @@ class StudentController extends Controller
     {
 
         $request->validate([
-            'current_district_id' => 'required|integer|exists:districts,id',
-            'permanent_district_id' => 'required|integer|exists:districts,id',
-            'sub_category_id' => 'required|integer|exists:sub_categories,id',
-            'school_id' => 'required|integer|exists:schools,id',
-            'gender_id' => 'required|integer|exists:genders,id',
-            'appreciation_id' => 'required|integer|exists:appreciations,id',
-            'form_id' => 'required|string',
-            'name' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'last_name_en' => 'required|string|max:255',
-            'father_name' => 'required|string|max:255',
-            'father_name_en' => 'required|string|max:255',
-            'grand_father_name' => 'required|string|max:255',
-            'grand_father_name_en' => 'required|string|max:255',
-            'current_village' => 'required|string|max:255',
-            'permanent_village' => 'required|string|max:255',
-            'dob' => 'required|date',
-            'dob_qamari' => 'required|string|max:255',
-            'graduation_year' => 'required|integer',
-            'phone' => 'required|string',
-            'whatsapp' => 'required|string',
+
+            // 'tazkira_type' => 'nullable',
+            // 'tazkira_no' => 'required|integer',
+
+            // 'current_district_id' => 'required|integer|exists:districts,id',
+            // 'permanent_district_id' => 'required|integer|exists:districts,id',
+            // 'sub_category_id' => 'required|integer|exists:sub_categories,id',
+            // 'school_id' => 'required|integer|exists:schools,id',
+            // 'gender_id' => 'required|integer|exists:genders,id',
+            // 'appreciation_id' => 'required|integer|exists:appreciations,id',
+            // 'form_id' => 'required|string',
+            // 'name' => 'required|string|max:255',
+            // 'name_en' => 'required|string|max:255',
+            // 'last_name' => 'required|string|max:255',
+            // 'last_name_en' => 'required|string|max:255',
+            // 'father_name' => 'required|string|max:255',
+            // 'father_name_en' => 'required|string|max:255',
+            // 'grand_father_name' => 'required|string|max:255',
+            // 'grand_father_name_en' => 'required|string|max:255',
+            // 'current_village' => 'required|string|max:255',
+            // 'permanent_village' => 'required|string|max:255',
+            // 'dob' => 'required|date',
+            // 'dob_qamari' => 'required|string|max:255',
+            // 'graduation_year' => 'required|integer',
+            // 'phone' => 'required|string',
+            // 'whatsapp' => 'required|string',
         ]);
-        $user = User::find($student->user_id);
-        $user->name = $request->name;
-        $user->email = $request->phone;
-        $user->save();
+        // $user = User::find($student->user_id);
+        // $user->name = $request->name;
+        // $user->email = $request->phone;
+        // $user->save();
+        $tazkira = Tazkira::find($student->tazkira_id);
+        $tazkira->type = $request->tazkira_type;
+        $tazkira->tazkira_no = $request->tazkira_no;
+        $tazkira->save();
         $student->update($request->all());
-        if ($request->hasFile('image_path')) {
-            if (isset($student->image_path)) {
-                $student->dropFile('image_path');
-            }
-            $student->image_path = $request->file('image_path')->store('public/students');
-            $student->save();
-        }
+        // if ($request->hasFile('image_path')) {
+        //     if (isset($student->image_path)) {
+        //         $student->dropFile('image_path');
+        //     }
+        //     $student->image_path = $request->file('image_path')->store('public/students');
+        //     $student->save();
+        // }
         return redirect()->route('students.index')->with("msg", __('messages.record_submitted'));
     }
 
