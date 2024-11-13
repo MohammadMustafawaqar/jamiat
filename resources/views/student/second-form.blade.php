@@ -89,8 +89,6 @@
                                     <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="relative_contact"
                                         :label="__('jamiat.relative_contact')"  />
 
-
-
                                     <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
                                         :label="__('lang.image')"  />
                                 @endif

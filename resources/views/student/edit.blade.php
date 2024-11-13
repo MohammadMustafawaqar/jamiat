@@ -48,10 +48,8 @@
                                 name="gender_id" :label="__('lang.gender')" :required="1" :selected="$student->gender_id" />
                             {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob" :label="__('lang.dob')"
                                 :required="1" value="{{ $student->dob }}" /> --}}
-                                <x-qamari-input name='dob_qamari' id='dob_qamari' :label="__('lang.dob_qamari')" format="yyyy/mm/dd"
-                                col='col-6 col-md-4 col-lg-3 col-xl-2' :required="1"
-                                :value="$student->dob_qamari"
-                                />
+                            <x-qamari-input name='dob_qamari' id='dob_qamari' :label="__('lang.dob_qamari')" format="yyyy/mm/dd"
+                                col='col-6 col-md-4 col-lg-3 col-xl-2' :required="1" :value="$student->dob_qamari" />
 
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="phone" :label="__('lang.phone')"
                                 :required="1" value="{{ $student->phone }}" />
@@ -68,6 +66,7 @@
                             <x-input type='text' name='tazkira_no' :label="__('jamiat.tazkira_no')"
                                 col='col-6 col-md-4 col-lg-3 col-xl-2' :required='1'
                                 value="{{ $student->tazkira->tazkira_no }}" />
+
                             {{-- 
                         <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="$schools"
                             name="school_id" :label="__('lang.school')" :required="1" :selected="$student->school_id" />
@@ -94,22 +93,15 @@
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="old('school_country_id')
                                 ? App\Models\Country::find(old('school_country_id'))->provinces
                                 : App\Models\Country::find(1)->provinces"
-                                name="school_province_id" :label="__('lang.province')" :required="1" 
-                                :selected="$student?->school?->province?->country_id"
-                                />
+                                name="school_province_id" :label="__('lang.province')" :required="1" :selected="$student?->school?->province?->country_id" />
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="App\Models\District::all()"
                                 id='school_district_id' name="school_district_id" :label="__('lang.district')" :required="1"
-                                :selected="$student?->school?->district_id"
-                                
-                                />
+                                :selected="$student?->school?->district_id" />
 
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" id="school_id" :options="App\Models\School::all()"
-                                name="school_id" :label="__('lang.school')" :required="1"
-                                :selected="$student->school?->id" class="select2"
-                                
-                                />
+                                name="school_id" :label="__('lang.school')" :required="1" :selected="$student->school?->id" class="select2" />
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="$appreciations" name="appreciation_id"
                                 :label="__('lang.appreciation')" :required="1" :selected="$student->appreciation_id" />
@@ -238,55 +230,55 @@
         });
 
         $("#school_country_id").change(function() {
-                $.ajax({
-                    url: "{{ route('load-provinces') }}",
-                    method: 'GET',
-                    data: {
-                        'country_id': $("#school_country_id").val(),
-                    },
-                    success: function(response) {
-                        $("#school_province_id").html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+            $.ajax({
+                url: "{{ route('load-provinces') }}",
+                method: 'GET',
+                data: {
+                    'country_id': $("#school_country_id").val(),
+                },
+                success: function(response) {
+                    $("#school_province_id").html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
             });
+        });
 
-            $("#school_province_id").change(function() {
-                $.ajax({
-                    url: "{{ route('load-schools-districts') }}",
-                    method: 'GET',
-                    data: {
-                        'province_id': $("#school_province_id").val(),
-                    },
-                    success: function(response) {
-                        $("#school_district_id").html(response.districts);
-                        $("#school_id").html(response.schools);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+        $("#school_province_id").change(function() {
+            $.ajax({
+                url: "{{ route('load-schools-districts') }}",
+                method: 'GET',
+                data: {
+                    'province_id': $("#school_province_id").val(),
+                },
+                success: function(response) {
+                    $("#school_district_id").html(response.districts);
+                    $("#school_id").html(response.schools);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
             });
+        });
 
-            $("#school_district_id").change(function() {
-                // $("#school_id").html('');
-                $.ajax({
-                    url: "{{ route('load-schools') }}",
-                    method: 'GET',
-                    data: {
-                        'district_id': $("#school_district_id").val(),
-                    },
-                    success: function(response) {
-                        console.log(response)
-                        // $("#school_id").append(response.schools);
-                        $("#school_id").html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+        $("#school_district_id").change(function() {
+            // $("#school_id").html('');
+            $.ajax({
+                url: "{{ route('load-schools') }}",
+                method: 'GET',
+                data: {
+                    'district_id': $("#school_district_id").val(),
+                },
+                success: function(response) {
+                    console.log(response)
+                    // $("#school_id").append(response.schools);
+                    $("#school_id").html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
             });
+        });
     </script>
 @endpush
