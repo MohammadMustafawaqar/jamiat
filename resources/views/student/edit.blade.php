@@ -46,18 +46,21 @@
                             :label="__('lang.grand_father_name_en')" :required="1"  value="{{$student->grand_father_name_en}}"/> --}}
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" display="name_ps" :options="$genders"
                                 name="gender_id" :label="__('lang.gender')" :required="1" :selected="$student->gender_id" />
-                            <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob" :label="__('lang.dob')"
-                                :required="1" value="{{ $student->dob }}" />
-                            <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob_qamari" :label="__('lang.dob_qamari')"
-                                :required="1" value="{{ $student->dob_qamari }}" />
+                            {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob" :label="__('lang.dob')"
+                                :required="1" value="{{ $student->dob }}" /> --}}
+                                <x-qamari-input name='dob_qamari' id='dob_qamari' :label="__('lang.dob_qamari')" format="yyyy/mm/dd"
+                                col='col-6 col-md-4 col-lg-3 col-xl-2' :required="1"
+                                :value="$student->dob_qamari"
+                                />
+
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="phone" :label="__('lang.phone')"
                                 :required="1" value="{{ $student->phone }}" />
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="whatsapp" :label="__('lang.whatsapp')"
                                 :required="1" value="{{ $student->whatsapp }}" />
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="graduation_year" :label="__('lang.graduation_year')"
                                 :required="1" value="{{ $student->graduation_year }}" />
-                            <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
-                                :label="__('lang.image')" :required="1" />
+                            {{-- <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
+                                :label="__('lang.image')" :required="1" /> --}}
 
                             <x-select2 col="col-6 col-md-4 col-lg-3 col-xl-2" :list="$nic_types" name="tazkira_type"
                                 value='value' text='text' :label="__('jamiat.nic_type')" :selected_value="$student->tazkira->type" :required='1' />
@@ -95,20 +98,16 @@
                                 :selected="$student?->school?->province?->country_id"
                                 />
 
-                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="old('school_province_id')
-                                ? App\Models\Province::find(old('school_province_id'))->districts
-                                : collect()"
+                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="App\Models\District::all()"
                                 id='school_district_id' name="school_district_id" :label="__('lang.district')" :required="1"
                                 :selected="$student?->school?->district_id"
                                 
                                 />
 
 
-                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" id="school_id" :options="old('school_district_id')
-                                ? App\Models\District::find(old('school_district_id'))->schools
-                                : collect()"
+                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" id="school_id" :options="App\Models\School::all()"
                                 name="school_id" :label="__('lang.school')" :required="1"
-                                :selected="$student->school?->id"
+                                :selected="$student->school?->id" class="select2"
                                 
                                 />
 

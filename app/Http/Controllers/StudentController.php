@@ -321,7 +321,19 @@ class StudentController extends Controller
         $tazkira->type = $request->tazkira_type;
         $tazkira->tazkira_no = $request->tazkira_no;
         $tazkira->save();
-        $student->update($request->all());
+        $student->update($request->except([
+            'tazkira_type',
+            'tazkira_no',
+            'school_country_id',
+            'school_province_id',
+            'school_district_id',
+            'current_country_id',
+            'permanent_country_id',
+            'current_province_id',
+            'permanent_province_id',
+            'action',
+            'new_school'
+        ]));
         // if ($request->hasFile('image_path')) {
         //     if (isset($student->image_path)) {
         //         $student->dropFile('image_path');
@@ -329,7 +341,7 @@ class StudentController extends Controller
         //     $student->image_path = $request->file('image_path')->store('public/students');
         //     $student->save();
         // }
-        return redirect()->route('students.index')->with("msg", __('messages.record_submitted'));
+        return redirect()->route('admin.student.form.evaluation')->with("msg", __('messages.record_submitted'));
     }
 
     /**

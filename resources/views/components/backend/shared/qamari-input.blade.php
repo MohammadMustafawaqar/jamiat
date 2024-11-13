@@ -6,7 +6,8 @@
     'classes' => '',
     'format' => 'کال-میاشت-ورځ',
     'label' => '',
-    'required' => 0
+    'required' => 0,
+    'value' => ''
 ])
 <div class="{{ $col }}">
     <div class="form-group">
@@ -18,7 +19,9 @@
         @endif
         <input class="form-control {{ $classes }} @error($name) is-invalid @enderror" type="text"
             id={{ $id == '' ? $name : $id }} name="{{ $name }}" value="yyyy-mm-dd"
-            key="{{ $name }}">
+            key="{{ $name }}"
+            value="{{ $value }}"
+            >
         <div id="error-message" style="color:red;"></div>
         @error($name)
             <span id="{{ $id == '' ? $name : $id }}-error" class="error invalid-feedback">{{ $message }}</span>
