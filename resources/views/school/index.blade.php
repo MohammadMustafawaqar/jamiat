@@ -53,9 +53,7 @@
                             : App\Models\Country::where('name', 'افغانستان')->first()->provinces" id='filter_province_id' name="filter_province_id" :label="__('lang.province')"
                             :required="1" col="col-sm-3" text='name' value='id' />
 
-                        <x-select2 :list="
-                            App\Models\Province::find(14)->districts
-                            " id='filter_district_id' name="filter_district_id"
+                        <x-select2 :list="App\Models\Province::find(14)->districts" id='filter_district_id' name="filter_district_id"
                             :label="__('lang.district')" :required="1" col="col-sm-3" text='name' value='id' />
 
                         <x-input type="text" name='filter_village' :label="__('jamiat.village')" col='col-sm-3' />
@@ -72,8 +70,10 @@
                             <label for="">{{ __('jamiat.jamiat_grade') }}:</label>
                             @foreach (JamiaHelper::grades() as $grade)
                                 <div class="form-check form-check-inline">
-                                    <x-checkbox claases='form-check-input' name='filter_grades[]' value='{{ $grade->id }}'
-                                        id='grade-{{ $grade->id }}' label='{{ $grade->name }}' :checked="isset($_GET['filter_grades']) && in_array($grade->id, $_GET['filter_grades'])" />
+                                    <x-checkbox claases='form-check-input' name='filter_grades[]'
+                                        value='{{ $grade->id }}' id='grade-{{ $grade->id }}'
+                                        label='{{ $grade->name }}' :checked="isset($_GET['filter_grades']) &&
+                                            in_array($grade->id, $_GET['filter_grades'])" />
                                 </div>
                             @endforeach
                         </div>
@@ -119,7 +119,11 @@
                                     <td>
                                         <div class="btn-group" dir="ltr">
                                             @can('schools.edit')
-                                                <x-buttons.edit :route="route('schools.edit', $school)" />
+                                                {{-- <x-buttons.edit :route="route('schools.edit', $school)" /> --}}
+                                                <button class="btn btn-sm btn-primary"
+                                                    onclick="openEditModal({{ $school }})">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
                                             @endcan
                                             @can('schools.delete')
                                                 <x-buttons.delete :route="route('schools.destroy', $school)" />
@@ -162,10 +166,10 @@
                         <x-input name="name" :label="__('lang.name')" :required="1" />
 
                         <div class="form-group">
-                            <label for="">{{ __('jamiat.jamiat_grade') }}:</label>
+                            <label for="" class="d-block">{{ __('jamiat.jamiat_grade') }}:</label>
                             @foreach (JamiaHelper::grades() as $grade)
                                 <div class="form-check form-check-inline">
-                                    <x-checkbox claases='form-check-input' name='grades[]' value='{{ $grade->id }}'
+                                    <x-checkbox classes='form-check-input' name='grades[]' value='{{ $grade->id }}'
                                         id='grade-{{ $grade->id }}' label='{{ $grade->name }}' />
                                 </div>
                             @endforeach
@@ -189,6 +193,69 @@
                                 ? App\Models\Province::find(old('province_id'))->districts
                                 : collect()" col="col-6" id='district_id' name="district_id"
                                 :label="__('lang.district')" :required="1" class="select2" />
+                        </div>
+
+                        <x-input type="text" name="village" id='village' :label="__('jamiat.village')" />
+
+                        <x-input type="textarea" name="details" :label="__('lang.details')" />
+                        <x-buttons.save />
+                    </form>
+                </x-modal>
+            @endcan
+
+            @can('schools.edit')
+                <!-- New Modal -->
+                <x-modal id="edit-modal" title="<i class='bi bi-plus'></i>{{ __('lang.school') }}">
+                    <form action="{{ route('schools.store') }}" method="post">
+                        @csrf
+                        <div class="form-group">
+                            <label for="option">{{ __('lang.address_type') }}:</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="edit_address_type_id"
+                                    id="edit_interior" value="1" checked>
+                                <label class="form-check-label" for="edit_interior">
+                                    {{ __('jamiat.interior') }}
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="edit_address_type_id"
+                                    id="edit_exterior" value="2">
+                                <label class="form-check-label" for="edit_exterior">
+                                    {{ __('jamiat.exterior') }}
+                                </label>
+                            </div>
+                        </div>
+                        <x-input name="name" id='edit_name' :label="__('lang.name')" :required="1" />
+
+                        <div class="form-group">
+                            <label class="d-block">{{ __('jamiat.jamiat_grade') }}:</label>
+                            @foreach (JamiaHelper::grades() as $grade)
+                                <div class="form-check form-check-inline">
+                                    <x-checkbox classes='form-check-input' name='grades[]' value='{{ $grade->id }}'
+                                        id='edit_grade-{{ $grade->id }}' label='{{ $grade->name }}' />
+                                </div>
+                            @endforeach
+                            @error('grades')
+                                <div class="text-danger" id="grades-error">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="row">
+                            {{-- <x-select col="col-6" :options="App\Models\AddressType::get()" :label="__('lang.address_type')" :required="1" id='type_id' class='select2' :selected='1' /> --}}
+                            <div class="col-6" id='edit_country_container' style="display: none">
+                                <x-js-select2 col="col-12" :list="App\Models\Country::get()" name="country_id" id='country_id' text="name" value='id'
+                                    name="edit_country_id" :label="__('lang.country')" :required="1" modal_id='edit-modal' />
+                            </div>
+                            <x-js-select2 :list="old('country_id')
+                                ? App\Models\Country::find(old('country_id'))->provinces
+                                : App\Models\Country::where('name', 'افغانستان')->first()->provinces" col="col-6" id='edit_province_id' name="province_id" value='id' text='name'
+                                :label="__('lang.province')" :required="1" modal_id='edit-modal' />
+
+                            <x-js-select2 :list="old('province_id')
+                                ? App\Models\Province::find(old('province_id'))->districts
+                                : collect()" col="col-6" id='edit_district_id' name="district_id"
+                                value='id' text='name'
+                                :label="__('lang.district')" :required="1" modal_id='edit-modal' />
                         </div>
 
                         <x-input type="text" name="village" id='village' :label="__('jamiat.village')" />
@@ -224,6 +291,32 @@
         <script src="{{ asset('admin/select2/js/select2.full.js') }}"></script>
         <script type="text/javascript" src="{{ asset('admin/js/plugins/jquery.dataTables.min.js') }}"></script>
         <script type="text/javascript">
+            let school_id = null;
+
+            function openEditModal(school) {
+                school_id = school.id;
+                $("#edit_name").val(school.name)
+                if (school.address_type_id == 1) {
+                    $("#edit_interior").prop('checked', true)
+                } else {
+                    $("#edit_country_container").show();
+                    $("#edit_exterior").prop('checked', true);
+                }
+                console.log(school)
+                school.grades.map((grade) => {
+                    console.log(grade)
+                    $("#edit_grade-" + grade.id).prop('checked', true);
+                })
+                $("#edit_country_id").val(school.province.country_id).trigger('change');
+                console.log(school.province.country_id)
+
+                $("#edit_province_id").val(school.province_id).trigger('change');
+                $("#edit_district_id").val(school.district_id).trigger('change');
+                $("#edit_village").val(school.village);
+                $("#edit_details").val(school.details);
+                $("#edit-modal").modal('show');
+            }
+
             $(document).ready(function() {
 
                 $("#btn-filter").click(function() {
@@ -236,6 +329,14 @@
                     } else if ($("#exterior").is(":checked")) {
                         $("#country_container").show();
                         $("#village").attr('col', 'col-sm-6')
+                    }
+                });
+                $("input[name='edit_address_type_id']").change(function() {
+                    if ($("#edit_interior").is(":checked")) {
+                        $("#edit_country_container").hide();
+                    } else if ($("#edit_exterior").is(":checked")) {
+                        $("#edit_country_container").show();
+                        $("#edit_village").attr('col', 'col-sm-6')
                     }
                 });
 
@@ -267,6 +368,17 @@
             $("#province_id").change(function() {
                 const province_id = $("#province_id").val()
                 loadDistricts(province_id, 'district_id');
+            });
+
+            // Edit modal data fetch
+            $("#edit_country_id").change(function() {
+                const country_id = $("#edit_country_id").val()
+                loadProvinces(country_id, 'edit_province_id');
+            });
+
+            $("#edit_province_id").change(function() {
+                const province_id = $("#edit_province_id").val()
+                loadDistricts(province_id, 'edit_district_id');
             });
 
             $("#filter_country_id").change(function() {
