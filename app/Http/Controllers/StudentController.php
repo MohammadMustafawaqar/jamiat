@@ -318,9 +318,17 @@ class StudentController extends Controller
         // $user->email = $request->phone;
         // $user->save();
         $tazkira = Tazkira::find($student->tazkira_id);
-        $tazkira->type = $request->tazkira_type;
-        $tazkira->tazkira_no = $request->tazkira_no;
-        $tazkira->save();
+        if ($tazkira) {
+
+            $tazkira->type = $request->tazkira_type;
+            $tazkira->tazkira_no = $request->tazkira_no;
+            $tazkira->save();
+        } else {
+            $tazkira = Tazkira::create([
+                'type' => $request->tazkira_type,
+                'tazkira_no' => $request->tazkira_no
+            ]);
+        }
         $student->update($request->except([
             'tazkira_type',
             'tazkira_no',
@@ -333,7 +341,9 @@ class StudentController extends Controller
             'permanent_province_id',
             'action',
             'new_school'
-        ]));
+        ]) + [
+            'tazkira_id' => $tazkira->id
+        ]);
         // if ($request->hasFile('image_path')) {
         //     if (isset($student->image_path)) {
         //         $student->dropFile('image_path');
