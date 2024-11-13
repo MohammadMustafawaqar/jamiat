@@ -262,7 +262,17 @@ class StudentController extends Controller
         $categories = Category::get();
         $appreciations = Appreciation::get();
         $genders = Gender::get();
-        return view('student.edit', compact("student", "countries", "schools", 'categories', 'appreciations', 'genders'));
+        $nic_types = [
+            (object)[
+                'value' => 'paper',
+                'text' => __('jamiat.paper_nic')
+            ],
+            (object)[
+                'value' => 'electric',
+                'text' => __('jamiat.electric_nic')
+            ],
+        ];
+        return view('student.edit', compact("student", "countries","nic_types", "schools", 'categories', 'appreciations', 'genders'));
     }
 
     /**
