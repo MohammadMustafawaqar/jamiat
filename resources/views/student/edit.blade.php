@@ -67,6 +67,15 @@
                                 col='col-6 col-md-4 col-lg-3 col-xl-2' :required='1'
                                 value="{{ $student->tazkira->tazkira_no }}" />
 
+                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="JamiaHelper::educationLevels()" :display="Settings::trans('en_name', 'pa_name', 'da_name', 'ar_name')"
+                                name="education_level_id" :label="__('jamiat.edu_level')" :required="1" class='select2'
+                                :selected="$student->education_level_id"
+                                />
+
+                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="JamiaHelper::Languages()" :display="Settings::trans('en_name', 'pa_name', 'da_name', 'ar_name')"
+                                name="language_id" :label="__('jamiat.mother_tongue')" :required="1" class='select2'
+                                :selected="$student->language_id"
+                                />
                             {{-- 
                         <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="$schools"
                             name="school_id" :label="__('lang.school')" :required="1" :selected="$student->school_id" />
@@ -90,9 +99,7 @@
                                 name="school_country_id" :label="__('lang.country')" :required="1" :selected="old('school_country_id', 1)" />
                             <!-- Ensure selected country -->
 
-                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="old('school_country_id')
-                                ? App\Models\Country::find(old('school_country_id'))->provinces
-                                : App\Models\Country::find(1)->provinces"
+                            <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="App\Models\Province::get()"
                                 name="school_province_id" :label="__('lang.province')" :required="1" :selected="$student?->school?->province?->country_id" />
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" class="select2" :options="App\Models\District::all()"
@@ -138,7 +145,12 @@
                             <x-input col="col-6 col-md-4 col-lg-3" name="permanent_village" :label="__('lang.village')"
                                 :required="1" value="{{ $student->permanent_village }}" />
                         </div>
-                        <x-buttons.save />
+
+                        <div class="d-flex justify-content-between bg-light p-3">
+                            <x-btn-back route="admin.student.form.evaluation" />
+
+                            <x-buttons.save />
+                        </div>
                     </form>
                 </div>
             </div>

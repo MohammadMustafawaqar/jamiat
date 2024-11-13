@@ -246,21 +246,17 @@
                                 <x-js-select2 col="col-12" :list="App\Models\Country::get()" name="country_id" id='country_id' text="name" value='id'
                                     name="edit_country_id" :label="__('lang.country')" :required="1" modal_id='edit-modal' />
                             </div>
-                            <x-js-select2 :list="old('country_id')
-                                ? App\Models\Country::find(old('country_id'))->provinces
-                                : App\Models\Country::where('name', 'افغانستان')->first()->provinces" col="col-6" id='edit_province_id' name="province_id" value='id' text='name'
+                            <x-js-select2 :list="App\Models\Province::get()" col="col-6" id='edit_province_id' name="province_id" value='id' text='name'
                                 :label="__('lang.province')" :required="1" modal_id='edit-modal' />
 
-                            <x-js-select2 :list="old('province_id')
-                                ? App\Models\Province::find(old('province_id'))->districts
-                                : collect()" col="col-6" id='edit_district_id' name="district_id"
+                            <x-js-select2 :list="App\Models\District::get()" col="col-6" id='edit_district_id' name="district_id"
                                 value='id' text='name'
                                 :label="__('lang.district')" :required="1" modal_id='edit-modal' />
                         </div>
 
-                        <x-input type="text" name="village" id='village' :label="__('jamiat.village')" />
+                        <x-input type="text" name="village" id='edit_village' :label="__('jamiat.village')" />
 
-                        <x-input type="textarea" name="details" :label="__('lang.details')" />
+                        <x-input type="textarea" name="edit_details" :label="__('lang.details')" />
                         <x-buttons.save />
                     </form>
                 </x-modal>
@@ -371,15 +367,15 @@
             });
 
             // Edit modal data fetch
-            $("#edit_country_id").change(function() {
-                const country_id = $("#edit_country_id").val()
-                loadProvinces(country_id, 'edit_province_id');
-            });
+            // $("#edit_country_id").change(function() {
+            //     const country_id = $("#edit_country_id").val()
+            //     loadProvinces(country_id, 'edit_province_id');
+            // });
 
-            $("#edit_province_id").change(function() {
-                const province_id = $("#edit_province_id").val()
-                loadDistricts(province_id, 'edit_district_id');
-            });
+            // $("#edit_province_id").change(function() {
+            //     const province_id = $("#edit_province_id").val()
+            //     loadDistricts(province_id, 'edit_district_id');
+            // });
 
             $("#filter_country_id").change(function() {
                 const country_id = $("#filter_country_id").val()
