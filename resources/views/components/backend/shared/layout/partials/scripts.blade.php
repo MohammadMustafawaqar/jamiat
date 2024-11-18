@@ -10,6 +10,7 @@
 
 <script src="{{ asset('shamsi_calendars/js/persianDatepicker.min.js') }}"></script>
 
+<script src="{{ asset('assets/plugins/moment/moment.min.js') }}"></script>
 
 {{-- <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script> --}}
 
@@ -29,13 +30,10 @@
         })
 
         function toggleButtonState(isLoading) {
-            console.log('hide is also called')
-
             if (isLoading) {
                 $('.save-icon').hide();
                 $('.spinner-icon').show();
             } else {
-                console.log('hide is also called')
                 $('.save-icon').show();
                 $('.spinner-icon').hide();
             }

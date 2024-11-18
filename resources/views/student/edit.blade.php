@@ -33,7 +33,7 @@
                             {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="name_en" :label="__('lang.name_en')"
                             :required="1"  value="{{$student->name_en}}"/> --}}
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="last_name" :label="__('lang.last_name')"
-                                :required="1" value="{{ $student->last_name }}" />
+                                 value="{{ $student->last_name }}" />
                             {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="last_name_en"
                             :label="__('lang.last_name_en')" :required="1"  value="{{$student->last_name_en}}"/> --}}
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="father_name" :label="__('lang.father_name')"
@@ -48,13 +48,13 @@
                                 name="gender_id" :label="__('lang.gender')" :required="1" :selected="$student->gender_id" />
                             {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="dob" :label="__('lang.dob')"
                                 :required="1" value="{{ $student->dob }}" /> --}}
-                            <x-qamari-input name='dob_qamari' id='dob_qamari' :label="__('lang.dob_qamari')" format="yyyy/mm/dd"
+                            <x-input name='dob_qamari' id='dob_qamari' :label="__('lang.dob_qamari')"
                                 col='col-6 col-md-4 col-lg-3 col-xl-2' :required="1" :value="$student->dob_qamari" />
 
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="phone" :label="__('lang.phone')"
                                 :required="1" value="{{ $student->phone }}" />
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="whatsapp" :label="__('lang.whatsapp')"
-                                :required="1" value="{{ $student->whatsapp }}" />
+                                value="{{ $student->whatsapp }}" />
                             <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="graduation_year" :label="__('lang.graduation_year')"
                                 :required="1" value="{{ $student->graduation_year }}" />
                             {{-- <x-input type="file" col="col-6 col-md-4 col-lg-3 col-xl-2" name="image_path"
@@ -68,12 +68,12 @@
                                 value="{{ $student->tazkira->tazkira_no }}" />
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="JamiaHelper::educationLevels()" :display="Settings::trans('en_name', 'pa_name', 'da_name', 'ar_name')"
-                                name="education_level_id" :label="__('jamiat.edu_level')" :required="1" class='select2'
+                                name="education_level_id" :label="__('jamiat.edu_level')"  class='select2'
                                 :selected="$student->education_level_id"
                                 />
 
                             <x-select col="col-6 col-md-4 col-lg-3 col-xl-2" :options="JamiaHelper::Languages()" :display="Settings::trans('en_name', 'pa_name', 'da_name', 'ar_name')"
-                                name="language_id" :label="__('jamiat.mother_tongue')" :required="1" class='select2'
+                                name="language_id" :label="__('jamiat.mother_tongue')" class='select2'
                                 :selected="$student->language_id"
                                 />
                             {{-- 

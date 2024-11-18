@@ -243,8 +243,8 @@
                         <div class="row">
                             {{-- <x-select col="col-6" :options="App\Models\AddressType::get()" :label="__('lang.address_type')" :required="1" id='type_id' class='select2' :selected='1' /> --}}
                             <div class="col-6" id='edit_country_container' style="display: none">
-                                <x-js-select2 col="col-12" :list="App\Models\Country::get()" name="country_id" id='country_id' text="name" value='id'
-                                    name="edit_country_id" :label="__('lang.country')" :required="1" modal_id='edit-modal' />
+                                <x-js-select2 col="col-12" :list="App\Models\Country::get()" name="country_id"  text="name" value='id'
+                                    id="edit_country_id" :label="__('lang.country')" :required="1" modal_id='edit-modal' />
                             </div>
                             <x-js-select2 :list="App\Models\Province::get()" col="col-6" id='edit_province_id' name="province_id" value='id' text='name'
                                 :label="__('lang.province')" :required="1" modal_id='edit-modal' />
@@ -256,7 +256,7 @@
 
                         <x-input type="text" name="village" id='edit_village' :label="__('jamiat.village')" />
 
-                        <x-input type="textarea" name="edit_details" :label="__('lang.details')" />
+                        <x-input type="textarea" name="details" id='edit_details' :label="__('lang.details')" />
                         <x-buttons.save />
                     </form>
                 </x-modal>
@@ -294,13 +294,14 @@
                 $("#edit_name").val(school.name)
                 if (school.address_type_id == 1) {
                     $("#edit_interior").prop('checked', true)
+                    $("#edit_country_container").hide();
+
                 } else {
                     $("#edit_country_container").show();
                     $("#edit_exterior").prop('checked', true);
+
                 }
-                console.log(school)
                 school.grades.map((grade) => {
-                    console.log(grade)
                     $("#edit_grade-" + grade.id).prop('checked', true);
                 })
                 $("#edit_country_id").val(school.province.country_id).trigger('change');
@@ -316,7 +317,6 @@
             $(document).ready(function() {
 
                 $("#btn-filter").click(function() {
-                    console.log('object selected')
                     $("#filter-container").toggle();
                 });
                 $("input[name='address_type_id']").change(function() {

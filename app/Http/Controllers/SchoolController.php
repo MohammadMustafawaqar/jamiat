@@ -134,6 +134,10 @@ class SchoolController extends Controller
                 'max:255',
                 Rule::unique('schools')->ignore($school->id),
             ],
+            'province_id' => 'required',
+            'country_id' => $request->address_type_id == 2 ? 'required' : 'nullable',
+            'village' => 'nullable|string',
+            'details' => 'nullable|string'
         ]);
         $school->update($request->all());
         return redirect()->route('schools.index')->with("msg", __('messages.record_updated'));

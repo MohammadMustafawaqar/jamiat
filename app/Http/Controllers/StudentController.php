@@ -32,8 +32,8 @@ class StudentController extends Controller
     public function index()
     {
         return redirect()->route('admin.student.form.commission');
-        $students = Student::with('forms', 'exams')->paginate(10);
-        return view('student.index', compact("students"));
+        // $students = Student::with('forms', 'exams')->paginate(10);
+        // return view('student.index', compact("students"));
     }
 
     public function commissionForm(Request $request)
@@ -397,7 +397,7 @@ class StudentController extends Controller
         $student->update($request->all());
         if ($request->hasFile('image_path')) {
             if (isset($student->image_path)) {
-                $student->dropFile('image_path');
+                $student->dropFile();
             }
             $student->image_path = $request->file('image_path')->store('public/students');
             $student->save();

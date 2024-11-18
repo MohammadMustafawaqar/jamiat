@@ -46,7 +46,8 @@ class CampusController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|min:3|max:255',
-            'province_id' => 'required|exists:provinces,id'
+            'province_id' => 'required|exists:provinces,id',
+            'address' => 'nullable'
         ]);
 
         if($validator->fails()){
@@ -88,9 +89,28 @@ class CampusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $locale, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:3|max:255',
+            'province_id' => 'required|exists:provinces,id',
+            'address' => 'nullable'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'errors' => $validator->errors(),
+                'status' => 'validation-error',
+            ], 422);
+        }
+
+        $campus = Campus::find($id);
+        $campus->update($validator->validated());
+
+        return response()->json([
+            'request' => $request->all(),
+            'campus_id' => $id
+        ]);
     }
 
     /**

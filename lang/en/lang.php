@@ -90,8 +90,6 @@ return [
     'edit_profile' => 'Edit profile',
     'waiting' => 'Waiting',
     'my_topics' => 'My topics',
-    'user' => 'User',
-    'users' => 'Users',
     'change_password' => 'Change password',
     'take_db_backup' => 'Take database backup',
     'download_files_backup' => 'Download files backup',

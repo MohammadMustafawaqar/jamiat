@@ -23,10 +23,10 @@
     <div class="form-group was-validated">
 
         @if ($label != 'default')
-            <label for="{{ $id }}" class="mb-0">{{ $label }} {!! $required == 1
-                ? '<i
-                                        class="text-danger">*</i>'
-                : '' !!}</label>
+            <label for="{{ $id }}" class="mb-0">
+                {{ $label }}
+                {!! $required == 1 ? '<i class="text-danger">*</i>' : '' !!}
+            </label>
         @endif
         <select {{ $attributes }} name="{{ $name }}" id="{{ $id }}" class="{{ $classes }} "
             @if ($disabled) disabled @endif @if ($readonly) readonly @endif

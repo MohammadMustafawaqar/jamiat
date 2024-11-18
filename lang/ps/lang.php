@@ -29,7 +29,6 @@ return [
     'users' => 'استعمالونکي',
     'user' => 'استعمالونکی',
     'form_id' => 'فورم ایډي',
-    'name' => 'نوم',
     'action' => 'عملیه',
     'save' => 'ثبتول',
     'update' => 'تغیرول',
@@ -90,8 +89,7 @@ return [
     'edit_profile' => 'د پروفايل معلومات تغیرول',
     'waiting' => 'انتظار',
     'my_topics' => 'زما موضوعات',
-    'user' => 'استعمالونکی',
-    'users' => 'استعمالونکي',
+
     'change_password' => 'د پاسورډ بدول',
     'take_db_backup' => 'د ډاټابیس بک اپ',
     'download_files_backup' => 'د فایلونو بک اپ',

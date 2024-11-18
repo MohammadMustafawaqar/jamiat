@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Jamiat;
 
 use App\Global\Settings;
+use App\Helpers\HijriDate;
 use App\Http\Controllers\Controller;
 use App\Models\Jamiat\Exam;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +17,7 @@ class ExamController extends Controller
     {
         $this->middleware('permission:exam.read')->only('index');
         $this->middleware('permission:exam.create')->only(['index', 'store']);
-        $this->middleware('permission:exam.edit')->only(['index', 'edit','update']);
+        $this->middleware('permission:exam.edit')->only(['index', 'edit', 'update']);
         $this->middleware('permission:exam.delete')->only(['index', 'destroy']);
         $this->middleware('permission:exam.*')->only(['index', 'store', 'create', 'edit', 'update', 'destroy']);
     }
@@ -30,7 +32,6 @@ class ExamController extends Controller
         return view('backend.jamiat.exam.index', [
             'exams' => $exams
         ]);
-        
     }
 
     /**
@@ -65,7 +66,7 @@ class ExamController extends Controller
             'campus_id' => __('jamiat.campus'),
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
                 'status' => 'validation-error',
@@ -102,9 +103,52 @@ class ExamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $locale,  string $id)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:64',
+            'start_date' => 'required',
+            'end_date' => 'nullable',
+            'grade_id' => 'required',
+            'description' => 'nullable|string|max:255|min:3',
+            'province_id' => 'required',
+            'district_id' => 'nullable',
+            'campus_id' => 'required'
+        ], attributes: [
+            'title' => __('lang.title'),
+            'start_date' => __('jamiat.start_date'),
+            'end_date' => __('jamiat.end_date'),
+            'grade_id' => __('jamiat.exam_grade'),
+            'description' => __('jamiat.description'),
+            'campus_id' => __('jamiat.campus'),
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+                'status' => 'validation-error',
+            ], 422);
+        }
+
+        $st_date = Carbon::parse($request->start_date)->format('Y-m-d');
+        $en_date = $request->end_date ? Carbon::parse($request->end_date)->format('Y-m-d') : null;
+
+        $start_date = Settings::change_from_hijri($st_date);
+        $end_date = $request->end_date ? Settings::change_from_hijri($en_date) : null;
+        
+        $exam = Exam::find($id);
+
+
+        $exam = $exam->update($request->except('start_date', 'end_date') + [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+        ]);
+
+        return response()->json([
+            'request' => $request->all(),
+            'message' => __('messages.record_updated')
+        ]);
     }
 
     /**

@@ -69,9 +69,9 @@ class TopicController extends Controller
         $response = "";
         if ($topic->fee) {
             return view('topic.printSlip',compact('topic'));
-            $response .= "<h3>موضوع: " . $topic->title . "</h3>";
-            $response .= "<h5>فیس: " . $topic->fee->amount . " افغانۍ</h5>";
-            $response .= "<a class='btn btn-sm btn-primary' href='" . $topic->fee->file_path . "' target='_blank'>د فیس رسید</a>";
+            // $response .= "<h3>موضوع: " . $topic->title . "</h3>";
+            // $response .= "<h5>فیس: " . $topic->fee->amount . " افغانۍ</h5>";
+            // $response .= "<a class='btn btn-sm btn-primary' href='" . $topic->fee->file_path . "' target='_blank'>د فیس رسید</a>";
         }
     }
 

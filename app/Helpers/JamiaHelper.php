@@ -3,11 +3,13 @@
 namespace App\Helpers;
 
 use App\Models\Country;
+use App\Models\District;
 use App\Models\Jamiat\Campus;
 use App\Models\Jamiat\EducationLevel;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Grade;
 use App\Models\Jamiat\Language;
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -42,6 +44,16 @@ class JamiaHelper
     public static function countries()
     {
         return Country::all();
+    }
+
+    public static function afgProDis()
+    {
+        $afg_provinces = Province::where('country_id', 1)->get();
+        $afg_districts = District::whereIn('province_id', $afg_provinces->pluck('id'))->get();
+        return [
+            'provinces' => $afg_provinces,
+            'districts' => $afg_districts
+        ];
     }
 
     public static function applyStudentFilters(Builder $query, Request $request)
