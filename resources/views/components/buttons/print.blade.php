@@ -1,4 +1,4 @@
 @props([
 'id' => 'btnPrint',
 ])
-<button class="btn btn-primary btn-print" id="{{$id}}"><i class="bi bi-printer"></i>{{__('lang.print')}}</button>
+<button class="btn btn-primary btn-print" id="{{$id}}"{{ $attributes }}printer"></i>{{__('lang.print')}}</button>

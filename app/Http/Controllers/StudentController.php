@@ -276,11 +276,7 @@ class StudentController extends Controller
                 'text' => __('jamiat.electric_nic')
             ],
         ];
-<<<<<<< HEAD
-        return view('student.edit', compact("student", "countries","nic_types", "schools", 'categories', 'appreciations', 'genders'));
-=======
         return view('student.edit', compact("student", "countries", "schools", 'categories', 'appreciations', 'genders', 'nic_types'));
->>>>>>> 8d46d7fa91d25ca352ec6ee7f36797572a2a78f4
     }
 
     /**
@@ -318,21 +314,6 @@ class StudentController extends Controller
             
             // 'whatsapp' => 'required|string',
         ]);
-<<<<<<< HEAD
-        $user = User::find($student->user_id);
-        $user->name = $request->name;
-        $user->email = $request->phone;
-        $user->save();
-        $student->update($request->all());
-        if ($request->hasFile('image_path')) {
-            if (isset($student->image_path)) {
-                $student->dropFile('image_path');
-            }
-            $student->image_path = $request->file('image_path')->store('public/students');
-            $student->save();
-        }
-        return redirect()->route('students.index')->with("msg", __('messages.record_submitted'));
-=======
         // $user = User::find($student->user_id);
         // $user->name = $request->name;
         // $user->email = $request->phone;
@@ -372,7 +353,6 @@ class StudentController extends Controller
         //     $student->save();
         // }
         return redirect()->route('admin.student.form.evaluation')->with("msg", __('messages.record_submitted'));
->>>>>>> 8d46d7fa91d25ca352ec6ee7f36797572a2a78f4
     }
 
     /**

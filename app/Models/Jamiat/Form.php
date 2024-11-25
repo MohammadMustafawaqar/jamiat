@@ -16,4 +16,9 @@ class Form extends Model
     {
         return $this->belongsToMany(Student::class, 'student_forms', 'form_id');
     }
+
+    public function studentForms()
+    {
+        return $this->hasMany(StudentForm::class);
+    }
 }

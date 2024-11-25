@@ -71,6 +71,12 @@ return [
 
     'generate_card_btn' => 'کارت جوړ کړئ',
     'class_selected' => 'کارت چاپ ',
-    'pending' => 'انتظار'
+    'pending' => 'انتظار',
+
+    'start_range' => 'پېل',
+    'end_range' => 'پای',
+    'generate' => 'ایجاد',
+    'shamsi_year' => 'شمسي کال',
+    'qamari_year' => 'قمري کال'
 ];
 

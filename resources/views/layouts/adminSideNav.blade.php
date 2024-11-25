@@ -58,6 +58,33 @@
         </li>
     @endcanany
 
+    @canany(['students.create'])
+    <li class="treeview {{ Settings::check_parent_route(['admin.forms.']) }}">
+        <a class="app-menu__item" href="#" data-toggle="treeview"><i class="app-menu__icon bi bi-people"></i><span
+                class="app-menu__label">{{ __('sidebar.forms') }}</span>
+            <i class="treeview-indicator bi bi-chevron-right"></i></a>
+        <ul class="treeview-menu">
+            @canany(['students.create', 'students.create.rajab', 'students.create.commission', 'students.create.evaluation'])
+            <li>
+                <a class="app-menu__item {{ Settings::current_route('admin.forms.commission.') }}"
+                    href="{{ route('admin.forms.commission.index') }}"><i class="app-menu__icon bi bi-plus">
+                    </i>
+                    <span class="app-menu__label">{{ __('sidebar.commission_form') }}</span>
+                </a>
+            </li>
+            @endcanany
+            @canany(['students.create', 'students.create.rajab', 'students.create.commission', 'students.create.evaluation'])
+            <li>
+                <a class="app-menu__item {{ Settings::current_route('admin.forms.rajab.') }}"
+                    href="{{ route('admin.forms.rajab.index') }}"><i class="app-menu__icon bi bi-plus">
+                    </i>
+                    <span class="app-menu__label">{{ __('sidebar.rajab_form') }}</span>
+                </a>
+            </li>
+            @endcanany
+        </ul>
+    </li>
+    @endcanany
 
     {{-- Exam --}}
     @canany(['exam.create', 'exam.edit', 'exam.read', 'exam.delete', 'exam.show'])

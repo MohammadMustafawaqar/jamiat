@@ -18,5 +18,15 @@ class StudentForm extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function getFormattedSerialNumberAttribute()
+    {
+        return str_pad($this->serial_number, 8, '0', STR_PAD_LEFT);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
 
 }

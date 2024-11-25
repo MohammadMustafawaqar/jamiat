@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Alkoumi\LaravelHijriDate\Hijri;
 use App\Models\Country;
 use App\Models\District;
 use App\Models\Jamiat\Campus;
@@ -12,6 +13,8 @@ use App\Models\Jamiat\Language;
 use App\Models\Province;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Morilog\Jalali\CalendarUtils;
+use Morilog\Jalali\Jalalian;
 
 class JamiaHelper
 {
@@ -19,6 +22,11 @@ class JamiaHelper
     public static function grades()
     {
         return Grade::where("status", "active")->get();
+    }
+
+    public static function gradesForRajab()
+    {
+        return Grade::where("status", "active")->whereIn('id', [1,2])->get();
     }
 
     public static function educationLevels()
@@ -165,5 +173,31 @@ class JamiaHelper
         return "<span
         class='badge bg-$badgeColor'
         >" . $badgeText . '</span>';
+    }
+
+
+    public static function getQamariAndShamsiYears($range = [5, 10])
+    {
+        // Current Gregorian year
+        $currentGregorianYear = now()->year;
+
+        // Hijri (Qamari) current year
+        $currentQamariYear = Hijri::Date('Y', now());
+    
+        // Jalali (Shamsi) current year
+        $currentShamsiYear = Jalalian::fromCarbon(now())->getYear();
+    
+        // Generate Hijri years
+        $qamariYears = range($currentQamariYear - $range[0], $currentQamariYear + $range[1]);
+        $qamariYears = array_map(fn($year) => (object)['year' =>  $year   ], $qamariYears);
+    
+        // Generate Jalali years
+        $shamsiYears = range($currentShamsiYear - $range[0], $currentShamsiYear + $range[1]);
+        $shamsiYears = array_map(fn($year) => (object)['year' => $year], $shamsiYears);
+
+        return [
+            'qamari' => $qamariYears,
+            'shamsi' => $shamsiYears,
+        ];
     }
 }
