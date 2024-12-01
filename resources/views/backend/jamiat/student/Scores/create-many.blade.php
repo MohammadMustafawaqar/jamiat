@@ -30,12 +30,11 @@
                                 <div class="student-avatar me-4">
                                     @if ($student->profile_pic)
                                         <!-- If profile picture exists -->
-                                        <img src="{{ $student->profile_pic }}" alt="{{ $student->full_name }}"
-                                            class="rounded-circle shadow"
-                                            style="width: 70px; height: 70px; object-fit: cover;">
+                                        <img src="{{ $student->profile_pic }}" alt="{{ $student->full_name }}" 
+                                            class="rounded-circle shadow" style="width: 70px; height: 70px; object-fit: cover;">
                                     @else
                                         <!-- Placeholder Avatar with Initials -->
-                                        <div class="placeholder-avatar rounded-circle shadow d-flex align-items-center justify-content-center bg-primary text-white"
+                                        <div class="placeholder-avatar rounded-circle shadow d-flex align-items-center justify-content-center bg-primary text-white" 
                                             style="width: 70px; height: 70px; font-size: 0.65rem; font-weight: bold;">
                                             {{ $student->full_name }}
                                         </div>
@@ -58,21 +57,18 @@
                             <div class="row">
                                 @foreach ($exam->subjects as $subject)
                                     @php
-                                        $scoreKey = $subject->pivot->id . '-' . $student->id;
-                                        $student_exam = $student
-                                            ->studentExams()
-                                            ->where('exam_id', $exam->id)
-                                            ->first();
+                                        $student_exam = $student->studentExams->where('exam_id', $exam->id)->first();
+                                        $scoreKey = $subject->pivot->id . '-' . $student_exam->id;
                                         $existingScore = $scores[$scoreKey]->score ?? null;
-                                        $inputName = "scores[{$subject->pivot->id}][{$student_exam->id}]";
-                                        $inputId = "score-{$subject->pivot->id}-{$student_exam->id}";
-                                        dd($scoreKey, $existingScore, $inputName, $inputId);
+                                        $inputName = "scores[{$subject->pivot->id}][{$student->id}]";
+                                        $inputId = "score-{$subject->pivot->id}-{$student->id}";
+                                        // dd($scores, $inputName, $inputId, $scoreKey, $existingScore);
                                     @endphp
                                     <div class="col-sm-4 col-md-3 col-lg-2 mb-3">
                                         <x-input type="number" label="{{ $subject->name }}"
                                             name="{{ $inputName }}" id="{{ $inputId }}"
                                             value="{{ $existingScore }}" col="col-12" required="1" />
-                                        @error("scores.{$subject->pivot->id}.{$student_exam->id}")
+                                        @error("scores.{$subject->pivot->id}.{$student->id}")
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>

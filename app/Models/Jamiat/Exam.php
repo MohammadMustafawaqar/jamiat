@@ -80,5 +80,8 @@ class Exam extends Model
     {
         return $this->hasManyThrough(StudentExamSubject::class, ExamSubject::class);
     }
+
+    
+
 }
 

@@ -138,7 +138,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($exam->studentExamSubjects as $subject)
+                                        @foreach ($exam->studentExams as $subject)
+                                        @dd($subject)
                                             <tr>
                                                 <td colspan="2">{{ $subject->subject->name }}</td>
                                                 <td>{{ $subject->score }}</td>
