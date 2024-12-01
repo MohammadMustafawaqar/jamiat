@@ -32,6 +32,7 @@ class StudentScoreController extends Controller
                 return $item->exam_subject_id . '-' . $item->student_exam_id;
             });
 
+
         return view('backend.jamiat.student.Scores.create-many', [
             'exam' => $exam,
             'students' => $students,

@@ -66,7 +66,7 @@
                                         $existingScore = $scores[$scoreKey]->score ?? null;
                                         $inputName = "scores[{$subject->pivot->id}][{$student_exam->id}]";
                                         $inputId = "score-{$subject->pivot->id}-{$student_exam->id}";
-                                        // dd($scoreKey, $existingScore, $inputName, $inputId);
+                                        dd($scoreKey, $existingScore, $inputName, $inputId);
                                     @endphp
                                     <div class="col-sm-4 col-md-3 col-lg-2 mb-3">
                                         <x-input type="number" label="{{ $subject->name }}"
