@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Alkoumi\LaravelHijriDate\Hijri;
+use App\Models\Appreciation;
 use App\Models\Country;
 use App\Models\District;
 use App\Models\Jamiat\Campus;
@@ -10,6 +11,7 @@ use App\Models\Jamiat\EducationLevel;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Grade;
 use App\Models\Jamiat\Language;
+use App\Models\Jamiat\Subject;
 use App\Models\Province;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -139,11 +141,46 @@ class JamiaHelper
             case 4:
                 $badgeColor = 'warning';
                 break;
+            default: 
+                $badgeColor = 'danger';
         }
 
         return "<span
         class='badge bg-$badgeColor'
         >" . $appreciation?->name . '</span>';
+    }
+
+    public static function studentResultBadge($appreciation)
+    {
+        $badgeColor = '';
+        switch ($appreciation?->id) {
+            case 1:
+                $badgeColor = 'primary';
+                break;
+            case 2:
+                $badgeColor = 'info';
+                break;
+            case 3:
+                $badgeColor = 'success';
+                break;
+            case 4:
+                $badgeColor = 'warning';
+                break;
+            default: 
+                $badgeColor = 'danger';
+                $appreciation = new Appreciation();
+                $appreciation->name = 'ناکام';
+                break;
+        }
+
+        return "<span
+        class='badge bg-$badgeColor'
+        >" .  $appreciation?->name . '</span>';
+    }
+
+    public static function appreciations()
+    {
+        return Appreciation::get();
     }
 
     public static function studentExamStatus($status)
@@ -199,5 +236,34 @@ class JamiaHelper
             'qamari' => $qamariYears,
             'shamsi' => $shamsiYears,
         ];
+    }
+
+    public static function subjects()
+    {
+        return Subject::where('status', 'active')->get();
+    }
+
+    public static function resultBadge($status)
+    {
+        $badgeColor = '';
+        $badgeText = '';
+        switch ($status) {
+            case 'passed':
+                $badgeColor = 'success';
+                $badgeText = __('jamiat.passed');
+                break;
+            case 'failed':
+                $badgeColor = 'danger';
+                $badgeText = __('jamiat.failed');
+                break;
+            default:
+                $badgeColor = 'warning';
+                $badgeText = __('jamiat.pending');
+                break;
+        }
+
+        return "<span
+        class='badge bg-$badgeColor'
+        >" . $badgeText . '</span>';
     }
 }

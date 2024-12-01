@@ -2,6 +2,7 @@
 
 namespace App\Models\Jamiat;
 
+use App\Models\Appreciation;
 use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,11 +25,17 @@ class StudentExam extends Model
 
     public function student()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsTo(Student::class);
     }
 
     public function exam()
     {
         return $this->belongsTo(Exam::class);
     }
+
+    public function appreciation()
+    {
+        return $this->belongsTo(Appreciation::class);
+    }
+
 }

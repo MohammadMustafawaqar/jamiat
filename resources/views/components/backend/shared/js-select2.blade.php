@@ -31,7 +31,7 @@
         <select {{ $attributes }} name="{{ $name }}" id="{{ $id }}" class="{{ $classes }} "
             @if ($disabled) disabled @endif @if ($readonly) readonly @endif
             style="width: 100%" @required($required)>
-            <option value="">{{ $default }}</option>
+            {{-- <option value="" >{{ $default }}</option> --}}
             @foreach ($list as $item)
                 <option value="{{ $item->$value }}" @selected($item->$value == $selected_value || old($name) == $item->$value || (isset($_GET[$name]) && $_GET[$name] == $item->$value))>{{ $item->$text }}
                 </option>
@@ -48,7 +48,7 @@
         $(document).ready(function() {
             $('#{{ $id }}').select2({
                 theme: "bootstrap-5",
-                placeholder: '{{ $default }}',
+                placeholder: '{{ $default != "default" ? $default : $label }}',
                 dropdownParent: $('#{{ $modal_id }}')
             });
         });

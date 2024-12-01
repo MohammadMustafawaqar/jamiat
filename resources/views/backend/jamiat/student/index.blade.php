@@ -10,7 +10,7 @@
     <x-page-container>
         <div class="container-fluid">
             <div class="">
-                <div class="btn-group">
+                <div class="btn-group" dir="ltr">
                     @can('students.import')
                         <button class="btn btn-success" onclick="openImportModal()">
                             <i class="fa fa-file-excel"></i>
@@ -20,6 +20,10 @@
                     <button class="btn btn-sm btn-info" id="btn-filter" title='filter'>
                         <i class="fa fa-search"></i>
                     </button>
+                    <a href="{{ route('admin.student.evaluation.export') }}" class="btn btn-sm btn-secondary"
+                        title='export'>
+                        <i class="fa fa-download"></i>
+                    </a>
                     <br>
                 </div>
             </div>
@@ -57,7 +61,7 @@
 
 
                     <div class="col-sm-2 mt-4">
-                        <div class="btn-group">
+                        <div class="btn-group" dir="ltr">
                             <x-btn-filter type='submit' />
                             <x-btn-reset :route="route(Route::currentRouteName())" />
                         </div>
@@ -81,9 +85,16 @@
         <x-table>
             <x-slot:tools>
                 <div></div>
-                <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
-                    {{ __('jamiat.generate_card_btn') }}
-                </button>
+                <div class="btn-group" dir="ltr">
+                    <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
+                        {{ __('jamiat.generate_card_btn') }}
+                    </button>
+
+                    <button type="submit" class="btn btn-success" style="display: none" id="add-score-btn">
+                        {{ __('jamiat.add_scores') }}
+                    </button>
+                </div>
+
 
             </x-slot:tools>
             <thead class="table-primary">
@@ -153,8 +164,7 @@
                                 {{ $student->phone }}
                             @endif
                         </td>
-                        <td  data-toggle="tooltip"
-                            data-placement="bottom"
+                        <td data-toggle="tooltip" data-placement="bottom"
                             title="{{ $student->school?->name }} ({{ $student->school?->address }})">
                             <div class="text-truncate" style="max-width: 150px;">
                                 {{ $student->school?->name }}
@@ -180,7 +190,7 @@
                                     <x-buttons.delete :route="route('students.destroy', $student)" />
                                 @endcan
                                 @can('students.show')
-                                    <x-buttons.show :route="route('students.show', $student)" />
+                                    <x-buttons.show :route="route('admin.student.show', $student)" />
                                 @endcan
                                 @can('students.edit')
                                     <x-buttons.edit :route="route('students.edit', $student)" />
@@ -254,6 +264,21 @@
             </div>
         </x-modal>
 
+        <x-modal id='scores-modal' :title="__('jamiat.add_scores')" size='md'>
+            <div class="container-fluid">
+
+                <form action="{{ route('admin.student.scores.many.create') }}" method="GET" id='scores-form'>
+                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title'
+                        id='card_exam_id' name='exam_id' col='col-sm-12' modal_id='card-modal' />
+                    @csrf
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-save"></i>
+                    </button>
+                </form>
+
+            </div>
+        </x-modal>
+
     </div>
     @push('scripts')
         <script>
@@ -268,14 +293,39 @@
             function toggleGenerateButton() {
                 const isAnyChecked = $('.student-checkbox:checked').length > 0;
                 $('#generate-id-cards-btn').toggle(isAnyChecked);
+                $('#add-score-btn').toggle(isAnyChecked);
             }
+
+            $('#add-score-btn').on('click', function() {
+                const selectedIds = $('.student-checkbox:checked').map(function() {
+                    return this.value;
+                }).get();
+
+                if (selectedIds.length === 0) {
+                    alert("Please select at least one student.");
+                    return;
+                }
+
+                // Clear any existing hidden inputs to avoid duplicates
+                $('#scores-form input[name="student_ids[]"]').remove();
+
+                // Add new hidden inputs for selected students
+                selectedIds.forEach(function(id) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'student_ids[]',
+                        value: id
+                    }).appendTo('#scores-form');
+                });
+
+                $('#scores-modal').modal('show');
+            });
 
             // Call toggleGenerateButton on page load and on checkbox changes
             $(document).ready(function() {
                 toggleGenerateButton();
 
                 $("#btn-filter").click(function() {
-                    console.log('object selected')
                     $("#filter-container").toggle();
                 });
                 $("input[name='address_type_id']").change(function() {
@@ -307,6 +357,10 @@
                     alert("Please select at least one student.");
                     return;
                 }
+
+                // Clear any existing hidden inputs to avoid duplicates
+                $('#card-form input[name="student_ids[]"]').remove();
+
 
                 selectedIds.forEach(function(id) {
                     $('<input>').attr({

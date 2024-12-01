@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StudentExport;
 use App\Helpers\JamiaHelper;
 use App\Imports\RajabStudentImport;
 use App\Imports\StudentImport;
@@ -256,6 +257,13 @@ class StudentController extends Controller
         return view('student.show', compact('student'));
     }
 
+    public function showEmployee($locale, Student $student)
+    {
+        return view('backend.jamiat.student.show', [
+            'student' => $student
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -311,7 +319,7 @@ class StudentController extends Controller
             // 'dob_qamari' => 'required|string|max:255',
             // 'graduation_year' => 'required|integer',
             // 'phone' => 'required|string',
-            
+
             // 'whatsapp' => 'required|string',
         ]);
         // $user = User::find($student->user_id);
@@ -553,5 +561,11 @@ class StudentController extends Controller
         return view('backend.jamiat.student.card.generate', [
             'students' => $students
         ]);
+    }
+
+
+    public function evaluationStudentExport()
+    {
+        return Excel::download(new StudentExport, "students" . date('ymdhis') . ".xlsx");
     }
 }

@@ -9,7 +9,9 @@ use App\Http\Controllers\Jamiat\Forms\CommissionController;
 use App\Http\Controllers\Jamiat\Forms\RajabController;
 use App\Http\Controllers\Jamiat\GradeController;
 use App\Http\Controllers\Jamiat\LanguageController;
+use App\Http\Controllers\Jamiat\StudentScoreController;
 use App\Http\Controllers\Jamiat\SubClassController;
+use App\Http\Controllers\Jamiat\SubjectController;
 use App\Http\Controllers\Jamiat\UserGroupController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StudentController;
@@ -33,9 +35,17 @@ Route::group([
         Route::resource('campus', CampusController::class);
         Route::resource('/campus/{campus_id}/classes', ClassController::class);
         Route::resource('campus/classes/{class_id}/sub-classes', SubClassController::class);
+
+        // Subjects
+        Route::resource('subjects', SubjectController::class);
     });
 
     Route::resource('exam', ExamController::class);
+    Route::post('exam/subject/{exam_id}', [ExamController::class, 'assignSubjects'])
+        ->name('exam.subjects');
+
+    Route::get('/exam/get-exam-subjects/{exam_id}', [ExamController::class, 'getExamSubjects'])
+        ->name('exam.get.subjects');
 
     Route::group([
         'as' => 'student.',
@@ -45,6 +55,9 @@ Route::group([
         Route::get('second-form', 'secondForm')
             ->name('form.second')
             ->middleware('permission:students.create');
+
+        Route::get('{student}', 'showEmployee')
+            ->name('show');
 
         Route::get('/form/rajab', 'rajabIndex')
             ->name('form.rajab')
@@ -62,11 +75,27 @@ Route::group([
         Route::post('import/form/excel/', 'importFromExcel')
             ->name('import.excel');
 
+        Route::get('/evaluation/export', 'evaluationStudentExport')
+            ->name('evaluation.export');
+
 
         // Generate Card
 
         Route::post('/generate-card', 'generateIdCard')
             ->name('generate.card');
+
+        // Student Exam Scores
+        Route::group([
+            'as' => 'scores.',
+            'prefix' => '/scores/',
+            'controller' => StudentScoreController::class
+        ], function () {
+            Route::get('create/many', 'createMany')
+                ->name('many.create');
+
+            Route::post('exam/{exam_id}/store/many', 'storeMany')
+                ->name('many.store');
+        });
     });
 
 
@@ -87,8 +116,8 @@ Route::group([
         'as' => 'forms.',
         'prefix' => 'forms/',
         'controller' => FormController::class
-    ], function(){
-     
+    ], function () {
+
         Route::resource('/commission', CommissionController::class);
         Route::resource('/rajab', RajabController::class);
         Route::get('print-many', [RajabController::class, 'printManyForms'])

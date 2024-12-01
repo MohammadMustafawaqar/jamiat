@@ -77,6 +77,26 @@ return [
     'end_range' => 'پای',
     'generate' => 'ایجاد',
     'shamsi_year' => 'شمسي کال',
-    'qamari_year' => 'قمري کال'
+    'qamari_year' => 'قمري کال',
+    'add_grade' => 'درجه اډ کړئ',
+    'min_score' => 'د کامیابې نمرې',
+    'score' => 'نمرې',
+    'subject_name' => 'مضمون',
+    'en_subject' => 'مضمون (انګلیسي)',
+    'pa_subject' => ' مضمون (پښتو)',
+    'da_subject' => 'مضمون (دري)',
+    'ar_subject' => 'مضمون (عربي)',
+
+    'assign_subjects_to_exam' => 'دامتحان مضامین مشخص کړئ',
+    'add_scores' => 'نمرات اضافه کړئ',
+    'assign_scores' => 'نمرات مشخص کړئ',
+    'exam_info' => 'د امتحان معلومات',
+    'exam_result' => 'د امتحان نتایج',
+    'files' => 'فایلونه',
+    'percentage' => 'د نمراتو فیصدي',
+    'result' => 'نتیجه',
+    'subject' => 'مضمون',
+    'passed' => 'کامیاب',
+    'failed' => 'ناکام',
 ];
 

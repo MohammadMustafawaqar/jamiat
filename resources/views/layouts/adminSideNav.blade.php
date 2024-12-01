@@ -21,7 +21,7 @@
             <ul class="treeview-menu">
                 @canany(['students.create', 'students.create.rajab', 'students.create.commission', 'students.create.evaluation'])
                 <li>
-                    <a class="app-menu__item {{ Route::currentRouteName() == 'students.create' || Route::currentRouteName() == 'admin.student.form.second' ? 'active' : '' }}"
+                    <a class="app-menu__item {{ Settings::current_route(['students.create','admin.student.form.second']) }}"
                         href="{{ route('students.create') }}"><i class="app-menu__icon bi bi-plus">
                         </i>
                         <span class="app-menu__label">{{ __('sidebar.add_students') }}</span>
@@ -30,7 +30,7 @@
                 @endcanany
                 @canany(['students.read.commission', 'students.import', 'students.read'])
                 <li>
-                    <a class="app-menu__item {{ Settings::current_route('admin.student.form.commission') }}"
+                    <a class="app-menu__item {{ Settings::current_route(['admin.student.form.commission', 'admin.student.show']) }}"
                         href="{{ route('admin.student.form.commission') }}"><i class="app-menu__icon bi bi-person-check">
                         </i>
                         <span class="app-menu__label">{{ __('sidebar.commission_students') }}</span>
@@ -193,6 +193,15 @@
                     href="{{ route('admin.settings.campus.index') }}">
                     <i class="icon bi bi-buildings"></i>
                     {{ __('sidebar.campuses') }}
+                </a>
+            </li>
+            @endcanany
+            @canany(['exam_centers.create', 'exam_centers.edit', 'exam_centers.read', 'exam_centers.delete', 'exam_centers.show'])
+            <li>
+                <a class="treeview-item  {{ Settings::current_route('admin.settings.subjects.') }}"
+                    href="{{ route('admin.settings.subjects.index') }}">
+                    <i class="icon bi bi-book"></i>
+                    {{ __('sidebar.subjects') }}
                 </a>
             </li>
             @endcanany

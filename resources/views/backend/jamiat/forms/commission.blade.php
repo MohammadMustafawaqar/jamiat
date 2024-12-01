@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="row" style="display: none" id="form-generate-container">
-                <form action="{{ route('admin.forms.rajab.store') }}" class="row" method="POST">
+                <form action="{{ route('admin.forms.commission.create') }}" class="row">
                     <x-input col='col-sm-4' type='number' id="start_range" name='start_range' :label="__('jamiat.start_range')" />
                     <x-input col='col-sm-4' type='number' id="end_range" name='end_range' :label="__('jamiat.end_range')" />
 

@@ -2,6 +2,7 @@
 
 namespace App\Models\Jamiat;
 
+use App\Models\Appreciation;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\Student;
@@ -38,6 +39,8 @@ class Exam extends Model
     {
         return $this->hasManyThrough(CClass::class, Campus::class, 'id', 'campus_id', 'campus_id', 'id');
     }
+
+
     public function students()
     {
         return $this->belongsToMany(Student::class, 'student_exams');
@@ -46,6 +49,36 @@ class Exam extends Model
     public function getFullAddressAttribute()
     {
         return $this->address . ', ' . $this->district?->name . ', ' . $this->province?->name;
+    }
+
+    public function appreciations()
+    {
+        return $this->belongsToMany(Appreciation::class, 'exam_appreciations')
+            ->withPivot([
+                'min_score'
+            ]);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'exam_subjects')
+            ->withPivot('id');
+    }
+    
+
+    public function studentExams()
+    {
+        return $this->hasMany(StudentExam::class);
+    }
+
+    public function examSubjects()
+    {
+        return $this->hasMany(ExamSubject::class);
+    }
+
+    public function studentExamSubjects()
+    {
+        return $this->hasManyThrough(StudentExamSubject::class, ExamSubject::class);
     }
 }
 

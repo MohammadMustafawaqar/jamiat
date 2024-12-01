@@ -1,0 +1,42 @@
+.student-section {
+    background-color: #f8f9fa; /* Light gray background */
+    border-left: 5px solid #007bff; /* Primary left border */
+    display: flex; /* Flexbox for avatar and details */
+    align-items: center; /* Align items vertically */
+}
+
+.student-avatar img {
+    border: 2px solid #eaeaea; /* Subtle border for avatar */
+}
+
+.student-details h4 {
+    color: #007bff; /* Primary color for name */
+    font-size: 1.25rem;
+}
+
+.student-details p {
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+    color: #6c757d; /* Muted text color */
+}
+
+.row {
+    margin-top: 1rem; /* Add spacing below student details */
+    gap: 0.5rem; /* Space between subject inputs */
+}
+
+.student-avatar img {
+    border: 2px solid #eaeaea; /* Subtle border for avatar */
+}
+
+.placeholder-avatar {
+    background-color: #007bff; /* Use primary color for placeholder */
+    color: #ffffff; /* White text for initials */
+    text-transform: uppercase; /* Ensure initials are uppercase */
+}
+
+@media (min-width: 768px) {
+    .row {
+        gap: 1rem;
+    }
+}

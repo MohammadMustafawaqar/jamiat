@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Jamiat\Exam;
+use App\Models\Jamiat\ExamSubject;
 use App\Models\Jamiat\Form;
 use App\Models\Jamiat\StudentExam;
 use App\Models\Jamiat\StudentForm;
@@ -118,7 +119,7 @@ class Student extends Model
     public function exams()
     {
         return $this->belongsToMany(Exam::class, 'student_exams', 'student_id', 'exam_id')
-            ->withPivot('student_id', 'exam_id', 'class_id');
+            ->withPivot('student_id', 'exam_id', 'class_id', 'sub_class_id');
     }
 
     public function forms()
@@ -154,6 +155,14 @@ class Student extends Model
     public function getWhatsappAttribute($value)
     {
         return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
+    }
+
+    public function examSubjects()
+    {
+        return $this->belongsToMany(ExamSubject::class, 'student_exam_subjects')
+            ->withPivot([
+                'id', 'score', 'status'
+            ]);
     }
 
  

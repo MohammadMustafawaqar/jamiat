@@ -109,9 +109,12 @@ return [
     'committees' => 'کمیټې',
     'committee_member' => 'د کمیټې غړی',
     'committee_members' => 'د کمیټې غړي',
-    'job'=>'دنده',
+    'job' => 'دنده',
     'dob_shamsi' => ' زیږیدو نیټه (شمسي)',
     'first_form' => 'د فورمې ډول',
     'success' => 'کړنه موفقانه ترسره شوه',
-    'filter' => 'فلټر'
+    'filter' => 'فلټر',
+
+    // new
+    'personal_info' => 'شخصي معلومات'
 ];

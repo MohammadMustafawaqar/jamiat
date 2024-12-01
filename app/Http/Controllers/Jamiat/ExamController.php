@@ -6,8 +6,11 @@ use App\Global\Settings;
 use App\Helpers\HijriDate;
 use App\Http\Controllers\Controller;
 use App\Models\Jamiat\Exam;
+use App\Models\Jamiat\ExamAppreciation;
+use App\Models\Jamiat\ExamSubject;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
@@ -136,7 +139,7 @@ class ExamController extends Controller
 
         $start_date = Settings::change_from_hijri($st_date);
         $end_date = $request->end_date ? Settings::change_from_hijri($en_date) : null;
-        
+
         $exam = Exam::find($id);
 
 
@@ -161,5 +164,65 @@ class ExamController extends Controller
         $exam->delete();
 
         return redirect()->back()->with('msg', __('messages.record_deleted'));
+    }
+
+    public function assignSubjects(Request $request, $locale, $exam_id)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'subject_ids' => 'required|array',
+            'min_app.*' => ['required', 'integer', 'max:1000'],
+        ], attributes: [
+            'subject_ids' => __('sidebar.subjects'),
+            'min_app.*' => '',
+        ]);
+
+        try {
+            DB::beginTransaction();
+            $exam = Exam::find($exam_id);
+            $exam->subjects()->sync($request->subject_ids);
+
+            foreach ($request->min_app as $key => $value) {
+                ExamAppreciation::updateOrCreate([
+                    'exam_id' => $exam_id,
+                    'appreciation_id' => $key,
+                ], [
+                    'min_score' => $value
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => __('messages.record_submitted')
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'server error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors(),
+                'status' => 'validation-error',
+            ], 422);
+        }
+    }
+
+    public function getExamSubjects($locale, $exam_id)
+    {
+        $subjects = ExamSubject::where('exam_id', $exam_id)->pluck('subject_id');
+        $appreciations = ExamAppreciation::where('exam_id', $exam_id)->get();
+
+        return response()->json([
+            'exists' => $subjects->isNotEmpty() || $appreciations->isNotEmpty(),
+            'subjects' => $subjects,
+            'appreciations' => $appreciations,
+        ]);
     }
 }

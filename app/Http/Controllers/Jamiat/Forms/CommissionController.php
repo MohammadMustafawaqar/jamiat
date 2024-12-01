@@ -26,7 +26,7 @@ class CommissionController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.jamiat.forms.commission.create');
     }
 
     /**

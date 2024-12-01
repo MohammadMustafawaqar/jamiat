@@ -6,11 +6,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <x-backend.shared.validation.all />
+                <div class="tile">
+                    <div class="tile-title">
+                        {{-- <x-backend.shared.validation.all /> --}}
                     </div>
-                    <div class="card-body" style="min-height: 70vh">
+                    <div class="tile-body" style="min-height: 70vh">
                         {{ $slot }}
                     </div>
                 </div>

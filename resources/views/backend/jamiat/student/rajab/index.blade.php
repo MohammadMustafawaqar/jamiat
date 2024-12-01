@@ -142,7 +142,7 @@
                                         <x-buttons.delete :route="route('students.destroy', $student)" />
                                     @endcan
                                     @can('students.show')
-                                        <x-buttons.show :route="route('students.show', $student)" />
+                                        <x-buttons.show :route="route('admin.student.show', $student)" />
                                     @endcan
                                     @can('students.edit')
                                         <x-buttons.edit :route="route('students.edit', $student)" />

@@ -76,6 +76,10 @@
                                             <i class="fa fa-edit"></i>
                                         </button>
                                     @endcan
+                                    <button class="btn btn-sm btn-success"
+                                        onclick="openSubjectModal({{ $exam->id }})">
+                                        <i class="fa fa-book"></i>
+                                    </button>
                                 </div>
 
                             </td>
@@ -144,8 +148,8 @@
                 <x-js-select2 :list="App\Models\Country::find(1)->provinces" col="col-sm-4" id='edit_province_id' name="province_id"
                     :label="__('lang.province')" name='province_id' value='id' text='name' required
                     modal_id="edit-modal" />
-                <x-js-select2 :list="JamiaHelper::afgProDis()['districts']" col="col-sm-4" id='edit_district_id' name="district_id" value="id" text="name"
-                    :label="__('lang.district')" modal_id="edit-modal" />
+                <x-js-select2 :list="JamiaHelper::afgProDis()['districts']" col="col-sm-4" id='edit_district_id' name="district_id"
+                    value="id" text="name" :label="__('lang.district')" modal_id="edit-modal" />
                 {{-- <x-input2 type='text' col='col-sm-6' label="{{ __('jamiat.address') }}" id='edit_address'
                     name='address' /> --}}
                 <x-date-picker type='text' col='col-sm-6' label="{{ __('jamiat.start_date') }}"
@@ -166,10 +170,78 @@
             </form>
         </div>
     </x-modal>
+    <x-modal id='subject-modal' :title="__('jamiat.assign_subjects_to_exam')" size='lg'>
+        <div class="container-fluid">
+            <div  style="display: none; width: 100%" id="subject-loader" class="text-center">
+                <i class="fa fa-spinner fa-spin text-center fa-3x"></i>
+            </div>
+            <form id='subject-form' class="row" method="POST">
+                @csrf
+                <x-js-select2 col="col-12" :list="JamiaHelper::subjects()" :label="__('sidebar.subjects')" :required="1" id='subject_ids'
+                    name='subject_ids[]' value='id' text='name' modal_id="subject-modal" multiple="true"  />
+
+                @foreach (JamiaHelper::appreciations() as $appreciation)
+                    <div class="col-sm-6">
+                        <x-input2 type='text' label="{{ $appreciation->name }} {{ __('lang.appreciation') }}"
+                            id="min_app[{{ $appreciation->id }}]" name='min_app[{{ $appreciation->id }}]'
+                            col='col-sm-12' :required="1" />
+                        <div class="error-message" id="error-min_app-{{ $appreciation->id }}"></div>
+                    </div>
+                @endforeach
+
+                <div class="d-flex justify-content-between bg-light mt-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        {{ Settings::trans('Close', 'بند کړئ', 'لغوه') }}</button>
+                    <x-btn-save type='button' id='save-btn' />
+                </div>
+            </form>
+        </div>
+    </x-modal>
     @push('scripts')
         <script>
             const saveBtn = $('#save-btn');
             let edit_exam_id = null;
+            let subject_exam_id = null;
+
+            function openSubjectModal(exam_id) {
+                subject_exam_id = exam_id;
+
+                $("#subject-modal").modal('show');
+                loadSubjectContent(exam_id);
+            }
+
+            function loadSubjectContent(exam_id) {
+                $("#subject-form").hide();
+                $("#subject-loader").show();
+                // $("#subject-modal").modal('show');
+                $.ajax({
+                    url: '{{ route('admin.exam.get.subjects', ':exam_id') }}'.replace(":exam_id", exam_id),
+                    type: 'GET',
+                    success: function(response) {
+                        $("#subject-form").show();
+                        $("#subject-loader").hide();
+                        if (response.exists) {
+                            $('#subject_ids').val(response.subjects).trigger('change');
+
+                            response.appreciations.forEach(app => {
+                                $(`#min_app\\[${app.appreciation_id}\\]`).val(app.min_score);
+                            });
+
+                            $('#save-btn').text('{{ Settings::trans('Edit', 'اصلاح', 'ویرایش') }}');
+                        } else {
+                            $('#subject-form')[0].reset();
+                            $('#subject_ids').val(null).trigger('change');
+                            $('#save-btn').text('{{ Settings::trans('Save', 'ذخیره کړئ', 'ذخیره') }}');
+                        }
+
+                    },
+                    error: function() {
+                        $("#subject-form").show();
+                        $("#subject-loader").hide();
+                        console.log('Unexpected error');
+                    }
+                });
+            }
 
             function openCreateModal() {
                 $('#create-modal').modal('show');
@@ -199,9 +271,7 @@
 
             $(document).ready(function() {
 
-
-
-                $('#create-form').submit(function(e) {
+                $('#subject-form').submit(function(e) {
                     e.preventDefault();
 
                     var formData = new FormData(this);
@@ -209,7 +279,8 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: "{{ route('admin.exam.store') }}",
+                        url: '{{ route('admin.exam.subjects', ':exam_id') }}'.replace(":exam_id",
+                            subject_exam_id),
                         data: formData,
                         dataType: "json",
                         processData: false,
@@ -223,7 +294,7 @@
 
                             $('#create-form')[0].reset();
                             // $('#patient_id').val(null).trigger('change'); // Reset Select2
-                            location.reload();
+                            // location.reload();
 
 
                             toastr["success"](response.message);
@@ -238,6 +309,11 @@
                                     $('#' + key).addClass('is-invalid');
                                     $('#' + key + '-error').removeClass('d-none').text(
                                         value[0]);
+
+                                    let errorId = key.replace('.',
+                                        '-'); // Replace dots with dashes for ID
+                                    $(`#error-${errorId}`).html(
+                                        `<span class="text-danger">${value[0]}</span>`);
                                 });
                             } else if (xhr.status === 401) {
                                 console.error('Unauthorized:', xhr);
@@ -257,7 +333,8 @@
 
                     $.ajax({
                         type: 'POST',
-                        url: '{{ route("admin.exam.update", ":exam") }}'.replace(":exam", edit_exam_id),
+                        url: '{{ route('admin.exam.update', ':exam') }}'.replace(":exam",
+                            edit_exam_id),
                         data: formData,
                         dataType: "json",
                         processData: false,
@@ -285,6 +362,7 @@
                                     $('#' + key).addClass('is-invalid');
                                     $('#' + key + '-error').removeClass('d-none').text(
                                         value[0]);
+
                                 });
                             } else if (xhr.status === 401) {
                                 console.error('Unauthorized:', xhr);

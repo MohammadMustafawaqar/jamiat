@@ -91,9 +91,9 @@
         <div class="tile">
             <div class="tile-body">
                 <h3>{{__('lang.topics')}}</h3>
-                @if($student?->user->topics)
+                @if($student?->user?->topics)
                 <div class="accordion" id="accordionExample">
-                    @foreach ($student->user->topics as $topic)
+                    @foreach ($student?->user?->topics as $topic)
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button @if($loop->iteration!=1)  collapsed @endif" type="button"
