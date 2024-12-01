@@ -34,8 +34,5 @@ class StudentExamSubject extends Model
         return $this->belongsTo(StudentExam::class);
     }
 
-    public function student()
-    {
-        return $this->hasOneThrough(Student::class, StudentExam::class, 'id', 'id', 'student_exam_id', 'student_id');
-    }
+   
 }

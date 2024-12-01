@@ -138,8 +138,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($exam->studentExams as $subject)
-                                        @dd($subject)
+                                        @foreach ($exam->studentExams()->where('student_id', $student->id)->first()->studentExamSubjects as $subject)
                                             <tr>
                                                 <td colspan="2">{{ $subject->subject->name }}</td>
                                                 <td>{{ $subject->score }}</td>

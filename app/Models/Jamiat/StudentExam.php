@@ -38,4 +38,9 @@ class StudentExam extends Model
         return $this->belongsTo(Appreciation::class);
     }
 
+    public function studentExamSubjects()
+    {
+        return $this->hasMany(StudentExamSubject::class);
+    }
+
 }

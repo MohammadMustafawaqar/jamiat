@@ -6,6 +6,7 @@ use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\ExamSubject;
 use App\Models\Jamiat\Form;
 use App\Models\Jamiat\StudentExam;
+use App\Models\Jamiat\StudentExamSubject;
 use App\Models\Jamiat\StudentForm;
 use App\Models\Jamiat\Tazkira;
 use App\Traits\CreatedBy;
@@ -157,13 +158,7 @@ class Student extends Model
         return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
     }
 
-    public function examSubjects()
-    {
-        return $this->belongsToMany(ExamSubject::class, 'student_exam_subjects')
-            ->withPivot([
-                'id', 'score', 'status'
-            ]);
-    }
+  
 
  
 
