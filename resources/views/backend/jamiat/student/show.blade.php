@@ -154,7 +154,7 @@
                                             <td><strong>{{ __('lang.appreciation') }}</strong></td>
                                             <td>
                                                 {!! JamiaHelper::studentResultBadge(
-                                                    $exam->studentExams()->where('student_id', $student->id)->first()?->appreciation
+                                                    $exam->studentExams()->where('student_id', $student->id)->first()?->appreciation, $exam->studentExams()->where('student_id', $student->id)->first()->studentExamSubjects()->exists()
                                                 ) !!}
                                             </td>
                                         </tr>

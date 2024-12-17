@@ -1,6 +1,6 @@
-<x-app :title="__('sidebar.rajab_form')">
+<x-app :title="__('sidebar.commission_form')">
 
-    <x-page-nav :title="__('sidebar.rajab_form')" icon='file'>
+    <x-page-nav :title="__('sidebar.commission_form')" icon='file'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>
@@ -22,23 +22,27 @@
 
                 </div>
             </div>
-            <div class="row" style="display: none" id="form-generate-container">
-                <form action="{{ route('admin.forms.rajab.store') }}" class="row" method="POST" target="_blank">
+            <div class="row" style="@if (!$errors->any()) display: none @endif" id="form-generate-container">
+                <form action="{{ route('admin.forms.commission.store') }}" method="POST" class="row"
+                    target="_blank">
                     @csrf
+
                     <x-select2 name="shamsi_year" id="shamsi_year" value="year" text="year" :list="$shamsiYears"
                         col="col-sm-2" :selected_value="old('shamsi_year')" :label="__('jamiat.shamsi_year')" required="1" />
 
                     <x-select2 name="qamari_year" id="qamari_year" value="year" text="year" :list="$qamariYears"
                         col="col-sm-2" :selected_value="old('qamari_year')" :label="__('jamiat.qamari_year')" required="1" />
-                    <input type="hidden" name="form_id" value="{{ $form->id }}" />
+
+                    <x-select2 id="address_type_id" name="address_type_id" :list="\App\Models\AddressType::get()" text="name"
+                        value="id" :label="__('lang.address_type')" col="col-sm-2" />
+
+                    <x-select2 id="grade_id" name="grade_id" :list="JamiaHelper::grades()" text="name" value="id"
+                        :label="__('jamiat.grade_name')" col="col-sm-2" />
+
                     <x-input col='col-sm-2' type='number' id="start_range" name='start_range' :label="__('jamiat.start_range')"
-                        :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
-
+                        :min="$highestSerialNumber" :value="$highestSerialNumber" />
                     <x-input col='col-sm-2' type='number' id="end_range" name='end_range' :label="__('jamiat.end_range')"
-                        :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
-
-                    <x-select2 id="grade_id" name="grade_id" :list="JamiaHelper::gradesForRajab()" text="name" value="id"
-                        :label="__('jamiat.grade_name')" col="col-sm-2" :required="1" />
+                        :min="$highestSerialNumber" />
 
                     <div class="col-sm-2 mt-4">
                         <div class="btn-group">
@@ -55,22 +59,20 @@
             <x-table id='doctorTable'>
                 <x-slot:tools>
                     <div></div>
-                    <div>
-                        <form action="{{ route('admin.forms.rajab.print.many') }}" method="GET" id='print-many-form' target="_blank">
+                        <form action="{{ route('admin.forms.commission.print.many') }}" method="GET" id='print-many-form' target="_blank">
                             <input type="hidden" id="stud_form_ids" name="stud_form_ids" >
                             <button class="btn btn-info btn-sm" id="form-print-btn">
                                 <i class="fa fa-print"></i>
                                 {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
                             </button>
                         </form>
-                        
-                    </div>
                 </x-slot:tools>
                 <thead>
                     <tr>
                         <th><input type="checkbox" id="select-all"></th>
                         <th>{{ __('jamiat.no') }}</th>
                         <th>{{ __('jamiat.exam_grade') }}</th>
+                        <th>{{ __('lang.address_type') }}</th>
                         <th>{{ __('lang.form_id') }}</th>
                         <th>{{ __('jamiat.shamsi_year') }}</th>
                         <th>{{ __('jamiat.qamari_year') }}</th>
@@ -90,6 +92,11 @@
                                 {{ $form->grade?->name }}
                             </td>
                             <td>
+                                <span
+                                class="badge bg-secondary"
+                                > {{ $form->addressType?->name }}</span>
+                            </td>
+                            <td>
                                 {{ $form->formatted_serial_number }}
                             </td>
                             <td>
@@ -107,12 +114,12 @@
                             <td>
                                 <div class="btn-group">
                                     @can('exam.delete')
-                                        <x-buttons.delete :route="route('admin.forms.rajab.destroy', $form->id)" />
+                                        <x-buttons.delete :route="route('admin.forms.commission.destroy', $form->id)" />
                                     @endcan
-                                   
+
                                     @can('exam.edit')
-                                        <x-btn-print route="admin.forms.rajab.show" :params="[
-                                            'rajab' => $form->id,
+                                        <x-btn-print route="admin.forms.commission.show" :params="[
+                                            'commission' => $form->id,
                                             'locale' => app()->getLocale(),
                                         ]" />
                                     @endcan
@@ -129,37 +136,7 @@
 
         </div>
     </x-page-container>
-    <x-modal id='create-modal' :title="__('jamiat.add_exam')" size='lg'>
-        <div class="container-fluid">
-            <form id='create-form' class="row" method="POST">
-                @csrf
 
-
-
-                <div class="d-flex justify-content-between bg-light mt-2">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        {{ Settings::trans('Close', 'بند کړئ', 'لغوه') }}</button>
-                    <x-btn-save type='button' id='save-btn' />
-                </div>
-            </form>
-        </div>
-    </x-modal>
-    <x-modal id='edit-modal' :title="__('jamiat.add_exam')" size='lg'>
-        <div class="container-fluid">
-            <form id='edit-form' class="row" method="POST">
-                @csrf
-
-
-
-                <div class="d-flex justify-content-between bg-light mt-2">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        {{ Settings::trans('Close', 'بند کړئ', 'لغوه') }}
-                    </button>
-                    <x-btn-save type='button' id='edit-btn' />
-                </div>
-            </form>
-        </div>
-    </x-modal>
     @push('scripts')
         <script>
             function toggleGenerateButton() {

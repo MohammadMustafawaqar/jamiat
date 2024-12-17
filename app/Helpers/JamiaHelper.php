@@ -150,7 +150,7 @@ class JamiaHelper
         >" . $appreciation?->name . '</span>';
     }
 
-    public static function studentResultBadge($appreciation)
+    public static function studentResultBadge($appreciation, $checked)
     {
         $badgeColor = '';
         switch ($appreciation?->id) {
@@ -173,9 +173,9 @@ class JamiaHelper
                 break;
         }
 
-        return "<span
-        class='badge bg-$badgeColor'
-        >" .  $appreciation?->name . '</span>';
+        return $checked ? "<span
+        class='badge text-bg-$badgeColor'
+        >" .  $appreciation?->name . '</span>' : "<span class='badge text-bg-warning'>منتظر</span>";
     }
 
     public static function appreciations()

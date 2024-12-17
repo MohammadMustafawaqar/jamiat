@@ -21,17 +21,19 @@ class RajabController extends Controller
 
         $form = Form::find(3);
         $highestSerial = (int) DB::table('student_forms')
+            ->where('form_id', 3)
+
             ->selectRaw('MAX(CAST(serial_number AS UNSIGNED)) as max_serial')
             ->value('max_serial') + 1;
 
         $perPage = $request->perPage ?? 10;
         $studentForms = $form->studentForms()->where('status', 'unused')->paginate($request->perPage ?? 10)
-        ->withQueryString();
+            ->withQueryString();
         return view('backend.jamiat.forms.rajab.index', [
             'form' => $form,
             'studentForms' => $studentForms,
             'highestSerial' => $highestSerial,
-            'qamariYears' => $years['qamari'],  
+            'qamariYears' => $years['qamari'],
             'shamsiYears' => $years['shamsi'],
             'perPage' => $perPage
 
@@ -53,18 +55,28 @@ class RajabController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'start_range' => 'required|integer',
-            'end_range' => 'required|integer|gte:start_range',
-            'grade_id' => 'required|integer',
-            'shamsi_year' => 'required',
-            'qamari_year' => 'required'
-        ]);
+        $request->validate(
+            [
+                'start_range' => 'required|integer',
+                'end_range' => 'required|integer|gte:start_range',
+                'grade_id' => 'required|integer',
+                'shamsi_year' => 'required',
+                'qamari_year' => 'required'
+            ],
+            attributes: [
+                'start_range' => __('jamiat.start_range'),
+                'end_range' => __('jamiat.end_range'),
+                'grade_id' => __('jamiat.grade_name'),
+                'shamsi_year' => __('jamiat.shamsi_year'),
+                'qamari_year' => __('jamiat.qamari_year'),
+                'address_type_id' => __('lang.address_type'),
+            ]
+        );
 
         $start = $request->start_range;
         $end = $request->end_range;
 
-        $existingSerials = DB::table('student_forms')->pluck('serial_number')->toArray();
+        $existingSerials = DB::table('student_forms')->where('form_id', 3)->pluck('serial_number')->toArray();
 
 
         $dataToInsert = [];
@@ -138,9 +150,9 @@ class RajabController extends Controller
     {
         $form = StudentForm::find($id);
 
-        if($form->status == 'unused'){
+        if ($form->status == 'unused') {
             $form->delete();
-        }else{
+        } else {
             return redirect()->back()->with('error', __('messages.cant_delete'));
         }
 

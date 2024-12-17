@@ -165,23 +165,29 @@
     @foreach ($form as $frm)
         <div class="container-fluid borders pt-3">
             <div class="row border-bottom border-1 p-2">
+               
                 <div class="col-2">
                     <img src="{{ asset('assets/logos/eia-logo-final.png') }}" alt="" height="100"
                         width="120">
                 </div>
-                <div class="col-8">
+                <div class="col-6">
                     <div class="text-center">
-                        <p style="margin: 0.7">د افغانستان اسلامي امارت</p>
-                        <p style="margin: 0.7">د لوړو زده کړو وزارت</p>
-                        <p style="margin: 0.7">د دیني جامعاتو او تخصصاتو د چارو لوی ریاست</p>
-                        <p style="margin: 1">
-                            د ا.ا.ا. په لومړې دور کې د {{ $frm->grade->name }} دورې د ارزیابي شویو او د تعلیم، تربیې او عالي
-                            تحصیلاتو کمېسیون لخوا د ورکړل شویو اسنادو د ارزیابې او برابرې لپاره د نوم لیکنې فورمه
+                        <p style="margin: 0.4">د افغانستان اسلامي امارت</p>
+                        <p style="margin: 0.4">د لوړو زده کړو وزارت</p>
+                        <p style="margin: 0.4">د دیني جامعاتو او تخصصاتو د چارو لوی ریاست</p>
+                        <p style="margin: 1; white-space: nowrap; text-overflow: visible;">
+                            د {{ $frm->addressType->name }} د دیني جامعاتو د {{ $frm->grade->name }} دورې ({{ $frm->grade->equivalent }}) د اسنادو ارزونې فورمه
                         </p>
                     </div>
                 </div>
                 <div class="col-2">
                     <img src="{{ asset('assets/logos/mohe_logo.png') }}" alt="" height="100" width="100">
+                </div>
+                <div class="col-2">
+                    <div class="text-center border row align-content-center" style="height: 3.5cm; width: 3cm;" dir="ltr">
+                        <p class="col-12">انځور</p>
+                        <p class="col-12">3 X 4</p>
+                    </div>
                 </div>
                 <div class="col-12 row mt-2" style="width: 100%;">
                     <div class="col-4">
@@ -270,47 +276,45 @@
 
                 </div>
                 <div class="col-12">
-                    <div class="mb-2">
+                    <div class="mb-1">
                         اصلي استوګنڅی: ولایت . . . . . . . . . . . . . . . . . . . . ولسوالي / ناحیه . . . . . . . . . .
                         . . . . . . . . . کلی / کوڅه . . . . . . . . . . . . . . . . .
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-1">
                         فعلي استوګنڅی: ولایت . . . . . . . . . . . . . . . . . . . . ولسوالي / ناحیه . . . . . . . . . .
                         . . . . . . . . . کلی / کوڅه . . . . . . . . . . . . . . . . . کور نمبر . . . . . . . . . .
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-1">
                         د زده کړې هېواد . . . . . . . . . . . . . . . . . ښار: . . . . . . . . . . . . . . جامعه . . . .
                         . . . . . . . . . فراغت کال: . . . . . . . . . . . . . . تقدیر: . . . . . . . . . .
                     </div>
-                    <div class="mb-2">
+                    <div class="mb-1">
+                        د عصري زده کړو کچه: {!! $dots !!} {!! $dots !!} . . . . . . . . . . . . . . 
+                    </div>
+                    <div class="mb-1">
                         د اړیکې شمېره: . . . . . . . . . . .  . . . . . . . د واټساپ شمېره: . . . . . . . . . .
                         . . . . . . . . . . . . . د ګډون کونکي قریب یوه فعاله شمېره: . . . . . . . . . . . . . .
                         . . . . .
                     </div>
                 </div>
-                <div class="col-12 mt-4">
+                <div class="col-12 mt-2">
                     ما پورته فورمه په پوره دقت سره ډکه کړې ده او هر ډول غلطۍ او تېروتنې مسؤلیت په غاړه اخلم.
                 </div>
-                <div class="col-12 mt-4 row border-bottom">
+                <div class="col-12 mt-2 row border-bottom" style="width: 100%">
                     <div class="col-8">
                         د فورمې د تسلیمۍ نیټه:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ {{ $frm->qamari_year }}
                         هـ ق
                     </div>
                     <div class="col-4 text-left">
-                        د فاضل لاسلیک: . . . . . . . . . . . . . .
+                        د طالب العلم لاسلیک: . . . . . . . . . . . . . .
                     </div>
                 </div>
-                <div class="col-12 mt-4 py-4" style="width: 100%">
+                <div class="col-12 mt-2 py-2" style="width: 100%">
                     <div>
                         <div class="text-center">
-                            <strong>د ارزیابې ریاست لخوا د {{ $frm->grade->name }} دورې د سند تائید</strong>
+                            <strong>د اړوند جامعې لخوا د {{ $grade_name }} دورې د سند تائید</strong>
                             <p>
-                                اسنادو ته په کتنې سره (. . . . . . . . . . . . . . . . . . .) د (. . . . . . . . . . . . . .
-                                . . . . .) زوی په (. . . . . . . . . . . . . .) کال کې د (. . . . . . . . . . . . . . . . .
-                                . .) مدرسې له {{ $frm->grade->name }} دورې سند یې په (. . . . . . . . . . . . . .) نیټه د (. . .
-                                . . . . . . . . . . .) شوی دی، زموږ سره د (. . . . . . . . . . . . . .) جلد په اساس کتاب (.
-                                . . . . . . . . ) پاڼه کې په (. . . . . . . . . .) نمبر ثبت دی، نوموړی سند د اعتبار وړ او
-                                زموږ لخوا تائید دی.
+                                زه . . . . . . . . . . . . . . د . . . . . . . . . . . . . .  زوی د . . . . . . . . . . . . . .  ولایت د . . . . . . . . . . . . . .  ولسوالي د تذکرې نمبر . . . . . . . . . . . . . .  د جامعې مهتمم په حیث دنده لرم. د پورته شهرت لرونکي طالب العلم پوره تصدیق کوم، چې نوموړی له {{ $frm->grade->name }} دورې په یاده جامعه کې د فراغت سند ترلاسه کړی. د جعل په صورت کې د اسلامي امارت ټولو اصولي او قانوني اجراآتو ته ژمن یم، نو په همدې اساس هیله ده چې . . . . . . . . . . . . . .  د . . . . . . . . . . . . . .  زوی/لور ستاسې د اسنادو د برابرې او ارزونې د پروسې مستحق وګڼل شي.
                             </p>
                             <p>
                                 په درنښت !
@@ -318,25 +322,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 row">
+                <div class="col-12 row border-bottom " >
                     <div class="col-6">
-                        <div class="box-container">
-                            <span> د تصدیق کوونکي آمر: </span>
-                            <span class="box rounded-1"
-                                style="height: 15px !important; width: 20px; margin: 0px 10px;"></span>
-                            <span>
-                                داخل مرز
-                            </span>
-                            <span class="box rounded-1"
-                                style="height: 15px !important; width: 20px; margin: 0px 10px;"></span>
-                            <span>
-                                خارج مرز
-                            </span>
-                        </div>
+                        د تصدیق کوونکي د اړیکې شمېره: . . . . . . . . . . . . . .  
                     </div>
                     <div class="col-6 text-left">
-                        د تصدیق کوونکي آمر لاسلیک: . . . . . . . . . . . . . . . . . . . . . . . 
+                        د تصدیق کوونکي  لاسلیک او مهر: . . . . . . . . . . . . . . . . . . . . . . . 
                     </div>
+                </div>
+                <div class="col-12 py-3">
+                    <strong>یادونه: </strong> لطفاً د اسنادو د ارزونې لپاره د نوم لیکنې پورتنې فورمه د همدې پاڼې پر بل مخ د لیکل شویو لارښوونو مطابق ډکه کړئ او د اړوند ولایت پوهنتون / موسسې مربوط مرجع ته د سپارلو پر مهال اصلي تذکرې کاپي، د سند کاپي، او شیږ قطعې اوسني عکسونه چې اندازه یې (3X4 cm <sup>2</sup>) او د شا پرده یې سپینه وي، ضمیمه کړئ.
                 </div>
             </div>
 

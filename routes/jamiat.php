@@ -6,6 +6,7 @@ use App\Http\Controllers\Jamiat\EducationLevelController;
 use App\Http\Controllers\Jamiat\ExamController;
 use App\Http\Controllers\Jamiat\FormController;
 use App\Http\Controllers\Jamiat\Forms\CommissionController;
+use App\Http\Controllers\Jamiat\Forms\EvaluationController;
 use App\Http\Controllers\Jamiat\Forms\RajabController;
 use App\Http\Controllers\Jamiat\GradeController;
 use App\Http\Controllers\Jamiat\LanguageController;
@@ -118,10 +119,16 @@ Route::group([
         'controller' => FormController::class
     ], function () {
 
+        Route::get('commission/print-many', [CommissionController::class, 'printManyForms'])
+            ->name('commission.print.many');
         Route::resource('/commission', CommissionController::class);
-        Route::resource('/rajab', RajabController::class);
-        Route::get('print-many', [RajabController::class, 'printManyForms'])
+        Route::get('rajab/print-many', [RajabController::class, 'printManyForms'])
             ->name('rajab.print.many');
+        Route::resource('/rajab', RajabController::class);
+
+        Route::get('evaluation/print-many', [EvaluationController::class, 'printManyForms'])
+            ->name('evaluation.print.many');
+        Route::resource('/evaluation', EvaluationController::class);
         // Route::group([
         //     'as' => 'commission.',
         //     'prefix' => 'commission/',

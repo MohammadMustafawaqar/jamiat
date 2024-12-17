@@ -15,4 +15,5 @@ return [
     'commission_form' => 'د کمیسیون فورمې',
     'rajab_form' => 'د رجب فورمې',
     'subjects' => 'مضامین',
+    'evaluation_forms' => 'د ارزیابی فورمې',
 ];

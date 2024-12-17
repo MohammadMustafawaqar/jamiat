@@ -259,6 +259,8 @@ class StudentController extends Controller
 
     public function showEmployee($locale, Student $student)
     {
+        $student->studentExams()->first()->updateScoreAvg();
+
         return view('backend.jamiat.student.show', [
             'student' => $student
         ]);

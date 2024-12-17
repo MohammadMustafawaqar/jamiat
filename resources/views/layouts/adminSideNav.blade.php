@@ -82,6 +82,15 @@
                 </a>
             </li>
             @endcanany
+            @canany(['students.create', 'students.create.rajab', 'students.create.commission', 'students.create.evaluation'])
+            <li>
+                <a class="app-menu__item {{ Settings::current_route('admin.forms.evaluation.') }}"
+                    href="{{ route('admin.forms.evaluation.index') }}"><i class="app-menu__icon bi bi-plus">
+                    </i>
+                    <span class="app-menu__label">{{ __('sidebar.evaluation_forms') }}</span>
+                </a>
+            </li>
+            @endcanany
         </ul>
     </li>
     @endcanany

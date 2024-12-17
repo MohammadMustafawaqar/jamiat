@@ -14,6 +14,7 @@ class StudentExam extends Model
     protected $guarded = [];
     protected $with = ['subClass'];
 
+
     public function class()
     {
         return $this->belongsTo(CClass::class, 'class_id');
@@ -41,6 +42,14 @@ class StudentExam extends Model
     public function studentExamSubjects()
     {
         return $this->hasMany(StudentExamSubject::class);
+    }
+
+    public function updateScoreAvg()
+    {
+        $total_scores = $this->studentExamSubjects->sum('subject.score');
+        $total_obtained = $this->studentExamSubjects()->sum('score');
+        $this->score_avg =  $total_obtained ? ($total_obtained / $total_scores * 100) : 0;
+        $this->save();
     }
 
 }

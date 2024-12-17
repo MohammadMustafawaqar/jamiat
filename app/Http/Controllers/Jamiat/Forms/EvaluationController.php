@@ -10,7 +10,7 @@ use App\Models\Jamiat\StudentForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CommissionController extends Controller
+class EvaluationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,20 +19,25 @@ class CommissionController extends Controller
     {
         $years = JamiaHelper::getQamariAndShamsiYears();
 
-        $form = Form::find(1);
+        $form = Form::find(2);
 
         $highestSerial = (int) DB::table('student_forms')
-        ->where('form_id', 1)
-        ->selectRaw('MAX(CAST(serial_number AS UNSIGNED)) as max_serial')
-        ->value('max_serial') + 1;
+            ->where('form_id', 2)
 
-        $studentForms = $form->studentForms()->where('status', 'unused')->paginate(10);
-        return view('backend.jamiat.forms.commission.index', [
+            ->selectRaw('MAX(CAST(serial_number AS UNSIGNED)) as max_serial')
+            ->value('max_serial') + 1;
+
+        $perPage = $request->perPage ?? 10;
+        $studentForms = $form->studentForms()->where('status', 'unused')->paginate($request->perPage ?? 10)
+            ->withQueryString();
+        return view('backend.jamiat.forms.evaluation.index', [
             'form' => $form,
-            'qamariYears' => $years['qamari'],  
-            'shamsiYears' => $years['shamsi'],
             'studentForms' => $studentForms,
-            'highestSerialNumber' => $highestSerial
+            'highestSerialNumber' => $highestSerial,
+            'qamariYears' => $years['qamari'],
+            'shamsiYears' => $years['shamsi'],
+            'perPage' => $perPage
+
         ]);
     }
 
@@ -41,7 +46,7 @@ class CommissionController extends Controller
      */
     public function create()
     {
-        return view('backend.jamiat.forms.commission.create');
+        return view('backend.jamiat.forms.evaluation.create');
     }
 
     /**
@@ -56,7 +61,7 @@ class CommissionController extends Controller
             'shamsi_year' => 'required',
             'qamari_year' => 'required',
             'address_type_id' => 'required',
-            
+
         ], attributes: [
             'start_range' => __('jamiat.start_range'),
             'end_range' => __('jamiat.end_range'),
@@ -69,7 +74,7 @@ class CommissionController extends Controller
         $start = $request->start_range;
         $end = $request->end_range;
 
-        $existingSerials = DB::table('student_forms')->where('form_id', 1)->pluck('serial_number')->toArray();
+        $existingSerials = DB::table('student_forms')->where('form_id', 2)->pluck('serial_number')->toArray();
 
 
         $dataToInsert = [];
@@ -80,7 +85,7 @@ class CommissionController extends Controller
 
             $dataToInsert[] = [
                 'serial_number' => $serial,
-                'form_id' => 1,
+                'form_id' => 2,
                 'grade_id' => $request->grade_id,
                 'student_id' => null,
                 'status' => 'unused',
@@ -96,10 +101,10 @@ class CommissionController extends Controller
             StudentForm::insert($dataToInsert);
 
             $grade = Grade::find($request->grade_id);
-            $studentForms = StudentForm::whereIn('serial_number', array_column($dataToInsert, 'serial_number'))->where('form_id', 1)->get();
+            $studentForms = StudentForm::whereIn('serial_number', array_column($dataToInsert, 'serial_number'))->where('form_id', 2)->get();
 
 
-            return view('backend.jamiat.forms.commission.create', [
+            return view('backend.jamiat.forms.evaluation.create', [
                 'form' => $studentForms,
                 'grade_name' => $grade?->name,
                 'grade_classes' => $grade->grade_classes,
@@ -115,7 +120,7 @@ class CommissionController extends Controller
     public function show($locale, string $id)
     {
         $studentForm = StudentForm::where('id', $id)->get();
-        return view('backend.jamiat.forms.commission.create', [
+        return view('backend.jamiat.forms.evaluation.create', [
             'form' => $studentForm,
             'grade_name' => $studentForm->first()?->grade?->name,
             'grade_classes' => $studentForm->first()->grade->grade_classes
@@ -158,7 +163,7 @@ class CommissionController extends Controller
     {
         $selectedIds = explode(',', $request->stud_form_ids);
         $studentForm = StudentForm::whereIn('id', $selectedIds)->get();
-        return view('backend.jamiat.forms.commission.create', [
+        return view('backend.jamiat.forms.evaluation.create', [
             'form' => $studentForm,
             'grade_name' => $studentForm->first()?->grade?->name,
             'grade_classes' => $studentForm->first()->grade->grade_classes
