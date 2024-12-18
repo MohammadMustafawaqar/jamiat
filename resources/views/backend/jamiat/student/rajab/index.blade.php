@@ -108,17 +108,22 @@
                 <thead class="table-primary">
                     <tr>
                         <th><input type="checkbox" id="select-all"></th>
+
                         <th>#</th>
                         {{-- <th>{{__('lang.image')}}</th> --}}
+                        <th>{{ __('lang.form_id') }}</th>
                         <th>{{ __('lang.name') }}</th>
                         <th>{{ __('lang.father_name') }}</th>
-                        <th>{{ __('lang.dob_qamari') }}</th>
-                        <th>{{ __('lang.current_address') }}</th>
-                        <th>{{ __('lang.permanent_address') }}</th>
+                        <th>{{ __('jamiat.tazkira_no') }}</th>
+                        {{-- <th>{{ __('lang.dob_qamari') }}</th> --}}
+                        <th>{{ __('jamiat.address') }}</th>
+                        {{-- <th>{{ __('lang.permanent_address') }}</th> --}}
                         <th>{{ __('lang.phone') }}</th>
                         <th>{{ __('lang.school') }}</th>
-                        <th>{{ __('lang.address_type') }}</th>
+                        <th>{{ __('lang.graduation_year') }}</th>
+                        <th>{{ __('lang.appreciation') }}</th>
                         <th>{{ __('jamiat.exam') }}</th>
+                        <th>{{ __('lang.status') }}</th>
                         <th>{{ __('lang.action') }}</th>
                     </tr>
                 </thead>
@@ -130,18 +135,63 @@
                                     class="student-checkbox">
                             </td>
                             <td>{{ $loop->iteration }}</td>
+                            <td>{{ $student->form_id }}</td>
                             {{-- <td>
-                                    <img src="{{$student->image_path}}" alt="Student image" height="70">
-                                </td> --}}
+                                        <img src="{{$student->image_path}}" alt="Student image" height="70">
+                                    </td> --}}
                             <td>{{ $student->full_name }}</td>
                             <td>{{ $student->father_name }}</td>
-                            <td>{{ $student->dob_qamari }}</td>
-                            <td>{{ $student->currentDistrict?->name }}</td>
-                            <td>{{ $student->permanentDistrict?->name }}</td>
-                            <td dir="ltr">{{ $student->phone_number }}</td>
-                            <td>{{ $student->school?->name }}</td>
-                            <td>{{ $student->addressType?->name }}</td>
-                            <td>{{ $student->exams->first()?->title }}</td>
+                            <td>{{ $student->tazkira?->tazkira_no }}</td>
+                            {{-- <td>{{ $student->dob_qamari }}</td> --}}
+                            <td>
+
+                                <div>
+                                    <div class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="{{ __('lang.current_address') }}: {{ $student->currentAddress }}">
+                                        {{ $student->currentAddress }}
+
+                                    </div>
+                                    <div class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                                        data-placement="bottom"
+                                        title="{{ __('lang.permanent_address') }}: {{ $student->permanentAddress }}">
+                                        {{ $student->permanentAddress }}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td dir="ltr" style="width: 100%">
+                                
+                                    {{ $student->phone_number }}
+                            </td>
+                            <td data-toggle="tooltip" data-placement="bottom"
+                                title="{{ $student->school?->name }} ({{ $student->school?->address }})">
+                                <div class="text-truncate" style="max-width: 150px;">
+                                    {{ $student->school?->name }}
+                                </div>
+                                <div>
+                                    ({{ $student->school?->address }})
+                                </div>
+                            </td>
+                            <td>{{ $student->graduation_year }}</td>
+                            <td>
+                                <div data-toggle="tooltip" data-placement="bottom"
+                                    title="{{ __('jamiat.school_appreciation') }}: {{ $student->appreciation?->name }}">
+                                    {!! JamiaHelper::studentAppreciationBadge($student->appreciation) !!}
+                                </div>
+                                <div data-toggle="tooltip" data-placement="bottom"
+                                    title="{{ __('jamiat.exam_appreciation') }}: {{ $student->studentExams?->first()?->appreciation?->name }}">
+                                    {!! JamiaHelper::studentAppreciationBadge($student->studentExams?->first()?->appreciation) !!}
+                                </div>
+                            </td>
+                            <td class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
+                                data-placement="bottom" title="{{ $student->exams->first()?->title }}">
+                                {{ $student->exams->first()?->title }}
+                            </td>
+                            <td>
+                                {!! JamiaHelper::studentExamStatus($student->studentExams?->first()?->status) !!}
+
+                            </td>
                             <td>
                                 <div class="btn-group" dir="ltr">
                                     @can('students.delete')
