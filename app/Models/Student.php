@@ -149,9 +149,9 @@ class Student extends Model
         return $this->hasMany(StudentExam::class);
     }
 
-    public function getPhoneAttribute($value)
+    public function getPhoneNumberAttribute()
     {
-        return $value && $value[0] === '0' && $value[0] != '+' ? $value : '0' . $value;
+        return $this->phone && $this->phone[0] === '0' && $this->phone[0] != '+' ? $this->phone : '0' . $this->phone;
     }
     public function getWhatsappAttribute($value)
     {

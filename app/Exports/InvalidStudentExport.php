@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class InvalidStudentExport implements FromArray, WithHeadings
+class InvalidStudentExport implements WithHeadings
 {
     protected $invalidRows;
 
@@ -16,16 +16,6 @@ class InvalidStudentExport implements FromArray, WithHeadings
         $this->invalidRows = $invalidRows;
     }
 
-    public function array(): array
-    {
-        return array_map(function ($row) {
-            $row['dob'] = (string) $row['dob'];
-            $row['dob_qamari'] = (string) $row['dob_qamari'];
-            $row['dob_shamsi'] = (string) $row['dob_shamsi'];
-            
-            return $row;
-        }, $this->invalidRows);
-    }
 
     public function headings(): array
     {

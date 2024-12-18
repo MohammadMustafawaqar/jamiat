@@ -175,7 +175,14 @@
                         </td>
                         <td>{{ $student->graduation_year }}</td>
                         <td>
-                            {!! JamiaHelper::studentAppreciationBadge($student->appreciation) !!}
+                            <div data-toggle="tooltip" data-placement="bottom"
+                            title="{{ __('jamiat.school_appreciation') }}: {{ $student->appreciation?->name }}">
+                                {!! JamiaHelper::studentAppreciationBadge($student->appreciation) !!}
+                            </div>
+                            <div data-toggle="tooltip" data-placement="bottom"
+                            title="{{ __('jamiat.exam_appreciation') }}: {{ $student->studentExams?->first()?->appreciation?->name }}">
+                                {!! JamiaHelper::studentAppreciationBadge($student->studentExams?->first()?->appreciation) !!}
+                            </div>
                         </td>
                         <td class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
                             data-placement="bottom" title="{{ $student->exams->first()?->title }}">
@@ -183,6 +190,7 @@
                         </td>
                         <td>
                             {!! JamiaHelper::studentExamStatus($student->studentExams?->first()?->status) !!}
+
                         </td>
                         <td>
                             <div class="btn-group" dir="ltr">

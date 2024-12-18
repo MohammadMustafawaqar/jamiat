@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Jamiat;
 
 use App\Http\Controllers\Controller;
+use App\Models\Appreciation;
 use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\ExamSubject;
 use App\Models\Jamiat\StudentExam;
@@ -81,7 +82,8 @@ class StudentScoreController extends Controller
                             'total' => 0,
                             'count' => 0,
                             'percentage' => 0,
-                            'passed_count' => 0
+                            'passed_count' => 0,
+                            'total_scores' => 0,
 
                         ];
                     }
@@ -91,6 +93,8 @@ class StudentScoreController extends Controller
                     $studentsScores[$studentId]['count']++;
                     $studentsScores[$studentId]['percentage'] += $percentage;
                     $studentsScores[$studentId]['passed_count'] += $status == 'passed' ? 1 : 0;
+                    $studentsScores[$studentId]['total_scores'] += $exam_subject->subject->score;
+
                 }
             }
         }
@@ -102,21 +106,29 @@ class StudentScoreController extends Controller
 
         // Step 5: Update StudentExam model and assign score_avg and appreciation_id   
 
-        $appreciations = $exam->appreciations->sortByDesc(function ($appreciation) {
-            return $appreciation->pivot->min_score;  // Sort by min_score in descending order
-        });
+        // $appreciations = $exam->appreciations->sortByDesc(function ($appreciation) {
+        //     return $appreciation->pivot->min_score;  // Sort by min_score in descending order
+        // });
+
+        $appreciations = Appreciation::all();
 
         foreach ($studentsScores as $studentId => $data) {
             $sums[$studentId] = $data['total'];
             $averages[$studentId] = $data['count'] > 0 ? $data['total'] / $data['count'] : 0;
-            $percentage = $data['percentage'] / $data['count'];
+            $percentage = $sums[$studentId] / $data['total_scores'] * 100;
             $passed_count = $data['passed_count'];
 
-            $avgScore = $data['count'] > 0 ? $data['total'] / $data['count'] : 0;
+
+            // $appreciation = $appreciations->first(function ($appreciation) use ($percentage) {
+            //     return $percentage >= $appreciation->pivot->min_score;
+            // });
+
 
             $appreciation = $appreciations->first(function ($appreciation) use ($percentage) {
-                return $percentage >= $appreciation->pivot->min_score;
+                return $percentage >= $appreciation->min_score;
             });
+
+            $appreciation = Appreciation::where('min_score', '<=', $percentage)->first();
 
             // Assign appreciation_id if appreciation exists, otherwise null
             $appreciationId = $appreciation && $passed_count >= $data['count']  ? $appreciation->id : null;

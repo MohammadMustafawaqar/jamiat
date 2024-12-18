@@ -122,6 +122,11 @@ class JamiaHelper
             })
             ->when($request->address_type_id, function ($query) use ($request) {
                 $query->where('address_type_id', $request->address_type_id);
+            })
+            ->when($request->exam_id, function ($query) use ($request) {
+                $query->whereHas('exams', function ($q) use ($request) {
+                    $q->where('exams.id', $request->exam_id);
+                });
             });
     }
 

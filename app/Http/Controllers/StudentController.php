@@ -82,9 +82,10 @@ class StudentController extends Controller
         $exams = Exam::all();
 
         $perPage = $request->input('perPage', 10);
-        $query = Form::find(3)->students()->getQuery();
+        $query = Form::find(3)->students()->addSelect('students.*')->getQuery();
 
         $students = JamiaHelper::applyStudentFilters($query, $request)
+            ->orderBy('name')
             ->paginate($perPage)
             ->withQueryString();
 
@@ -419,7 +420,6 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'exam_id' => 'required',
-            'address_type_id' => 'required',
         ]);
         $file = request()->file('excel_file');
 
@@ -445,8 +445,6 @@ class StudentController extends Controller
         }
 
         $invalidRows = $import->getInvalidRows();
-        // dd($invalidRows);
-        // If there are invalid rows, save them to a file
         if (!empty($invalidRows)) {
             $fileName = $import->saveInvalidRecordsToFile();
 
