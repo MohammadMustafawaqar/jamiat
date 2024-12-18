@@ -179,7 +179,7 @@
                 @csrf
                 <x-js-select2 col="col-12" :list="JamiaHelper::subjects()" :label="__('sidebar.subjects')" :required="1" id='subject_ids'
                     name='subject_ids[]' value='id' text='name' modal_id="subject-modal" multiple="true"  />
-
+{{-- 
                 @foreach (JamiaHelper::appreciations() as $appreciation)
                     <div class="col-sm-6">
                         <x-input2 type='text' label="{{ $appreciation->name }} {{ __('lang.appreciation') }}"
@@ -187,7 +187,7 @@
                             col='col-sm-12' :required="1" />
                         <div class="error-message" id="error-min_app-{{ $appreciation->id }}"></div>
                     </div>
-                @endforeach
+                @endforeach --}}
 
                 <div class="d-flex justify-content-between bg-light mt-2">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -289,16 +289,13 @@
                             "Accept": "application/json"
                         },
                         success: function(response) {
-                            console.log(response);
-
-
                             $('#create-form')[0].reset();
                             // $('#patient_id').val(null).trigger('change'); // Reset Select2
-                            // location.reload();
-
-
                             toastr["success"](response.message);
                             $("#create-modal").modal('hide');
+                            location.reload();
+
+
                         },
                         error: function(xhr) {
                             console.log(xhr.responseJSON)

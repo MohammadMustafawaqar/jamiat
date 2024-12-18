@@ -82,7 +82,7 @@ class ExamController extends Controller
         ]);
 
         return response()->json([
-            'request' => $request->all(),
+            'status' => 'success',
             'message' => __('messages.record_submitted')
         ]);
     }
@@ -171,10 +171,10 @@ class ExamController extends Controller
 
         $validator = Validator::make($request->all(), [
             'subject_ids' => 'required|array',
-            'min_app.*' => ['required', 'integer', 'max:1000'],
+            // 'min_app.*' => ['required', 'integer', 'max:1000'],
         ], attributes: [
             'subject_ids' => __('sidebar.subjects'),
-            'min_app.*' => '',
+            // 'min_app.*' => '',
         ]);
 
         try {
@@ -182,14 +182,14 @@ class ExamController extends Controller
             $exam = Exam::find($exam_id);
             $exam->subjects()->sync($request->subject_ids);
 
-            foreach ($request->min_app as $key => $value) {
-                ExamAppreciation::updateOrCreate([
-                    'exam_id' => $exam_id,
-                    'appreciation_id' => $key,
-                ], [
-                    'min_score' => $value
-                ]);
-            }
+            // foreach ($request->min_app as $key => $value) {
+            //     ExamAppreciation::updateOrCreate([
+            //         'exam_id' => $exam_id,
+            //         'appreciation_id' => $key,
+            //     ], [
+            //         'min_score' => $value
+            //     ]);
+            // }
 
             DB::commit();
 

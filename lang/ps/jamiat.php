@@ -98,5 +98,7 @@ return [
     'subject' => 'مضمون',
     'passed' => 'کامیاب',
     'failed' => 'ناکام',
+    'exam_appreciation' => 'د امتحان تقدیر',
+    'school_appreciation' => 'د جامعې تقدیر',
 ];
 

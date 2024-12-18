@@ -8,7 +8,7 @@
         <li class="breadcrumb-item">{{ __('sidebar.rajab_students') }}</li>
     </x-page-nav>
     <x-page-container>
-        
+
         <div class="container-fluid">
             <div class="">
                 <div class="btn-group">
@@ -42,6 +42,9 @@
 
                     <x-input2 type="text" name='phone' :label="__('lang.phone')" col='col-sm-2' />
 
+                    <x-select2 :list="JamiaHelper::exams()" id='filter_exam_id' name="exam_id" :label="__('jamiat.exam')" col="col-sm-2"
+                        text='title' value='id' />
+
 
                     <x-select2 :list="App\Models\Province::get()" id='filter_province_id' name="filter_province_id" :label="__('lang.province')"
                         col="col-sm-2" text='name' value='id' />
@@ -55,6 +58,9 @@
 
                     <x-select2 :list="App\Models\User::get()" id='user_id' name="user_id" :label="__('lang.user')" col="col-sm-2"
                         text='name' value='id' />
+
+
+
 
 
                     <div class="col-sm-2 mt-4">
@@ -91,10 +97,10 @@
 
             <x-table>
                 <x-slot:tools>
-                  <div></div>
+                    <div></div>
 
                     <button type="submit" class="btn btn-primary" id="generate-id-cards-btn" style="display: none">
-                        {{ __('jamiat.generate_card_btn') }}    
+                        {{ __('jamiat.generate_card_btn') }}
                     </button>
 
 
@@ -132,10 +138,10 @@
                             <td>{{ $student->dob_qamari }}</td>
                             <td>{{ $student->currentDistrict?->name }}</td>
                             <td>{{ $student->permanentDistrict?->name }}</td>
-                            <td dir="ltr">{{ $student->phone }}</td>
+                            <td dir="ltr">{{ $student->phone_number }}</td>
                             <td>{{ $student->school?->name }}</td>
                             <td>{{ $student->addressType?->name }}</td>
-                            <td>{{ $student->exams()->first()?->title }}</td>
+                            <td>{{ $student->exams->first()?->title }}</td>
                             <td>
                                 <div class="btn-group" dir="ltr">
                                     @can('students.delete')
@@ -166,11 +172,11 @@
                     <form id='import-form' action="{{ route('admin.student.import.excel.rajab') }}" class="row"
                         method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group ">
+                        {{-- <div class="form-group ">
                             <label class='form-label fs-6 '>{{ __('lang.address_type') }}:</label>
                             <div class="">
-                                <input class="btn-check" type="radio" name="address_type_id" id="interior" value="1"
-                                    checked>
+                                <input class="btn-check" type="radio" name="address_type_id" id="interior"
+                                    value="1" checked>
                                 <label class="btn btn-outline-primary" for="interior">
                                     {{ __('jamiat.interior') }}
                                 </label>
@@ -181,11 +187,13 @@
                                     {{ __('jamiat.exterior') }}
                                 </label>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <x-js-select2 :list="$exams" :label="__('jamiat.select_exam')" value='id' text='title' id='exam_id'
-                            modal_id='import-modal' name='exam_id' col='col-sm-12 fs-6' class="select2" :required="1" />
-                        <x-input type="file" name='excel_file' col='col-12 fs-6' :label="__('jamiat.select_excel_file')" :required="1" />
+                            modal_id='import-modal' name='exam_id' col='col-sm-12 fs-6' class="select2"
+                            :required="1" />
+                        <x-input type="file" name='excel_file' col='col-12 fs-6' :label="__('jamiat.select_excel_file')"
+                            :required="1" />
 
                         <div class="d-flex justify-content-between bg-light mt-2">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -201,8 +209,8 @@
             <div class="container-fluid">
 
                 <form action="{{ route('admin.student.generate.card') }}" method="POST" id='card-form'>
-                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title' id='card_exam_id'
-                        name='exam_id' col='col-sm-12' modal_id='card-modal' />
+                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title'
+                        id='card_exam_id' name='exam_id' col='col-sm-12' modal_id='card-modal' />
                     @csrf
                     <button type="submit" class="btn btn-info">
                         <i class="fa fa-save"></i>
@@ -298,9 +306,6 @@
                 loadGroupUsers("{{ route('load-school-by-address') }}", 'address_type_id', address_type_id,
                     'school_id');
             });
-
-
-
 
 
             function loadProvinces(country_id, target_el_id) {

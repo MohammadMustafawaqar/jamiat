@@ -8,8 +8,9 @@
     </x-page-nav>
     <x-page-container>
         <div class="container">
-
+                     
             <div class="row">
+                <x-backend.shared.validation.all />
                 <div class="col-12">
                     @can('exam.create')
                         <button class="btn btn-primary" id="show-form-btn">
