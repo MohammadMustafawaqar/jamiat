@@ -321,6 +321,51 @@
                     });
                 });
 
+                $('#create-form').submit(function(e) {
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{ route('admin.exam.store') }}",
+                        data: formData,
+                        dataType: "json",
+                        processData: false,
+                        contentType: false,
+                        headers: {
+                            "Accept": "application/json"
+                        },
+                        success: function(response) {
+                            $('#create-form')[0].reset();
+                            // $('#patient_id').val(null).trigger('change'); // Reset Select2
+                            toastr["success"](response.message);
+                            $("#create-modal").modal('hide');
+                            location.reload();
+
+
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseJSON)
+
+                            if (xhr.status === 422) {
+                                var errors = xhr.responseJSON.errors;
+                                $.each(errors, function(key, value) {
+                                    $('#' + key).addClass('is-invalid');
+                                    $('#' + key + '-error').removeClass('d-none').text(
+                                        value[0]);
+
+                                });
+                            } else if (xhr.status === 401) {
+                                console.error('Unauthorized:', xhr);
+                            } else {
+                                console.error('XHR Error:', xhr);
+                            }
+                        }
+                    });
+                });
+
                 $('#edit-form').submit(function(e) {
                     e.preventDefault();
 

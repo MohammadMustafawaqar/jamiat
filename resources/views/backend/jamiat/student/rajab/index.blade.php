@@ -103,6 +103,10 @@
                         {{ __('jamiat.generate_card_btn') }}
                     </button>
 
+                    <button type="submit" class="btn btn-success" style="display: none" id="add-score-btn">
+                        {{ __('jamiat.add_scores') }}
+                    </button>
+
 
                 </x-slot:tools>
                 <thead class="table-primary">
@@ -269,6 +273,20 @@
 
             </div>
         </x-modal>
+        <x-modal id='scores-modal' :title="__('jamiat.add_scores')" size='md'>
+            <div class="container-fluid">
+
+                <form action="{{ route('admin.student.scores.many.create') }}" method="GET" id='scores-form'>
+                    <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title'
+                        id='card_exam_id' name='exam_id' col='col-sm-12' modal_id='card-modal' />
+                    @csrf
+                    <button type="submit" class="btn btn-info">
+                        <i class="fa fa-save"></i>
+                    </button>
+                </form>
+
+            </div>
+        </x-modal>
 
     </div>
     @push('scripts')
@@ -284,7 +302,34 @@
             function toggleGenerateButton() {
                 const isAnyChecked = $('.student-checkbox:checked').length > 0;
                 $('#generate-id-cards-btn').toggle(isAnyChecked);
+                $('#add-score-btn').toggle(isAnyChecked);
+
             }
+
+            $('#add-score-btn').on('click', function() {
+                const selectedIds = $('.student-checkbox:checked').map(function() {
+                    return this.value;
+                }).get();
+
+                if (selectedIds.length === 0) {
+                    alert("Please select at least one student.");
+                    return;
+                }
+
+                // Clear any existing hidden inputs to avoid duplicates
+                $('#scores-form input[name="student_ids[]"]').remove();
+
+                // Add new hidden inputs for selected students
+                selectedIds.forEach(function(id) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'student_ids[]',
+                        value: id
+                    }).appendTo('#scores-form');
+                });
+
+                $('#scores-modal').modal('show');
+            });
 
             // Call toggleGenerateButton on page load and on checkbox changes
             $(document).ready(function() {
