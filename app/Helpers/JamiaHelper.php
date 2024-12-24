@@ -28,7 +28,7 @@ class JamiaHelper
 
     public static function gradesForRajab()
     {
-        return Grade::where("status", "active")->whereIn('id', [1,2])->get();
+        return Grade::where("status", "active")->whereIn('id', [1, 2])->get();
     }
 
     public static function educationLevels()
@@ -146,7 +146,7 @@ class JamiaHelper
             case 4:
                 $badgeColor = 'warning';
                 break;
-            default: 
+            default:
                 $badgeColor = 'danger';
         }
 
@@ -171,7 +171,7 @@ class JamiaHelper
             case 4:
                 $badgeColor = 'warning';
                 break;
-            default: 
+            default:
                 $badgeColor = 'danger';
                 $appreciation = new Appreciation();
                 $appreciation->name = 'ناکام';
@@ -225,14 +225,14 @@ class JamiaHelper
 
         // Hijri (Qamari) current year
         $currentQamariYear = Hijri::Date('Y', now());
-    
+
         // Jalali (Shamsi) current year
         $currentShamsiYear = Jalalian::fromCarbon(now())->getYear();
-    
+
         // Generate Hijri years
         $qamariYears = range($currentQamariYear - $range[0], $currentQamariYear + $range[1]);
-        $qamariYears = array_map(fn($year) => (object)['year' =>  $year   ], $qamariYears);
-    
+        $qamariYears = array_map(fn($year) => (object)['year' =>  $year], $qamariYears);
+
         // Generate Jalali years
         $shamsiYears = range($currentShamsiYear - $range[0], $currentShamsiYear + $range[1]);
         $shamsiYears = array_map(fn($year) => (object)['year' => $year], $shamsiYears);
@@ -270,5 +270,16 @@ class JamiaHelper
         return "<span
         class='badge bg-$badgeColor'
         >" . $badgeText . '</span>';
+    }
+
+    public static function getYearFromDob($dob)
+    {
+        $normalizedDob = str_replace(['/', '\\'], '-', $dob);
+
+        if (preg_match('/\b(13|14)\d{2}\b/', $normalizedDob, $matches)) {
+            return $matches[0]; // Return the first matched year
+        }
+
+        return null; 
     }
 }

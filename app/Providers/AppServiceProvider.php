@@ -70,9 +70,11 @@ class AppServiceProvider extends ServiceProvider
         // Layout
         Blade::component('components.backend.shared.layout.main', 'app');
         Blade::component('components.backend.shared.layout.guest', 'guest');
+        Blade::component('components.backend.shared.layout.diploma-layout', 'diploma');
         Blade::component('components.backend.shared.page-container', 'page-container');
         Blade::component('components.backend.shared.page-nav', 'page-nav');
         Blade::component('components.backend.shared.table', 'table');
+        
 
         // Qamari Date
         Blade::component('components.backend.shared.qamari-input', 'qamari-input');

@@ -39,6 +39,7 @@ return [
     'edit_district' => 'Edit district',
     'edit_category' => 'Edit category',
     'edit_sub_category' => 'Edit sub category',
+    'edit_appreciation' => 'Edit Appreciation',
     'edit_school' => 'Edit school',
     'notice' => 'Notice',
     'error' => 'Error',

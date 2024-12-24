@@ -100,5 +100,7 @@ return [
     'failed' => 'ناکام',
     'exam_appreciation' => 'د امتحان تقدیر',
     'school_appreciation' => 'د جامعې تقدیر',
+    'print_diploma' => 'ديپلوم پرنټ کړئ',
+    'next' => 'مخکنې پاڼه',
 ];
 

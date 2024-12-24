@@ -1,6 +1,6 @@
 <x-app :title="__('lang.schools')">
 
-    <x-page-nav :title="__('sidebar.exams')" icon='clipboard'>
+    <x-page-nav :title="__('lang.schools')" icon='school'>
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         &nbsp;
         <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('lang.dashboard') }}</a></li>

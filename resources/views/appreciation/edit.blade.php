@@ -11,6 +11,7 @@
                     @csrf
                     @method('put')
                     <x-input name="name" :label="__('lang.name')" :value="$appreciation->name" :required="1" autofocus/>
+                    <x-input name="min_score" :label="__('jamiat.min_score')" :value="$appreciation->min_score" :required="1" />
                     <x-buttons.update/>
                 </form>
             </div>

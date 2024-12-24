@@ -115,7 +115,7 @@
                 <div class="pre-student-form-card-footer d-flex justify-content-between bg-light p-2 mb-2">
                     <x-btn-back route="students.index" />
                     <button class="btn btn-info">
-                        {{ Settings::trans('Next', 'وروستې پاڼه', 'صفحه بعدي') }}
+                        {{ __('jamiat.next') }}
                         <i class="fa fa-arrow-{{ app()->getLocale() == 'en' ? 'right' : 'left' }}"></i>
                     </button>
                 </div>

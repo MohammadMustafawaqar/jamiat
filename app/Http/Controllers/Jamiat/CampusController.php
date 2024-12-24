@@ -23,9 +23,9 @@ class CampusController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $campuses = Campus::paginate(10);
+        $campuses = Campus::paginate($request->perPage);
         return view('backend.jamiat.campus.index', [
             'campuses' => $campuses
         ]);
@@ -68,10 +68,10 @@ class CampusController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($locale, string $id)
+    public function show(Request $request, $locale, string $id)
     {
         $campus = Campus::find($id);
-        $classes = CClass::where('campus_id', $id)->paginate(10);
+        $classes = CClass::where('campus_id', $id)->paginate($request->perPage);
         return view('backend.jamiat.campus.classes.index', [
             'classes' => $classes,
             'campus' => $campus,

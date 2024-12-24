@@ -27,4 +27,39 @@ class Grade extends Model
 
         return null; // Default value if no match
     }
+
+    public function getLocalizedNameAttribute()
+    {
+
+        $replace = [
+            'الیعلة' => 'علیې',
+            'العالمیة' => 'عالمیې',
+            'العالمیة العلیا' => 'عالیمةالعلیا'
+        ];
+
+        return str_replace(array_keys($replace), array_values($replace), $this->name);
+    }
+
+    public function getArabicEquivalentAttribute()
+    {
+
+        $replace = [
+            'لیسانس' => 'البكالوريوس',
+            'ماستري' => 'الماجستیر',
+            'دوکتورا' => 'الدکتوراه'
+        ];
+
+        return str_replace(array_keys($replace), array_values($replace), $this->equivalent);
+    }
+
+    public function getEnglishEquivalentAttribute()
+    {
+        $replace = [
+            'لیسانس' => "Bachelor's Degree",
+            'ماستري' => "Master's Degree ",
+            'دوکتورا' => "PhD's Degree"
+        ];
+
+        return str_replace(array_keys($replace), array_values($replace), $this->equivalent);
+    }
 }

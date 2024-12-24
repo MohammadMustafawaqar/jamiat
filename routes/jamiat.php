@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Jamiat\CampusController;
 use App\Http\Controllers\Jamiat\ClassController;
+use App\Http\Controllers\Jamiat\DiplomaController;
 use App\Http\Controllers\Jamiat\EducationLevelController;
 use App\Http\Controllers\Jamiat\ExamController;
 use App\Http\Controllers\Jamiat\FormController;
@@ -96,6 +97,20 @@ Route::group([
 
             Route::post('exam/{exam_id}/store/many', 'storeMany')
                 ->name('many.store');
+        });
+
+
+        Route::group([
+            'as' => 'diploma.',
+            'prefix' => 'diploma/',
+            'controller' => DiplomaController::class
+        ], function(){
+            Route::post('store', 'store')
+                ->name('store');
+
+            Route::get('create', 'create')
+                ->name('create');
+
         });
     });
 

@@ -38,6 +38,8 @@ return [
     'edit_province' => 'ولایت تغیرول',
     'edit_district' => 'ولسوالي تغیرول',
     'edit_category' => 'د تخصص کټګوري تغیرول',
+    'edit_appreciation' => 'د تقدیر درجې تغیرول',
+
     'edit_sub_category' => 'د تخصص فرعي کټګوري تغیرول',
     'edit_school' => 'د جامعې تغیرول',
     'notice' => 'خبرتیا',

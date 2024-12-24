@@ -19,6 +19,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>{{__('lang.name')}}</th>
+                                <th>{{__('jamiat.score')}}</th>
                                 <th>{{__('lang.action')}}</th>
                             </tr>
                         </thead>
@@ -27,6 +28,7 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$appreciation->name}}</td>
+                                <td>{{$appreciation->min_score}}</td>
                                 <td>
                                     <div class="btn-group" dir="ltr">
                                         <x-buttons.edit :route="route('appreciation.edit',$appreciation)" />
@@ -47,6 +49,7 @@
         <form action="{{route('appreciation.store')}}" method="post">
             @csrf
             <x-input name="name" :label="__('lang.name')" :required="1" />
+            <x-input type='number' name="min_score" :label="__('jamiat.score')" :required="1" />
             <x-buttons.save />
         </form>
     </x-modal>

@@ -21,7 +21,7 @@ class AppreciationController extends Controller
      */
     public function index()
     {
-        $appreciations = Appreciation::get();
+        $appreciations = Appreciation::orderByDesc('min_score')->get();
         return view('appreciation.index', compact('appreciations'));
     }
 
@@ -39,7 +39,8 @@ class AppreciationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:appreciations'
+            'name' => 'required|string|max:255|unique:appreciations',
+            'min_score' => 'required|numeric|unique:appreciations,min_score'
         ]);
         Appreciation::create($request->all());
         return redirect()->back()->with("msg", __('messages.record_submitted'));
@@ -67,6 +68,10 @@ class AppreciationController extends Controller
      */
     public function update($locale, Request $request, Appreciation $appreciation)
     {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:appreciations,name,' . $appreciation->id,
+            'min_score' => 'required|numeric|unique:appreciations,min_score,' . $appreciation->id
+        ]);
         $appreciation->update($request->all());
         return redirect()->route('appreciation.index')->with("msg", __('messages.record_updated'));
     }
