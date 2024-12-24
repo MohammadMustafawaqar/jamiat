@@ -117,6 +117,12 @@ class Student extends Model
         );
     }
 
+
+    protected function getPermanentFullAddressAttribute()
+    {
+        return "{$this->permanentDistrict->province->name}, {$this->permanentDistrict->name}, {$this->permanent_village}";
+    }
+
     public function exams()
     {
         return $this->belongsToMany(Exam::class, 'student_exams', 'student_id', 'exam_id')

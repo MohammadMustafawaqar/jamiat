@@ -89,13 +89,11 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
 
     public function headingRow(): int
     {
-        return 6;
+        return 1;
     }
 
     public function model(array $row)
     {
-        // dd($row);
-
         $errors = [];
 
 
@@ -119,16 +117,6 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
             $errors[] = "Permanent Province is required";
         }
 
-        $schoolProvince = null;
-        if ($row['ar'] != '' || $row['ar'] != null) {
-            $schoolProvince = Province::where('name', $row['ar'])->first();
-            if (!$schoolProvince) {
-                $schoolProvince = Province::create(['country_id' => 1, 'name' => $row['ar']]);
-            }
-        } else {
-            $errors[] = "School Province is required";
-        }
-
         $schoolCountry = null;
         if ($row['zdh_ky_hyoad'] != '' || $row['zdh_ky_hyoad'] != null) {
             $schoolCountry = Country::where('name', $row['zdh_ky_hyoad'])->first();
@@ -139,13 +127,25 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
             $errors[] = "School Country is required";
         }
 
+        $schoolProvince = null;
+        if ($row['ar'] != '' || $row['ar'] != null) {
+            $schoolProvince = Province::where('name', $row['ar'])->first();
+            if (!$schoolProvince) {
+                $schoolProvince = Province::create(['country_id' => $schoolCountry->id, 'name' => $row['ar']]);
+            }
+        } else {
+            $errors[] = "School Province is required";
+        }
+
+       
+
 
         // Find or create districts with resolved province IDs
         if ($currentProvince) {
             $currentDistrict = $this->findOrCreateSimilarWithCondition(
                 District::class,
                 'name',
-                $row['faaly_astony'],
+                $row['faaly_olsoaly'],
                 ['province_id' => $currentProvince->id]
             );
         }
@@ -170,14 +170,24 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
         $gender = Gender::where('name_ps', $row['gnst'])->first();
 
         // For the school, match name, country, province, and district
-        $school = School::all()->filter(function ($school) use ($row, $schoolCountry, $schoolProvince) {
-            $nameSimilarity = similar_text($school->name, $row['gamaah_nom']) / max(strlen($school->name), strlen($row['gamaah_nom']));
-            $countryMatch = $school->country_id === $schoolCountry?->id ?? 1;
-            $provinceMatch = $school->province_id === $schoolProvince?->id ?? 25;
-            // $districtMatch = $school->district_id === $schoolDistrict->id;
+        // $school = School::all()->filter(function ($school) use ($row, $schoolCountry, $schoolProvince) {
+        //     $nameSimilarity = similar_text($school->name, $row['gamaah_nom']) / max(strlen($school->name), strlen($row['gamaah_nom']));
+        //     $countryMatch = $school->country_id === $schoolCountry?->id ?? 1;
+        //     $provinceMatch = $school->province_id === $schoolProvince?->id ?? 25;
+        //     // $districtMatch = $school->district_id === $schoolDistrict->id;
 
-            return $nameSimilarity >= 0.7 && $countryMatch && $provinceMatch;
-        })->first();
+        //     return $nameSimilarity >= 0.7 && $countryMatch && $provinceMatch;
+        // })->first();
+
+        $school = $this->findOrCreateSimilarWithCondition(
+            School::class,
+            'name',
+            $row['gamaah_nom'],
+            [
+                'province_id' => $schoolProvince->id,
+                'address_type_id' => $schoolCountry->id == 1 ? 1 : 2
+            ]
+        );
 
         if($row['gamaah_nom'] != null && $row['gamaah_nom'] != ''){
             if (!$school) {
@@ -224,8 +234,8 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
             'grand_father_name' => $row['nykh_nom'],
             'current_district_id' => $currentDistrict?->id ?? null,
             'permanent_district_id' => $permanentDistrict->id ?? null,
-            'current_village' => $row['faaly_olsoaly'],
-            'permanent_village' => $row['olsoaly'],
+            'current_village' => $row['faaly_kryh'],
+            'permanent_village' => $row['kryh'],
             'school_id' => $school->id,
             'gender_id' => $gender?->id ?? 1,
             'dob_qamari' => $row['zydo_nyh'],

@@ -158,8 +158,8 @@
                                     </div>
                                     <div class="text-truncate" style="max-width: 100px;" data-toggle="tooltip"
                                         data-placement="bottom"
-                                        title="{{ __('lang.permanent_address') }}: {{ $student->permanentAddress }}">
-                                        {{ $student->permanentAddress }}
+                                        title="{{ __('lang.permanent_address') }}: {{ $student->permanentFullAddress }}">
+                                        {{ $student->permanentFullAddress }}
                                     </div>
                                 </div>
                             </td>
