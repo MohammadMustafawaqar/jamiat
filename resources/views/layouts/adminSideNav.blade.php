@@ -8,7 +8,7 @@
     @canany(['schools.create', 'schools.edit', 'schools.read', 'schools.delete'])
         <li>
             <a class="app-menu__item {{ Str::startsWith(Route::currentRouteName(), 'schools.') ? 'active' : '' }}"
-                href="{{ route('schools.index') }}"><i class="app-menu__icon bi bi-houses"></i><span
+                href="{{ route('schools.index') }}"><i class="app-menu__icon bi bi-house"></i><span
                     class="app-menu__label">{{ __('lang.schools') }}</span>
             </a>
         </li>

@@ -23,7 +23,7 @@
     </div>
     <div class="col-lg-6 col-xl-3">
         <div class="widget-small info coloured-icon animate__animated animate__bounceInUp"><i
-                class="icon bi bi-house-check-fill fs-1"></i>
+                class="icon bi bi-house fs-1"></i>
             <div class="info">
                 <h4>{{__('lang.schools')}}</h4>
                 <p><b class="counter" data-target="{{App\Models\School::count()}}" data-duration="1000">0</b></p>
