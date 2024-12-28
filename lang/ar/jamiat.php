@@ -102,4 +102,5 @@ return [
     'school_appreciation' => 'تقدير الجامعة',
     'print_diploma' => 'طباعة الدبلوم',
     'next' => 'التالي',
+    'diploma_printed' => 'طباعة الشهادة',
 ];

@@ -227,7 +227,7 @@ class RajabStudentImport implements ToModel, WithHeadingRow, WithValidation, Ski
 
         // Create Student record with resolved IDs
         $student = Student::create([
-            'form_id' => $row['shmarh'],
+            'form_id' => $row['sryal_nmbr'],
             'name' => $row['nom'],
             'last_name' => $row['tkhls'],
             'father_name' => $row['dplarnom'],

@@ -102,5 +102,7 @@ return [
     'school_appreciation' => 'د جامعې تقدیر',
     'print_diploma' => 'ديپلوم پرنټ کړئ',
     'next' => 'مخکنې پاڼه',
+    'diploma_printed' => 'دیپلوم چاپ ',
+
 ];
 

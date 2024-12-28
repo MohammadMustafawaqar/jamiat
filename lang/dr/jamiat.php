@@ -103,4 +103,6 @@ return [
     'school_appreciation' => 'تقدیر جامعه',
     'print_diploma' => 'چاپ دیپلم',
     'next' => 'صفحه بعدي',
+    'diploma_printed' => 'دیپلوم چاپ ',
+
 ];

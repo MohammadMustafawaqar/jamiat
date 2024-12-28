@@ -18,6 +18,7 @@ class DiplomaController extends Controller
         $request->validate([
             'exam_id' => 'required',
             'student_ids' => 'required',
+            'diploma_year' => 'required'
         ]);
 
         $students = Student::whereIn('id', $request->student_ids)
@@ -27,12 +28,21 @@ class DiplomaController extends Controller
             })->get();
 
 
+
         if($students->isEmpty()){
             return redirect()->back()->with('error', __('messages.no_succeed_students'));
+        }
+
+        foreach($students as $stud){
+            $stud->studentExams->where('exam_id', $request->exam_id)->first()->update([
+                'status' => 'diploma_printed'
+            ]);
+            $stud->exam_grade = $stud->exams->where('id', $request->exam_id)->first()->grade;
         }
         
         return view('backend.jamiat.student.diploma.create', [
             'students' => $students,
+            'year' => $request->diploma_year
         ]);
     }
 }

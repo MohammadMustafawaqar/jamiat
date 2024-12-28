@@ -1,13 +1,7 @@
 <x-diploma title="Diploma">
     @push('styles')
         <style>
-            @font-face {
-                font-family: 'Bahij';
-                src: url("assets/fonts/Bahij/bahij-nassim-bold.ttf");
-                font-weight: bold;
-                font-style: normal;
-            }
-
+        
             body {
 
                 font-family: 'Bahij';
@@ -30,7 +24,8 @@
                 page-break-inside: avoid;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: end;
+                margin-bottom: 20px;
                 text-align: center;
             }
 
@@ -68,6 +63,10 @@
 
             @media print {
 
+                .student-container{
+                    page-break-after: always;
+                }
+
                 .underline-text {
                     display: inline-block !important;
                     /* Ensure the inline-block behavior for print */
@@ -92,14 +91,14 @@
 
     <div class="container-fluid">
         @foreach ($students as $student)
-            <div class="student-container mt-5">
+            <div class="student-container container-fluid">
                 <div class="row mb-3 align-items-center smaller-text">
                     <div class="col-3 text-right">
                         <p class="smaller-text">رقم التسجیل: </p>
                     </div>
                     <div class="col-6 text-center">
-                        <p class="smaller-text">شهادة {{ $student->exams()->first()->grade->name }} ({{ $student->exams()->first()->grade->arabic_equivalent }})</p>
-                        <p class="smaller-text">{{ $student->exams()->first()->grade->english_equivalent }}</p>
+                        <p class="smaller-text">شهادة {{ $student->exam_grade->name }} ({{ $student->exam_grade->arabic_equivalent }})</p>
+                        <p class="smaller-text">{{ $student->exam_grade->english_equivalent }}</p>
                     </div>
                     <div class="col-3 text-left">
                         <p class="smaller-text">رقم المسلسل: {{ $student->form_id }}</p>
@@ -115,11 +114,10 @@
                        <span class="underline-text"> {{ JamiaHelper::getYearFromDob($student->dob_qamari) }}</span> هـ ق قد أتمّ المتطلبات الدراسیّة
                         لجامعة <span class="underline-text">{{ $student->school->name }}</span>
                         ونـجـح في الاختبار المنعقد عام <span
-                            class="underline-text">1446</span> هـ ق تحت إشراف
+                            class="underline-text">{{ $year }}</span> هـ ق تحت إشراف
                         هذه الرئاسة، و وزیر التعلیم العالي إذ یمنحه
                         شهادة
-                        العالمیة (
-                        الماجستیر )یوصیه بتقوی الله تعالی ویسأل الله عزَّوجلَّ أن یوفّقه لخدمة الإسلام والمسلمین
+                        {{ $student->exam_grade->name }} ({{ $student->exam_grade->arabic_equivalent }}) یوصیه بتقوی الله تعالی ویسأل الله عزَّوجلَّ أن یوفّقه لخدمة الإسلام والمسلمین
                     </p>
                 </div>
                 <div class="row justify-content-between text-center mt-2">

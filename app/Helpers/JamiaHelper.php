@@ -200,7 +200,8 @@ class JamiaHelper
             case 'created':
                 $badgeColor = 'success';
                 break;
-            case 2:
+            case 'diploma_printed':
+                $badgeText = __('jamiat.diploma_printed');
                 $badgeColor = 'info';
                 break;
             case 3:

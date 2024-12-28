@@ -102,5 +102,7 @@ return [
     'school_appreciation' => 'University Appreciation',
     'print_diploma' => 'Print Diploma',
     'next' => 'Next Page',
+    'diploma_printed' => 'Diploma Printed',
+
 
 ];

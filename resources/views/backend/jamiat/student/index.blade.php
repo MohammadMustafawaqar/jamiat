@@ -297,10 +297,13 @@
         <x-modal id='diploma-modal' :title="__('jamiat.print_diploma')" size='md'>
             <div class="container-fluid">
 
-                <form action="{{ route('admin.student.diploma.store') }}" method="POST" id='diploma-form'>
+                <form action="{{ route('admin.student.diploma.store') }}" method="POST" id='diploma-form' target="_blank">
+                    @csrf
                     <x-js-select2 :list="$exams" :label="__('jamiat.exam')" value='id' text='title'
                         id='diploma_exam_id' name='exam_id' col='col-sm-12' modal_id='diploma-modal' />
-                    @csrf
+                    <x-js-select2 :list="JamiaHelper::getQamariAndShamsiYears([100,10])['qamari']" :label="__('jamiat.qamari_year')" value='year' text='year'
+                        id='diploma_year' name='diploma_year' col='col-sm-12' modal_id='diploma-modal' />
+                   
                     <button type="submit" class="btn btn-info">
                         <i class="fa fa-save"></i>
                     </button>
