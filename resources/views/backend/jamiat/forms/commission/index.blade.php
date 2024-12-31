@@ -11,7 +11,7 @@
 
             <div class="row">
                 <div class="col-12">
-                    @can('exam.create')
+                    @can('form.commission.create')
                         <button class="btn btn-primary" id="show-form-btn">
                             <i class="fa fa-add" id="add-icon"></i>
                         </button>
@@ -24,6 +24,8 @@
             </div>
             <div class="row" style="@if (!$errors->any()) display: none @endif"
                 id="form-generate-container">
+                @can('form.commission.create')
+
                 <form action="{{ route('admin.forms.commission.store') }}" method="POST" class="row"
                     target="_blank">
                     @csrf
@@ -53,6 +55,7 @@
                         </div>
                     </div>
                 </form>
+                @endcan
             </div>
             <div class="clearfix"></div>
 
@@ -60,6 +63,8 @@
             <x-table id='doctorTable'>
                 <x-slot:tools>
                     <div></div>
+                    @can('form.commission.print many')
+
                     <form action="{{ route('admin.forms.commission.print.many') }}" method="GET" id='print-many-form'
                         target="_blank">
                         <input type="hidden" id="stud_form_ids" name="stud_form_ids">
@@ -68,6 +73,7 @@
                             {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
                         </button>
                     </form>
+                    @endcan
                 </x-slot:tools>
                 <thead>
                     <tr>
@@ -113,22 +119,24 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @can('exam.delete')
+                                    @can('form.commission.delete')
                                         <x-buttons.delete :route="route('admin.forms.commission.destroy', $form->id)" />
                                     @endcan
 
-                                    @can('exam.edit')
+                                    @can('form.commission.show')
                                         <x-btn-print route="admin.forms.commission.show" :params="[
                                             'commission' => $form->id,
                                             'locale' => app()->getLocale(),
                                         ]" />
                                     @endcan
 
+                                    @can('form.commission.add student')
                                     <a href="{{ route('admin.forms.commission.create-student', $form->id) }}"
                                         class="btn btn-sm btn-warning">
                                         <i class="fa fa-user"></i>
                                         فاضل اضافه کړئ
                                     </a>
+                                    @endcan
                                 </div>
 
                             </td>

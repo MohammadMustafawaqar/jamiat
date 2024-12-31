@@ -8,14 +8,15 @@
     </x-page-nav>
     <x-page-container>
         <div class="container">
-                     
+
             <div class="row">
                 <x-backend.shared.validation.all />
                 <div class="col-12">
-                    @can('exam.create')
+                    @can('form.rajab.create')
                         <button class="btn btn-primary" id="show-form-btn">
                             <i class="fa fa-add" id="add-icon"></i>
                         </button>
+
                         <button class="btn btn-danger" id="hide-form-btn" style="display: none">
                             <i class="fa fa-close" id="close-icon"></i>
                         </button>
@@ -24,31 +25,33 @@
                 </div>
             </div>
             <div class="row" style="display: none" id="form-generate-container">
-                <form action="{{ route('admin.forms.rajab.store') }}" class="row" method="POST" target="_blank">
-                    @csrf
-                    <x-select2 name="shamsi_year" id="shamsi_year" value="year" text="year" :list="$shamsiYears"
-                        col="col-sm-2" :selected_value="old('shamsi_year')" :label="__('jamiat.shamsi_year')" required="1" />
+                @can('form.rajab.create')
+                    <form action="{{ route('admin.forms.rajab.store') }}" class="row" method="POST" target="_blank">
+                        @csrf
+                        <x-select2 name="shamsi_year" id="shamsi_year" value="year" text="year" :list="$shamsiYears"
+                            col="col-sm-2" :selected_value="old('shamsi_year')" :label="__('jamiat.shamsi_year')" required="1" />
 
-                    <x-select2 name="qamari_year" id="qamari_year" value="year" text="year" :list="$qamariYears"
-                        col="col-sm-2" :selected_value="old('qamari_year')" :label="__('jamiat.qamari_year')" required="1" />
-                    <input type="hidden" name="form_id" value="{{ $form->id }}" />
-                    <x-input col='col-sm-2' type='number' id="start_range" name='start_range' :label="__('jamiat.start_range')"
-                        :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
+                        <x-select2 name="qamari_year" id="qamari_year" value="year" text="year" :list="$qamariYears"
+                            col="col-sm-2" :selected_value="old('qamari_year')" :label="__('jamiat.qamari_year')" required="1" />
+                        <input type="hidden" name="form_id" value="{{ $form->id }}" />
+                        <x-input col='col-sm-2' type='number' id="start_range" name='start_range' :label="__('jamiat.start_range')"
+                            :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
 
-                    <x-input col='col-sm-2' type='number' id="end_range" name='end_range' :label="__('jamiat.end_range')"
-                        :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
+                        <x-input col='col-sm-2' type='number' id="end_range" name='end_range' :label="__('jamiat.end_range')"
+                            :required="1" :value="$highestSerial" min="{{ $highestSerial }}" />
 
-                    <x-select2 id="grade_id" name="grade_id" :list="JamiaHelper::gradesForRajab()" text="name" value="id"
-                        :label="__('jamiat.grade_name')" col="col-sm-2" :required="1" />
+                        <x-select2 id="grade_id" name="grade_id" :list="JamiaHelper::gradesForRajab()" text="name" value="id"
+                            :label="__('jamiat.grade_name')" col="col-sm-2" :required="1" />
 
-                    <div class="col-sm-2 mt-4">
-                        <div class="btn-group">
-                            <button class="btn btn-success">
-                                {{ __('jamiat.generate') }}
-                            </button>
+                        <div class="col-sm-2 mt-4">
+                            <div class="btn-group">
+                                <button class="btn btn-success">
+                                    {{ __('jamiat.generate') }}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                @endcan
             </div>
             <div class="clearfix"></div>
 
@@ -57,14 +60,17 @@
                 <x-slot:tools>
                     <div></div>
                     <div>
-                        <form action="{{ route('admin.forms.rajab.print.many') }}" method="GET" id='print-many-form' target="_blank">
-                            <input type="hidden" id="stud_form_ids" name="stud_form_ids" >
-                            <button class="btn btn-info btn-sm" id="form-print-btn">
-                                <i class="fa fa-print"></i>
-                                {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
-                            </button>
-                        </form>
-                        
+                        @can('form.rajab.print many')
+                            <form action="{{ route('admin.forms.rajab.print.many') }}" method="GET" id='print-many-form'
+                                target="_blank">
+                                <input type="hidden" id="stud_form_ids" name="stud_form_ids">
+                                <button class="btn btn-info btn-sm" id="form-print-btn">
+                                    <i class="fa fa-print"></i>
+                                    {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
+                                </button>
+                            </form>
+                        @endcan
+
                     </div>
                 </x-slot:tools>
                 <thead>
@@ -107,20 +113,24 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @can('exam.delete')
+                                    @can('form.rajab.delete')
                                         <x-buttons.delete :route="route('admin.forms.rajab.destroy', $form->id)" />
                                     @endcan
-                                   
-                                    @can('exam.edit')
+
+                                    @can('form.rajab.show')
                                         <x-btn-print route="admin.forms.rajab.show" :params="[
                                             'rajab' => $form->id,
                                             'locale' => app()->getLocale(),
                                         ]" />
                                     @endcan
-                                    <a href="{{ route('admin.forms.rajab.create-student', $form->id) }}" class="btn btn-sm btn-warning">
-                                        <i class="fa fa-user"></i>
-                                        فاضل اضافه کړئ
-                                    </a>
+
+                                    @can('form.rajab.add student')
+                                        <a href="{{ route('admin.forms.rajab.create-student', $form->id) }}"
+                                            class="btn btn-sm btn-warning">
+                                            <i class="fa fa-user"></i>
+                                            فاضل اضافه کړئ
+                                        </a>
+                                    @endcan
                                 </div>
 
                             </td>
@@ -138,8 +148,6 @@
         <div class="container-fluid">
             <form id='create-form' class="row" method="POST">
                 @csrf
-
-
 
                 <div class="d-flex justify-content-between bg-light mt-2">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -172,7 +180,7 @@
                 $('#form-print-btn').toggle(isAnyChecked);
             }
 
-            $("#form-print-btn").on('click', function(){
+            $("#form-print-btn").on('click', function() {
                 const selectedIds = $('.stud_form-checkbox:checked').map(function() {
                     return this.value;
                 }).get();

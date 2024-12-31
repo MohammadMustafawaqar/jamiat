@@ -74,7 +74,7 @@ class PermissionSeeder extends Seeder
             // ['name' => 'users.db_backup', 'guard_name' => 'web'],
             // ['name' => 'users.file_backup', 'guard_name' => 'web'],
 
-          
+
 
             // // language
             // ['name' => 'language.*', 'guard_name' => 'web'],
@@ -139,10 +139,75 @@ class PermissionSeeder extends Seeder
             // ['name' => 'sub_class.read', 'guard_name' => 'web'],
             // ['name' => 'sub_class.show', 'guard_name' => 'web'],
 
-            ['name' => 'student_tools.*', 'guard_name' => 'web'],
-            ['name' => 'student_tools.print diploma', 'guard_name' => 'web'],
-            ['name' => 'student_tools.add score', 'guard_name' => 'web'],
-            ['name' => 'student_tools.generate Id Card', 'guard_name' => 'web'],
+            // ['name' => 'student_tools.*', 'guard_name' => 'web'],
+            // ['name' => 'student_tools.print diploma', 'guard_name' => 'web'],
+            // ['name' => 'student_tools.add score', 'guard_name' => 'web'],
+            // ['name' => 'student_tools.generate Id Card', 'guard_name' => 'web'],
+
+            [
+                'name' =>
+                'form.rajab.*',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.create',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.edit',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.read',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.show',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.add student',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' =>
+                'form.rajab.print many',
+                'guard_name' => 'web'
+            ],
+
+            ['name' => 'form.commission.*', 'guard_name' => 'web'],
+            ['name' => 'form.commission.create', 'guard_name' => 'web'],
+            ['name' => 'form.commission.edit', 'guard_name' => 'web'],
+            ['name' => 'form.commission.read', 'guard_name' => 'web'],
+            ['name' => 'form.commission.show', 'guard_name' => 'web'],
+            ['name' => 'form.commission.add student', 'guard_name' => 'web'],
+            [
+                'name' =>
+                'form.commission.print many',
+                'guard_name' => 'web'
+            ],
+
+
+
+            ['name' => 'form.evaluation.*', 'guard_name' => 'web'],
+            ['name' => 'form.evaluation.create', 'guard_name' => 'web'],
+            ['name' => 'form.evaluation.edit', 'guard_name' => 'web'],
+            ['name' => 'form.evaluation.read', 'guard_name' => 'web'],
+            ['name' => 'form.evaluation.show', 'guard_name' => 'web'],
+            ['name' => 'form.evaluation.add student', 'guard_name' => 'web'],
+            [
+                'name' =>
+                'form.evaluation.print many',
+                'guard_name' => 'web'
+            ],
+
+
+
 
         ];
 
