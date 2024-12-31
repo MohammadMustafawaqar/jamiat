@@ -61,6 +61,9 @@ Route::group([
         Route::get('{student}', 'showEmployee')
             ->name('show');
 
+        Route::delete('{student}', 'destroy')
+            ->name('destroy');
+
         Route::get('/form/rajab', 'rajabIndex')
             ->name('form.rajab')
             ->middleware('permission:students.read.rajab');
@@ -79,6 +82,7 @@ Route::group([
 
         Route::get('/evaluation/export', 'evaluationStudentExport')
             ->name('evaluation.export');
+
 
 
         // Generate Card
@@ -104,13 +108,12 @@ Route::group([
             'as' => 'diploma.',
             'prefix' => 'diploma/',
             'controller' => DiplomaController::class
-        ], function(){
+        ], function () {
             Route::post('store', 'store')
                 ->name('store');
 
             Route::get('create', 'create')
                 ->name('create');
-
         });
     });
 
@@ -136,14 +139,26 @@ Route::group([
 
         Route::get('commission/print-many', [CommissionController::class, 'printManyForms'])
             ->name('commission.print.many');
+
         Route::resource('/commission', CommissionController::class);
+
         Route::get('rajab/print-many', [RajabController::class, 'printManyForms'])
             ->name('rajab.print.many');
+
+        Route::get('rajab/{form_id}/create-student', [RajabController::class, 'createStudent'])
+            ->name('rajab.create-student');
+
         Route::resource('/rajab', RajabController::class);
 
         Route::get('evaluation/print-many', [EvaluationController::class, 'printManyForms'])
             ->name('evaluation.print.many');
+
+        Route::get('commission/{form_id}/create-student', [CommissionController::class, 'createStudent'])
+            ->name('commission.create-student');
+
         Route::resource('/evaluation', EvaluationController::class);
+        Route::get('evaluation/{form_id}/create-student', [EvaluationController::class, 'createStudent'])
+        ->name('evaluation.create-student');
         // Route::group([
         //     'as' => 'commission.',
         //     'prefix' => 'commission/',

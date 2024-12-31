@@ -4,9 +4,15 @@ namespace App\Http\Controllers\Jamiat\Forms;
 
 use App\Helpers\JamiaHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Appreciation;
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\Gender;
+use App\Models\Jamiat\Exam;
 use App\Models\Jamiat\Form;
 use App\Models\Jamiat\Grade;
 use App\Models\Jamiat\StudentForm;
+use App\Models\School;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -167,6 +173,54 @@ class RajabController extends Controller
             'form' => $studentForm,
             'grade_name' => $studentForm->first()?->grade?->name,
             'grade_classes' => $studentForm->first()->grade->grade_classes
+        ]);
+    }
+
+    public function createStudent($locale, $form_id)
+    {
+        $form = StudentForm::find($form_id);
+
+        $validated = [
+            'form_type' => 3,
+            'address_type_id' => $form->address_type_id,
+            'exam_grade' => $form->grade_id
+        ];
+
+        $redirect = 'admin.forms.rajab.index';
+
+        session([
+            'redirect' => $redirect
+        ]);
+
+        $countries = Country::get();
+        $schools = School::where('address_type_id', $form->address_type_id)->get();
+        $categories = Category::get();
+        $appreciations = Appreciation::get();
+        $genders = Gender::get();
+        $exams = Exam::all();
+        $nic_types = [
+            (object)[
+                'value' => 'paper',
+                'text' => __('jamiat.paper_nic')
+            ],
+            (object)[
+                'value' => 'electric',
+                'text' => __('jamiat.electric_nic')
+            ],
+        ];
+
+        return view('student.second-form', [
+            'countries' => $countries,
+            'schools' => $schools,
+            'categories' => $categories,
+            'appreciations' => $appreciations,
+            'genders' => $genders,
+            'exams' => $exams,
+            'selections' => $validated,
+            'nic_types' => $nic_types,
+            'serial_number' => $form->serial_number,
+            'redirect' => $redirect,
+            
         ]);
     }
 }

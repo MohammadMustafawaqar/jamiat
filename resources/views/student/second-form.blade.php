@@ -30,7 +30,10 @@
                                 @endif
 
                                 <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="form_id" :label="__('lang.form_id')"
-                                    :required="1" autofocus />
+                                    :required="1" autofocus
+                                    :value="isset($serial_number) ? $serial_number : old('form_id')"
+                                    :readonly="isset($serial_number) ? true : false"
+                                    />
                                 <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="name" :label="__('lang.name')"
                                     :required="1" />
                                 {{-- <x-input col="col-6 col-md-4 col-lg-3 col-xl-2" name="name_en" :label="__('lang.name_en')"
@@ -181,18 +184,27 @@
                                     <div id="error-message" style="color:red;"></div>
                                 </div> --}}
 
+                                @if(isset($serial_number))
+                                @foreach ($selections as $key => $value)
+                                <input type="hidden" value="{{ $value }}" name="selections[{{ $key }}]">
+                                    
+                                @endforeach
+                                @endif
+
 
 
                             </div>
                             <div class="d-flex justify-content-between bg-light p-3">
-                                <x-btn-back route="students.create" />
+                                <x-btn-back :route="isset($serial_number) ? $redirect : 'students.create'" />
 
                                 <div>
+                                    @if(!isset($serial_number))
                                     <button class="btn btn-info" type='submit' name='action'
                                         value='save_continue'>
                                         <i class="fa-regular fa-save"></i>
                                         {{ __('jamiat.save_continue') }}
                                     </button>
+                                    @endif
                                     <button class="btn btn-primary" type="submit" name="action" value='save_exit'>
                                         <i class="fa-solid fa-save"></i>
                                         {{ __('jamiat.save_exit') }}

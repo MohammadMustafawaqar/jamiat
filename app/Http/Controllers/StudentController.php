@@ -41,7 +41,7 @@ class StudentController extends Controller
     {
 
         $perPage = $request->input('perPage', 10);
-        $query = $students = Form::find(1)->students()->getQuery();
+        $query = $students = Form::find(1)->students()->addSelect('students.*')->getQuery();
 
         $students = JamiaHelper::applyStudentFilters($query, $request)
             ->paginate($perPage)
@@ -117,9 +117,22 @@ class StudentController extends Controller
             // 'exam_id' => 'required',
         ]);
 
+        
+        $redirect = '';
+
+        if($validated['form_type'] == 1){
+            $redirect = 'admin.student.form.commission';
+        }elseif($validated['form_type'] == 2){
+            $redirect = 'admin.student.form.evaluation';
+        }else{
+            $redirect = 'admin.student.form.rajab';
+        }
         session([
-            'pre_form_data' => $validated
+            'pre_form_data' => $validated,
+            'redirect' => $redirect
         ]);
+      
+
 
         $countries = Country::get();
         $schools = School::where('address_type_id', $validated['address_type_id'])->get();
@@ -157,8 +170,8 @@ class StudentController extends Controller
     {
         // dd($request->all());
         $session = session('pre_form_data', []);
-        $form_type = $session['form_type'];
-        $address_type = $session['address_type_id'];
+        $form_type = isset($session['form_type']) ? $session['form_type'] : $request->selections['form_type'];
+        $address_type = isset($session['address_type_id']) ? $session['address_type_id'] : $request->selections['address_type_id'];
         // $exam_id = $session['exam_id'];
 
         $request->validate([
@@ -222,7 +235,8 @@ class StudentController extends Controller
                 'current_province_id',
                 'permanent_province_id',
                 'action',
-                'new_school'
+                'new_school',
+                'selections'
 
             ]) + [
                 'tazkira_id' => $tazkira->id
@@ -246,7 +260,8 @@ class StudentController extends Controller
             return redirect()->back()->with("msg", __('messages.record_submitted'));
         } else {
             session()->forget('pre_form_data');
-            return redirect()->route('students.index')->with("msg", __('messages.record_submitted'));
+            $redirect = session()->get('redirect');
+            return redirect()->route($redirect)->with("msg", __('messages.record_submitted'));
         }
     }
 
@@ -430,7 +445,7 @@ class StudentController extends Controller
         }
 
         $import = new RajabStudentImport($validated);
-        Excel::import($import, $file->getRealPath());
+        Excel::import($import, $file);
 
         if ($import->failures()->isNotEmpty()) {
             // Retrieve validation failures
@@ -477,7 +492,7 @@ class StudentController extends Controller
         }
 
         $import = new StudentImport($validated);
-        Excel::import($import, $file, null, \Maatwebsite\Excel\Excel::XLSX);
+        Excel::import($import, $file);
 
 
         if ($import->failures()->isNotEmpty()) {
@@ -550,6 +565,8 @@ class StudentController extends Controller
                     }
                 }
             }
+
+            $student->currentExam = $student->exams()->where('exams.id', $request->exam_id)->first();
             // }
             // dd($assigned_student_count);
             // dd($exam);

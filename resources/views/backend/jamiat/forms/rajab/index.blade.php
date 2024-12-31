@@ -117,6 +117,10 @@
                                             'locale' => app()->getLocale(),
                                         ]" />
                                     @endcan
+                                    <a href="{{ route('admin.forms.rajab.create-student', $form->id) }}" class="btn btn-sm btn-warning">
+                                        <i class="fa fa-user"></i>
+                                        فاضل اضافه کړئ
+                                    </a>
                                 </div>
 
                             </td>

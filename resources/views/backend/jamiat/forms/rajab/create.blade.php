@@ -110,13 +110,12 @@
                     <div class="m-l">
                         <span>۲ - </span>
                         <span>المولود :&nbsp; </span>
-                        <span> _________________ </span>
+                        <span> ________________________ </span>
                         <span>هـ ق الموافق لعام :&nbsp; </span>
-                        <span> _________________ </span>
+                        <span> ________________________ </span>
                         <span>هـ ش :&nbsp; </span>
-                        <span> _________________ </span>
-                        <span>م :&nbsp; </span>
-                        <span> _________________ </span>
+                        <span> ______________________ </span>
+                        <span>م&nbsp; </span>
                     </div>
                     <div class="m-l">
                         <span>۳ - </span>

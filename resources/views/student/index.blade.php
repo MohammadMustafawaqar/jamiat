@@ -52,7 +52,7 @@
                                         <td>{{ $student->form_type}}</td>
                                         <td>
                                             <div class="btn-group" dir="ltr">
-                                                <x-buttons.delete :route="route('students.destroy', $student)" />
+                                                <x-buttons.delete :route="route('admin.student.destroy', $student)" />
                                                 <x-buttons.show :route="route('students.show', $student)" />
                                                 <x-buttons.edit :route="route('students.edit', $student)" />
                                             </div>

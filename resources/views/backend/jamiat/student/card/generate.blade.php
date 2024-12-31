@@ -118,9 +118,8 @@
 <body>
     <div class="container">
         <div class="row">
-
             @foreach ($students as $student)
-                <div class="col-6" style="margin-top: 3px; border-right: 3px dotted black; border-bottom: 3px dotted black;">
+                <div class="col-6" style="margin: 0px; border-right: 3px dotted black; border-bottom: 3px dotted black;">
                     <div class="card-container">
                         <!-- Header with logos and titles -->
                         <div class="card-header">
@@ -130,7 +129,7 @@
                                 <h6>د افغانستان اسلامي امارت</h6>
                                 <h6>د لوړو زده کړو وزارت</h6>
                                 <h6>د دیني جامعاتو او تخصصاتو لوی ریاست</h6>
-                                <h6>{{ $student->exams->first()?->title }} کارت</h6>
+                                <h6>{{ $student->currentExam->title }} کارت</h6>
                             </div>
                             <img src="{{ asset('assets/logos/mohe_logo.png') }}" alt="MOHE" class="logo">
                             <!-- Right logo -->
@@ -142,7 +141,7 @@
                         <div class="card-content">
                             <div class="card-row">
                                 <div class="card-field">
-                                    <span class="card-label">فورم ایډی: </span>
+                                    <span class="card-label">رقم الجلوس: </span>
                                     <span class="card-value">{{ $student->form_id }}</span>
                                 </div>
                                 <div class="card-field">

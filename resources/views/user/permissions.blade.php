@@ -29,7 +29,7 @@
                         </label>
                     </div>
                 </li>
-    @else
+            @else
                 <li class="list-group-item list-group-item-action">
                     <div class="form-check">
                         <label class="form-check-label">

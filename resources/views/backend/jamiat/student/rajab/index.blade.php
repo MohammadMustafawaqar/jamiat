@@ -98,14 +98,19 @@
             <x-table>
                 <x-slot:tools>
                     <div></div>
+                    <div>
+                        @can('student_tools.generate Id Card')
+                            <button type="submit" class="btn btn-primary" id="generate-id-cards-btn" style="display: none">
+                                {{ __('jamiat.generate_card_btn') }}
+                            </button>
+                        @endcan
 
-                    <button type="submit" class="btn btn-primary" id="generate-id-cards-btn" style="display: none">
-                        {{ __('jamiat.generate_card_btn') }}
-                    </button>
-
-                    <button type="submit" class="btn btn-success" style="display: none" id="add-score-btn">
-                        {{ __('jamiat.add_scores') }}
-                    </button>
+                        @can('student_tools.add score')
+                            <button type="submit" class="btn btn-success" style="display: none" id="add-score-btn">
+                                {{ __('jamiat.add_scores') }}
+                            </button>
+                        @endcan
+                    </div>
 
 
                 </x-slot:tools>
@@ -165,8 +170,8 @@
                             </td>
 
                             <td dir="ltr" style="width: 100%">
-                                
-                                    {{ $student->phone_number }}
+
+                                {{ $student->phone_number }}
                             </td>
                             <td data-toggle="tooltip" data-placement="bottom"
                                 title="{{ $student->school?->name }} ({{ $student->school?->address }})">
@@ -199,7 +204,7 @@
                             <td>
                                 <div class="btn-group" dir="ltr">
                                     @can('students.delete')
-                                        <x-buttons.delete :route="route('students.destroy', $student)" />
+                                        <x-buttons.delete :route="route('admin.student.destroy', $student)" />
                                     @endcan
                                     @can('students.show')
                                         <x-buttons.show :route="route('admin.student.show', $student)" />

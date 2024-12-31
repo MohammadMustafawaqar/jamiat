@@ -126,19 +126,26 @@ class PermissionSeeder extends Seeder
             // ['name' => 'exam_centers.show', 'guard_name' => 'web'],
 
             // Campus
-            ['name' => 'campus.*', 'guard_name' => 'web'],
-            ['name' => 'campus.create', 'guard_name' => 'web'],
-            ['name' => 'campus.edit', 'guard_name' => 'web'],
-            ['name' => 'campus.read', 'guard_name' => 'web'],
-            ['name' => 'campus.show', 'guard_name' => 'web'],
+            // ['name' => 'campus.*', 'guard_name' => 'web'],
+            // ['name' => 'campus.create', 'guard_name' => 'web'],
+            // ['name' => 'campus.edit', 'guard_name' => 'web'],
+            // ['name' => 'campus.read', 'guard_name' => 'web'],
+            // ['name' => 'campus.show', 'guard_name' => 'web'],
 
-            // Sub Class
-            ['name' => 'sub_class.*', 'guard_name' => 'web'],
-            ['name' => 'sub_class.create', 'guard_name' => 'web'],
-            ['name' => 'sub_class.edit', 'guard_name' => 'web'],
-            ['name' => 'sub_class.read', 'guard_name' => 'web'],
-            ['name' => 'sub_class.show', 'guard_name' => 'web'],
+            // // Sub Class
+            // ['name' => 'sub_class.*', 'guard_name' => 'web'],
+            // ['name' => 'sub_class.create', 'guard_name' => 'web'],
+            // ['name' => 'sub_class.edit', 'guard_name' => 'web'],
+            // ['name' => 'sub_class.read', 'guard_name' => 'web'],
+            // ['name' => 'sub_class.show', 'guard_name' => 'web'],
+
+            ['name' => 'student_tools.*', 'guard_name' => 'web'],
+            ['name' => 'student_tools.print diploma', 'guard_name' => 'web'],
+            ['name' => 'student_tools.add score', 'guard_name' => 'web'],
+            ['name' => 'student_tools.generate Id Card', 'guard_name' => 'web'],
+
         ];
+
 
 
         $role = Role::find(1);

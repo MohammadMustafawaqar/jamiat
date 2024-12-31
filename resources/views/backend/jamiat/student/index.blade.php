@@ -88,17 +88,23 @@
             <x-slot:tools>
                 <div></div>
                 <div class="btn-group" dir="ltr">
+                    @can('student_tools.generate Id Card')
                     <button type="submit" class="btn btn-primary" style="display: none" id="generate-id-cards-btn">
                         {{ __('jamiat.generate_card_btn') }}
                     </button>
+                    @endcan
 
+                    @can('student_tools.add score')
                     <button type="submit" class="btn btn-success" style="display: none" id="add-score-btn">
                         {{ __('jamiat.add_scores') }}
                     </button>
+                    @endcan
 
+                    @can('student_tools.print diploma')
                     <button type="submit" class="btn btn-secondary" style="display: none" id="print-diploma-btn">
                         {{ __('jamiat.print_diploma') }}
                     </button>
+                    @endcan
 
                 </div>
 
@@ -200,9 +206,10 @@
 
                         </td>
                         <td>
+
                             <div class="btn-group" dir="ltr">
                                 @can('students.delete')
-                                    <x-buttons.delete :route="route('students.destroy', $student)" />
+                                    <x-buttons.delete :route="route('admin.student.destroy', $student)" />
                                 @endcan
                                 @can('students.show')
                                     <x-buttons.show :route="route('admin.student.show', $student)" />

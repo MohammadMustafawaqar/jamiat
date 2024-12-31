@@ -22,7 +22,8 @@
 
                 </div>
             </div>
-            <div class="row" style="@if (!$errors->any()) display: none @endif" id="form-generate-container">
+            <div class="row" style="@if (!$errors->any()) display: none @endif"
+                id="form-generate-container">
                 <form action="{{ route('admin.forms.commission.store') }}" method="POST" class="row"
                     target="_blank">
                     @csrf
@@ -59,13 +60,14 @@
             <x-table id='doctorTable'>
                 <x-slot:tools>
                     <div></div>
-                        <form action="{{ route('admin.forms.commission.print.many') }}" method="GET" id='print-many-form' target="_blank">
-                            <input type="hidden" id="stud_form_ids" name="stud_form_ids" >
-                            <button class="btn btn-info btn-sm" id="form-print-btn">
-                                <i class="fa fa-print"></i>
-                                {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
-                            </button>
-                        </form>
+                    <form action="{{ route('admin.forms.commission.print.many') }}" method="GET" id='print-many-form'
+                        target="_blank">
+                        <input type="hidden" id="stud_form_ids" name="stud_form_ids">
+                        <button class="btn btn-info btn-sm" id="form-print-btn">
+                            <i class="fa fa-print"></i>
+                            {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
+                        </button>
+                    </form>
                 </x-slot:tools>
                 <thead>
                     <tr>
@@ -92,9 +94,7 @@
                                 {{ $form->grade?->name }}
                             </td>
                             <td>
-                                <span
-                                class="badge bg-secondary"
-                                > {{ $form->addressType?->name }}</span>
+                                <span class="badge bg-secondary"> {{ $form->addressType?->name }}</span>
                             </td>
                             <td>
                                 {{ $form->formatted_serial_number }}
@@ -123,6 +123,12 @@
                                             'locale' => app()->getLocale(),
                                         ]" />
                                     @endcan
+
+                                    <a href="{{ route('admin.forms.commission.create-student', $form->id) }}"
+                                        class="btn btn-sm btn-warning">
+                                        <i class="fa fa-user"></i>
+                                        فاضل اضافه کړئ
+                                    </a>
                                 </div>
 
                             </td>
@@ -144,7 +150,7 @@
                 $('#form-print-btn').toggle(isAnyChecked);
             }
 
-            $("#form-print-btn").on('click', function(){
+            $("#form-print-btn").on('click', function() {
                 const selectedIds = $('.stud_form-checkbox:checked').map(function() {
                     return this.value;
                 }).get();
