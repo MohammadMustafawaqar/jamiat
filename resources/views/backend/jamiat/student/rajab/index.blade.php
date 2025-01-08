@@ -74,7 +74,7 @@
                         <div class="btn-group">
                             <x-btn-filter type='submit' />
                             <x-btn-reset :route="route(Route::currentRouteName())" />
-                            <button name='export' type="submit">
+                            <button name='export' type="submit" class="btn btn-success">
                                 <i class='fa fa-download'></i>
                             </button>
                         </div>
