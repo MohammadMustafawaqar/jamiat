@@ -71,6 +71,11 @@ class JamiaHelper
         return $query->when($request->form_id, function ($query) use ($request) {
             $query->where('students.form_id', 'like', "%$request->form_id%");
         })
+            ->when($request->status, function ($query) use ($request) {
+                $query->whereHas('studentExams', function($query) use($request){
+                    $query->where('status', $request->status);
+                });
+            })
             ->when($request->filter_name, function ($query) use ($request) {
                 $query->where('name', 'like', '%' . $request->filter_name . '%')
                     ->orWhere('last_name', 'like', '%' . $request->filter_name . '%')
@@ -281,6 +286,6 @@ class JamiaHelper
             return $matches[0]; // Return the first matched year
         }
 
-        return null; 
+        return null;
     }
 }

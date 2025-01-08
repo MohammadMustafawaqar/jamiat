@@ -83,6 +83,9 @@ Route::group([
         Route::get('/evaluation/export', 'evaluationStudentExport')
             ->name('evaluation.export');
 
+        Route::get('/evaluation/export', 'rajabStudentExport')
+            ->name('rajab.export');
+
 
 
         // Generate Card
@@ -158,7 +161,7 @@ Route::group([
 
         Route::resource('/evaluation', EvaluationController::class);
         Route::get('evaluation/{form_id}/create-student', [EvaluationController::class, 'createStudent'])
-        ->name('evaluation.create-student');
+            ->name('evaluation.create-student');
         // Route::group([
         //     'as' => 'commission.',
         //     'prefix' => 'commission/',

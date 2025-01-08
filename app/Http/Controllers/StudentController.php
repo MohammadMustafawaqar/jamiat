@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RajabStudentExport;
 use App\Exports\StudentExport;
 use App\Helpers\JamiaHelper;
 use App\Imports\RajabStudentImport;
@@ -84,10 +85,14 @@ class StudentController extends Controller
         $perPage = $request->input('perPage', 10);
         $query = Form::find(3)->students()->addSelect('students.*')->getQuery();
 
-        $students = JamiaHelper::applyStudentFilters($query, $request)
+        $students = JamiaHelper::applyStudentFilters($query, $request)      
             ->orderBy('name')
             ->paginate($perPage)
             ->withQueryString();
+
+        if($request->has('export')){
+            return Excel::download(new RajabStudentExport($request), 'Rajab_Students-'.date('ymdhis').'.xlsx'); 
+        }
 
         // dd($students);
 
@@ -584,5 +589,10 @@ class StudentController extends Controller
     public function evaluationStudentExport()
     {
         return Excel::download(new StudentExport, "students" . date('ymdhis') . ".xlsx");
+    }
+
+    public function rajabStudentExport(Request $request)
+    {
+        return Excel::download(new RajabStudentExport($request), 'Rajab_Students-'.date('ymdhis').'.xlsx');
     }
 }

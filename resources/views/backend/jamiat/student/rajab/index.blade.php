@@ -59,14 +59,24 @@
                     <x-select2 :list="App\Models\User::get()" id='user_id' name="user_id" :label="__('lang.user')" col="col-sm-2"
                         text='name' value='id' />
 
+                    <div class="col-sm-2">
+                        <select name="status" id="fiter_select" class='form-control'>
+                            <option value="">Status</option>
+                            <option value="diploma_printed">Printed Diploma</option>
+                            <option value="class selected">Card Printed</option>
+                            <option value="taken">Pending</option>
+                           </select>
+                    </div>
 
 
 
-
-                    <div class="col-sm-2 mt-4">
+                    <div class="col-sm-4 mt-4">
                         <div class="btn-group">
                             <x-btn-filter type='submit' />
                             <x-btn-reset :route="route(Route::currentRouteName())" />
+                            <button name='export' type="submit">
+                                <i class='fa fa-download'></i>
+                            </button>
                         </div>
                     </div>
                 </form>
