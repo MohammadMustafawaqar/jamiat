@@ -1,66 +1,117 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://mohe.gov.af/sites/default/files/2021-09/my-mohe-logo_e_1_0.png" alt="Jamiat Logo" width="100">
 </p>
 
-## About Laravel
+<h1 align="center">Jamiat Scholar Registration & Exam Management System</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  A Laravel 10 application for managing scholar registration, exam enrollment, and distribution across exam halls, developed for the Jamiat Directorate.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<p align="center">
+  <a href="https://github.com/MOHE-Systems/jamiat_system">
+    <img alt="GitHub Repo" src="https://img.shields.io/badge/source-MOHE--Systems-blue?style=flat-square&logo=github">
+  </a>
+  <a href="https://laravel.com">
+    <img alt="Laravel" src="https://img.shields.io/badge/Laravel-10-red?style=flat-square&logo=laravel">
+  </a>
+  <a href="https://getbootstrap.com">
+    <img alt="Bootstrap" src="https://img.shields.io/badge/Bootstrap-5-blueviolet?style=flat-square&logo=bootstrap">
+  </a>
+  <a href="https://www.mysql.com/">
+    <img alt="MySQL" src="https://img.shields.io/badge/Database-MySQL-orange?style=flat-square&logo=mysql">
+  </a>
+</p>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🧾 Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The **Jamiat Scholar Registration & Exam Management System** is an internal application designed to manage scholar registrations, exam enrollments, and distribute applicants to exam halls based on their capacity. This system streamlines the entire exam process, from enrollment to result management, making it easy for the Jamiat Directorate to handle large volumes of applicants efficiently.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📌 Key Features
 
-## Laravel Sponsors
+### ✅ Scholar Registration & Management
+- Register scholars for exams
+- Assign scholars to specific Madars (schools)
+- Generate unique scholar enrollment numbers for exams
+- Maintain detailed records for each scholar, including enrollment history
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### 📝 Exam Enrollment & Hall Distribution
+- Create and manage exams
+- Assign scholars to exam halls based on hall capacities
+- Dynamic distribution of scholars to exam halls
+- Generate and download exam enrollment forms with unique identifiers
 
-### Premium Partners
+### 📊 Exam Results & Reporting
+- Track and record exam results
+- Generate reports based on exams, schools, and scholar data
+- Import/export applicant records through Excel (CSV, XLSX)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### 🏫 Madars (Schools) Management
+- Register and maintain records for Madars (schools)
+- Link scholars to their respective Madars for easy management
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🧪 TODO
 
-## Code of Conduct
+Planned features under active development:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- 📊 **Advanced Report Generation** – Generate complex reports based on various filters (e.g., exam results, scholar performance, Madars).
+- 💻 **Online Exam Enrollment** – Web portal for scholars to self-register for exams.
+- 🧑‍🏫 **Performance Analytics** – Track scholar performance across different exams and years.
+  
+---
 
-## Security Vulnerabilities
+## 🔐 Access Control
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The system uses **role-permission-based authorization** to manage access:
 
-## License
+- Admin
+- Exam Coordinator
+- Madars (School) Manager
+- Scholar (view-only in future)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠 Tech Stack
+
+- **Framework:** Laravel 10+
+- **Frontend:** Blade, Bootstrap 5, jQuery
+- **Database:** MySQL
+- **Auth:** Custom login with permission control
+- **File Handling:** Excel (via Laravel Excel package)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- PHP >= 8.1
+- Composer
+- MySQL
+
+### Installation
+
+```bash
+git clone https://github.com/MOHE-Systems/jamiat_system.git
+cd jamiat_system
+
+# Install PHP dependencies
+composer install
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Edit .env and configure your DB credentials
+
+# Import the provided SQL dump
+mysql -u root -p jamiat_db < database/jamiat_system.sql
+
+# Serve the app
+php artisan serve
