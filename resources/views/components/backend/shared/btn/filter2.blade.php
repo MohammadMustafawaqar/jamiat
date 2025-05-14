@@ -2,4 +2,3 @@
     <i class="fa fa-filter"></i>&nbsp;
     {{ __('applicant.filter')}}
     <i class="fa fa-spin sr-only"></i>
-</button>

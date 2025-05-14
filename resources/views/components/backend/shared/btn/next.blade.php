@@ -8,4 +8,3 @@
         {{ Settings::trans('Next', 'وروستې پاڼه', 'صفحه بعدي') }}
         <i class="fa fa-arrow-{{ app()->getLocale() == 'en' ? 'right' : 'left' }}"></i>
     </a>
-</div>

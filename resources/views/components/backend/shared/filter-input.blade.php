@@ -19,4 +19,3 @@
             id="{{ $name }}" value="{{ isset($_GET[$name]) ? $_GET[$name] : '' }}" name="{{ $name }}" key="{{ $name }}">
         <span id="{{ $name }}-error" class="error invalid-feedback d-none"></span>
     </div>
-</div>

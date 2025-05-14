@@ -81,4 +81,3 @@
 <script type="text/javascript">
     $('.data-table').DataTable();
 </script>
-@endpush

@@ -10,4 +10,3 @@
         </div>
     </div>
     </x-backend.shared.from>
-</div>

@@ -8,4 +8,3 @@
         <i class="fa fa-arrow-{{ app()->getLocale() == 'en' ? 'left' : 'right' }}"></i>
         {{ Settings::trans('Back', 'مخکنې پاڼه', 'صفحه قبلي', 'رجوع') }}
     </a>
-</div>

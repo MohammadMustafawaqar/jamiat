@@ -27,4 +27,3 @@
     </div>
   </div>
   <!-- End of Add Model -->
-</div>

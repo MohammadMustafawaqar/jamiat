@@ -23,4 +23,3 @@
         <span id="{{ $id == '' ? $name : $id }}-error" class="error invalid-feedback d-none"></span>
 
     </div>
-</div>

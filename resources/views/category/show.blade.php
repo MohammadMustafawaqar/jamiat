@@ -69,4 +69,3 @@
     myModal.show();
     @endif    
 </script>
-@endpush

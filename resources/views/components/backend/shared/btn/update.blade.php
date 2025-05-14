@@ -3,4 +3,3 @@
         <i class="fa fa-save"></i>&nbsp; 
         {{ $slot }}
     </button>
-</div>

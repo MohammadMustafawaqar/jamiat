@@ -50,4 +50,3 @@ for /r %%f  in (*.css) do (
 
 if exist %PPATH% ECHO. All files has been minified.. :)
 ECHO. Press any key...
-pause > nul

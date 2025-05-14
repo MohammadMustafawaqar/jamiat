@@ -21,4 +21,3 @@
         <span id="{{ $id == '' ? $name : $id }}-error" class="error invalid-feedback">{{ $message }}</span>
         @enderror
     </div>
-</div>

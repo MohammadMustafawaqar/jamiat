@@ -69,4 +69,3 @@
         scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
     };
 </script>
-@endpush

@@ -37,4 +37,3 @@
     $("#province_id").val("{{$school->district->province_id}}");
     $("#district_id").val("{{$school->district_id}}");
 </script>
-@endpush

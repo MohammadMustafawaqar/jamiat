@@ -12,4 +12,3 @@
                 class="app-menu__label">{{__('lang.theses')}}</span></a>
     </li>
    
-</ul>

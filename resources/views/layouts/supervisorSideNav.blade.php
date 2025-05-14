@@ -7,4 +7,3 @@
             href="{{route('all-students')}}"><i class="app-menu__icon bi bi-people"></i><span
                 class="app-menu__label">{{__('lang.students')}}</span></a>
     </li>
-</ul>

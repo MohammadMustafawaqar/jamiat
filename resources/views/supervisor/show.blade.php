@@ -100,4 +100,3 @@
         theme: "bootstrap-5"
     });
 </script>
-@endpush

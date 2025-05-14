@@ -5,4 +5,3 @@
       <i class="icon fas fa-check"></i> &nbsp; {{ session('success') }}
     </div>
     @endif
-</div>

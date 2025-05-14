@@ -34,4 +34,3 @@
         <br>
         <hr style="border:1px solid black;width:160px;">
     </div>
-</div>

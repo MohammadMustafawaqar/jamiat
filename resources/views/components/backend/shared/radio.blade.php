@@ -19,4 +19,3 @@
             {{ $attributes }} >
         <label for="{{ $id == '' ? $name : $id }}" class="custom-control-label">{{ $label }}</label>
     </div>
-</div>

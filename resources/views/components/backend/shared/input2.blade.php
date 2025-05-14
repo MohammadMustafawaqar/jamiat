@@ -18,4 +18,3 @@
             id="{{ $id == '' ? $name : $id }}" value="{{ isset($_GET[$name]) ? $_GET[$name] : ( $value ? $value : old($name) ) }}" name="{{ $name }}" key="{{ $name }}">
         <span id="{{ $id == '' ? $name : $id }}-error" class="error invalid-feedback d-none"></span>
     </div>
-</div>

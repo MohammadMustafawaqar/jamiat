@@ -11,4 +11,3 @@
         {{ $slot }}
         @endif
     </a>
-</div>

@@ -20,4 +20,3 @@
         return userConfirmed;
     }
 </script>
-@endpush

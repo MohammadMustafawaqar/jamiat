@@ -9,4 +9,3 @@
         <i class="fa fa-print"></i>
         {{ Settings::trans('Print', 'پرنټ', 'پرنت') }}
     </a>
-</div>
